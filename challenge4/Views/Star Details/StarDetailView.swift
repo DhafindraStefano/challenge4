@@ -52,11 +52,28 @@ struct StarDetailView: View {
                     .ignoresSafeArea()
             }
             .overlay(
-                VStack {
-                    Text("Hello, World!")
-                        .foregroundColor(.white)
-                        .padding()
-//                    Spacer()
+                VStack(spacing: 16) {
+                    
+                    HStack{
+                        // Back Button
+                        BackButton()
+                        
+                        // Date
+                    }
+                        
+                    
+                    // Top tab bar
+                    TabBar()
+                        .padding(.top, 20)
+
+                    // Three cards stacked vertically at the bottom
+                    VStack(spacing: 12) {
+                        Cards(state: .feeling)
+                        Cards(state: .why)
+                        Cards(state: .need)
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, 20)
                 }
             )
         }

@@ -26,7 +26,7 @@ struct TabBar: View {
                     }
                 }) {
                     Text(tab.rawValue)
-                        .font(.headline)
+                        .font(.title2)
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
