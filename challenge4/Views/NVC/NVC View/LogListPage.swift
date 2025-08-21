@@ -4,6 +4,10 @@
 //
 //  Created by Muhammad Dwiva Arya Erlangga on 21/08/25.
 //
+<<<<<<< Updated upstream
+=======
+// MARK: THIS IS JUST FOR TEST ALR
+>>>>>>> Stashed changes
 
 import SwiftUI
 import SwiftData

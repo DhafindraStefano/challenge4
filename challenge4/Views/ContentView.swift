@@ -61,8 +61,12 @@ struct ContentView: View {
         .modelContainer(for: [LogObject.self, NeedObject.self, RabitFaceObject.self, FeelingObject.self, Item.self], inMemory: true)
 }
 
+<<<<<<< Updated upstream
 
 // MARK: JUST TO TEST BACKEND
+=======
+//// MARK: JUST TO TEST BACKEND
+>>>>>>> Stashed changes
 //
 //struct ContentView: View {
 //    var body: some View {

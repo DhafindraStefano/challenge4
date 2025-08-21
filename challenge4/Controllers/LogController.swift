@@ -1,8 +1,8 @@
 //
-//  logController.swift
+//  LogController.swift
 //  challenge4
 //
-//  Created by Dhafindra Razaqa Stefano on 19/08/25.
+//  Created by Muhammad Dwiva Arya Erlangga on 19/08/25.
 //
 
 import Foundation
