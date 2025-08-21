@@ -8,11 +8,81 @@
 import SwiftUI
 
 struct Cards: View {
+    /// Represents the current card state: Feeling, Why, or Need.
+    enum CardState {
+        case feeling, why, need
+    }
+
+    /// The state controlling which card content to show.
+    var state: CardState
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(spacing: 0) {
+            // Title section
+            Text(title)
+                .font(.headline)
+                .foregroundColor(.white)
+                .padding()
+
+            // Thin separator with default divider colour at 10 % opacity
+            Rectangle()
+                .fill(Color.gray.opacity(0.1)) // default divider grey is #C6C6C8 [oai_citation:1‡sarunw.com](https://sarunw.com/posts/swiftui-divider/#:~:text=Changing%20SwiftUI%20Divider%20Colors)
+                .frame(height: 1)
+
+            // Content section
+            content
+                .padding()
+        }
+        .background(Color("EmotionBarColor"))
+        .cornerRadius(20)
+        .padding(.horizontal, 5) // optional outer padding
+    }
+
+    /// Returns the appropriate title for each state.
+    private var title: String {
+        switch state {
+        case .feeling:
+            return "How I'm Feeling Today"
+        case .why:
+            return "Why I Feel That Way"
+        case .need:
+            return "What I Need"
+        }
+    }
+
+    /// Returns the appropriate content view for each state.
+    @ViewBuilder
+    private var content: some View {
+        switch state {
+        case .feeling:
+            // Image from assets; adjust sizing as needed
+            Image("HappyFace")
+                .resizable()
+                .scaledToFit()
+                .frame(height: 150)
+        case .why:
+            // RecordButton is assumed to be defined elsewhere in your project
+            RecordButton()
+        case .need:
+            // Text with pill‐shaped background using EmotionBarColorDropShadow
+            Text("Rest")
+                .font(.headline)
+                .foregroundColor(.white)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(Color("EmotionBarColorDropShadow"))
+                .clipShape(Capsule())
+        }
     }
 }
 
 #Preview {
-    Cards()
+    // Example previews for each card state
+    VStack(spacing: 20) {
+        Cards(state: .feeling)
+        Cards(state: .why)
+        Cards(state: .need)
+    }
+    .padding()
+    .background(Color(.systemBackground)) // To see the card edges clearly in preview
 }
