@@ -11,13 +11,28 @@ import Lottie
 struct HomeView: View {
     @State private var daysCount : Int = 0
     @State private var daysTotal: Int = 30
+    @State private var offsetAmount : CGFloat = -150
     var body: some View {
         NavigationStack{
             ZStack{
-                //Need to figure out how to scatter the stars and the Moon, first layer
-                
+                //First Layer
                 VStack{
-                    
+                    Image("Background")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 2565, height: 908.09)
+                        .offset(x:offsetAmount, y: -9)
+                        .ignoresSafeArea()
+                        .onAppear {
+                                            withAnimation(.linear(duration: 5).repeatForever(autoreverses: false)) {
+                                                offsetAmount = 500 // Adjust as needed
+                                            }
+                                        }
+
+                }
+                //Need to figure out how to scatter the stars and the Moon, first layer
+                //Second layer
+                VStack{
                     Image("StarHome")
                         .resizable()
                         .scaledToFit()
@@ -30,17 +45,17 @@ struct HomeView: View {
                         .offset(x:120,y:-189)
                 }
                 
-                //Second Layer
+                //Third Layer
                 VStack {
                     Image("MoonBase")
                         .resizable()
                         .scaledToFit()
-                        .frame(height: 450)
-                        .offset(y:300)
+                        .frame(width: 440, height: 246)
+                        .offset(y: 300 )
                         .ignoresSafeArea(.all)
                 }
                 
-                //Third Layer
+                //Fourth Layer
                 VStack{
                     HStack{
                         ZStack {
@@ -65,13 +80,14 @@ struct HomeView: View {
                                     .offset(x: 58, y:-6)
                             }.frame(maxWidth:148, alignment: .topLeading)
                         }
-                        Spacer()
+                       Spacer()
                         Button() {
                             
                         } label: {
                             Image("SettingBtn")
                         }
-                    }.padding(.horizontal, 20.0)
+                    }.frame(maxWidth: 353)
+                     .padding(EdgeInsets(top: 50, leading:20, bottom: 8, trailing: 20))
                     
                     HStack(spacing:-50){
                         ZStack {
@@ -79,50 +95,39 @@ struct HomeView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 210.32, height: 69)
-                                .offset(x:130,y:365)
+                                .offset(x:70,y:390)
                             LottieView(name: "rabbit talk child", // the name is the name of the .json file
                                        loopMode: .loop, contentMode: .scaleAspectFit, speed: 1.0)
                             .frame(width: 134, height: 173)
-                            .offset(x:500,y: 2200)
-                            .scaleEffect(0.13)
+                            .offset(x: 100,y: 2180)
+                            .scaleEffect(0.14)
                             Image("ParentStone")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 99.84, height: 65.69)
-                                .offset(x:-30,y:365)
+                                .offset(x:-90,y:385)
                             LottieView(name: "rabbit talk mom", // the name is the name of the .json file
                                        loopMode: .loop, contentMode: .scaleAspectFit, speed: 1.0)
                             .frame(width: 163, height: 207)
-                            .offset(y: 2200)
-                            .scaleEffect(0.15)
+                            .offset(x:-70, y: 1700)
+                            .scaleEffect(0.17)
                         }
-                        
-                        
-//                            .scaleEffect(1, anchor: .trailing)
-            
-
-
-                            Image("ChildBunny")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 163, height: 250)
-                                .offset(y:280)
-                        
                         
                     }
                     
                     Button(){
                         
+                        
                     }label:{
                         Image("StartTalkBtn")
-                            .offset(x:10, y:320 )
+                            .offset(x:10, y:350 )
                     }
                     Spacer()
                 }
                
                 
             }
-            .background(Color("AppBg"))
+//            .background(Color("AppBg"))
     
         }
     }
