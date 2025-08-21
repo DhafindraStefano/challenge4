@@ -9,7 +9,39 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack{
+            ZStack{
+                //Need to figure out how to scatter the stars
+                Image("StarHome")
+                
+                VStack {
+                    Spacer()
+                    Image("MoonHome")
+                        .resizable()
+                        .scaledToFit()
+                }
+                VStack{
+                    HStack{
+                        Image("ProgressBar")
+                        Spacer()
+                        Button() {
+                            
+                        } label: {
+                            Image("SettingBtn")
+                        }
+                    }.padding(.horizontal, 20.0)
+                    Spacer()
+                    
+                }
+                
+                HStack{
+                    
+                }
+                
+            }
+            .background(Color("AppBg"))
+    
+        }
     }
 }
 
