@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5785217A2E56B54C003FF82D /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 578521792E56B54C003FF82D /* Lottie */; };
+		CCC2BA9A2E55B2BC0041AB66 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = CCC2BA992E55B2BC0041AB66 /* Lottie */; };
+		CCC2BA9C2E55B38F0041AB66 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = CCC2BA9B2E55B38F0041AB66 /* Lottie */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,7 +57,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5785217A2E56B54C003FF82D /* Lottie in Frameworks */,
+				CCC2BA9A2E55B2BC0041AB66 /* Lottie in Frameworks */,
+				CCC2BA9C2E55B38F0041AB66 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,7 +119,8 @@
 			);
 			name = challenge4;
 			packageProductDependencies = (
-				578521792E56B54C003FF82D /* Lottie */,
+				CCC2BA992E55B2BC0041AB66 /* Lottie */,
+				CCC2BA9B2E55B38F0041AB66 /* Lottie */,
 			);
 			productName = challenge4;
 			productReference = CC7A02292E4C26B300E9C6EE /* challenge4.app */;
@@ -202,7 +205,7 @@
 			mainGroup = CC7A02202E4C26B300E9C6EE;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				578521782E56B54C003FF82D /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				CCC2BA8F2E55AAB20041AB66 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CC7A022A2E4C26B300E9C6EE /* Products */;
@@ -571,9 +574,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		578521782E56B54C003FF82D /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+		CCC2BA8F2E55AAB20041AB66 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 4.5.2;
@@ -582,9 +585,12 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		578521792E56B54C003FF82D /* Lottie */ = {
+		CCC2BA992E55B2BC0041AB66 /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 578521782E56B54C003FF82D /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		CCC2BA9B2E55B38F0041AB66 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
 			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
