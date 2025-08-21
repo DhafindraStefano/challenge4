@@ -68,7 +68,7 @@ struct StarDetailView: View {
                         BackButton()
                             .padding(.leading, 20)
                         DatePicker()
-                            .padding(.leading, 13)
+                            .padding(.leading, 2)
                         Spacer()
                     }
 
@@ -88,7 +88,7 @@ struct StarDetailView: View {
                                 Cards(state: .feeling)
                                 Cards(state: .need)
                             case .games:
-                                Cards(state: .why)
+                                Cards(state: .games)
                             }
                         }
                         .padding(.horizontal, 16)

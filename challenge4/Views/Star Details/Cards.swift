@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct Cards: View {
-    /// Represents the current card state: Feeling, Why, or Need.
+    /// Represents the current card state: Feeling, Why, Need, or Games.
     enum CardState {
-        case feeling, why, need
+        case feeling, why, need, games
     }
 
     /// The state controlling which card content to show.
@@ -24,9 +24,9 @@ struct Cards: View {
                 .foregroundColor(.white)
                 .padding()
 
-            // Thin separator with default divider colour at 10 % opacity
+            // Thin separator with default divider colour at 10 % opacity
             Rectangle()
-                .fill(Color.gray.opacity(0.1)) // default divider grey is #C6C6C8 [oai_citation:1‡sarunw.com](https://sarunw.com/posts/swiftui-divider/#:~:text=Changing%20SwiftUI%20Divider%20Colors)
+                .fill(Color.gray.opacity(0.1))
                 .frame(height: 1)
 
             // Content section
@@ -35,7 +35,7 @@ struct Cards: View {
         }
         .background(Color("EmotionBarColor"))
         .cornerRadius(20)
-        .padding(.horizontal, 5) // optional outer padding
+        .padding(.horizontal, 5)
     }
 
     /// Returns the appropriate title for each state.
@@ -47,6 +47,8 @@ struct Cards: View {
             return "Why I Feel That Way"
         case .need:
             return "What I Need"
+        case .games:
+            return "Can you tell me a story about your childhood?"
         }
     }
 
@@ -55,16 +57,14 @@ struct Cards: View {
     private var content: some View {
         switch state {
         case .feeling:
-            // Image from assets; adjust sizing as needed
             Image("HappyFace")
                 .resizable()
                 .scaledToFit()
                 .frame(height: 150)
-        case .why:
-            // RecordButton is assumed to be defined elsewhere in your project
+        case .why, .games:
+            // Both Why and Games use a RecordButton as their content
             RecordButton()
         case .need:
-            // Text with pill‐shaped background using EmotionBarColorDropShadow
             Text("Rest")
                 .font(.headline)
                 .foregroundColor(.white)
@@ -77,12 +77,12 @@ struct Cards: View {
 }
 
 #Preview {
-    // Example previews for each card state
     VStack(spacing: 20) {
         Cards(state: .feeling)
         Cards(state: .why)
         Cards(state: .need)
+        Cards(state: .games) // preview for the new Games state
     }
     .padding()
-    .background(Color(.systemBackground)) // To see the card edges clearly in preview
+    .background(Color(.systemBackground))
 }
