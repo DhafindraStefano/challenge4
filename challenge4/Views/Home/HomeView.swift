@@ -90,6 +90,11 @@ struct HomeView: View {
                                 .scaledToFit()
                                 .frame(width: 99.84, height: 65.69)
                                 .offset(x:-30,y:365)
+                            LottieView(name: "rabbit talk mom", // the name is the name of the .json file
+                                       loopMode: .loop, contentMode: .scaleAspectFit, speed: 1.0)
+                            .frame(width: 163, height: 207)
+                            .offset(y: 2200)
+                            .scaleEffect(0.15)
                         }
                         
                         
