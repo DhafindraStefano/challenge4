@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		5785217A2E56B54C003FF82D /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 578521792E56B54C003FF82D /* Lottie */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		CC7A02392E4C26B500E9C6EE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5785217A2E56B54C003FF82D /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = challenge4;
 			packageProductDependencies = (
+				578521792E56B54C003FF82D /* Lottie */,
 			);
 			productName = challenge4;
 			productReference = CC7A02292E4C26B300E9C6EE /* challenge4.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = CC7A02202E4C26B300E9C6EE;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				578521782E56B54C003FF82D /* XCRemoteSwiftPackageReference "lottie-ios" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CC7A022A2E4C26B300E9C6EE /* Products */;
 			projectDirPath = "";
@@ -560,6 +569,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		578521782E56B54C003FF82D /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		578521792E56B54C003FF82D /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 578521782E56B54C003FF82D /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CC7A02212E4C26B300E9C6EE /* Project object */;
 }

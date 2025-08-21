@@ -8,6 +8,11 @@
 import SwiftUI
 
 struct NeedNVCView: View {
+    //Log Object
+    @Binding var observation: RabitFaceObject?
+    @Binding var feeling: FeelingObject?
+    @State private var Needs: NeedObject? = NeedObject(needs: [""])
+    
     @State private var selectedNeed: String? = nil
     @State private var customNeed: String = ""
     @Environment(\.dismiss) private var dismiss
@@ -81,6 +86,18 @@ struct NeedNVCView: View {
     }
 }
 
+//#Preview {
+//    NeedNVCView(
+//        observation: .constant(nil),
+//        feeling: .constant(nil)
+//    )
+//}
 #Preview {
-    NeedNVCView()
+    @Previewable @State var observation: RabitFaceObject? = RabitFaceObject(name: "", image: "")
+    @Previewable @State var feeling: FeelingObject? = FeelingObject(audioFilePath: "")
+    
+    NeedNVCView(
+        observation: $observation,
+        feeling: $feeling
+    )
 }
