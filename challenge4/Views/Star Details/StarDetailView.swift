@@ -39,51 +39,61 @@ struct Wave: Shape {
 }
 
 struct StarDetailView: View {
+    // Controls whether we show normal activity UI or the empty state.
+    @State private var hasActivity: Bool = false
+
     var body: some View {
         GeometryReader { geo in
             ZStack {
-                // Light background
-                Color("LightOrangeBackground")
-                    .ignoresSafeArea()
-
-                // Dark background clipped to the inverted wave
-                Wave(baselineFraction: 0.33, amplitudeFraction: 0.05, inverted: true)
-                    .fill(Color("DarkOrangeBackground"))
-                    .ignoresSafeArea()
+                // If there’s an activity, keep the wave backgrounds;
+                // otherwise, show a plain “Background” color.
+                if hasActivity {
+                    Color("LightOrangeBackground")
+                        .ignoresSafeArea()
+                    Wave(baselineFraction: 0.33, amplitudeFraction: 0.05, inverted: true)
+                        .fill(Color("DarkOrangeBackground"))
+                        .ignoresSafeArea()
+                } else {
+                    Color("Background")
+                        .ignoresSafeArea()
+                }
             }
             .overlay(
+                // Common UI elements (back button & date picker) stay the same.
                 VStack(spacing: 16) {
-                    
-                    HStack{
-                        // Back Button
+                    HStack {
                         BackButton()
                             .padding(.leading, 20)
-                        
-                        // Date
                         DatePicker()
                             .padding(.leading, 13)
-                        
                         Spacer()
                     }
 
-                    // Top tab bar
-                    TabBar()
-                        .padding(.top, 20)
+                    // Conditional content based on hasActivity
+                    if hasActivity {
+                        // Normal tab bar and cards
+                        TabBar()
+                            .padding(.top,-2)
 
-                    // Three cards stacked vertically at the bottom
-                    VStack(spacing: 12) {
-                        Cards(state: .feeling)
-                        Cards(state: .why)
-                        Cards(state: .need)
+                        VStack(spacing: 12) {
+                            Cards(state: .feeling)
+                            Cards(state: .why)
+                            Cards(state: .need)
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 20)
+                    } else {
+                        Spacer()
+                        
+                        // Show the no‑activity card
+                        NoActivityCard()
+                            .padding(.bottom, 100)
                     }
-                    .padding(.horizontal, 16)
-                    .padding(.bottom, 20)
                 }
             )
         }
     }
 }
-
 #Preview {
     StarDetailView()
 }
