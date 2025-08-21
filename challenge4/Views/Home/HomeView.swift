@@ -8,11 +8,21 @@
 import SwiftUI
 
 struct HomeView: View {
+    @State private var daysCount : Int = 0
+    @State private var daysTotal: Int = 30
     var body: some View {
         NavigationStack{
             ZStack{
-                //Need to figure out how to scatter the stars
-                Image("StarHome")
+                //Need to figure out how to scatter the stars and the Moon
+                VStack{
+                    Spacer()
+                    Image("StarHome")
+                    Image("FullMoon")
+                    Spacer()
+                    Spacer()
+                    Spacer()
+                }
+                
                 
                 VStack {
                     Spacer()
@@ -22,7 +32,29 @@ struct HomeView: View {
                 }
                 VStack{
                     HStack{
-                        Image("ProgressBar")
+                        ZStack {
+                            Image("ProgressBar")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 177, height: 65)
+//                            The distance between the stetoscope and the text supposed to be 7px but Ardel haven't figured out how to do that. So
+                            HStack(spacing: 0) {
+                                Spacer()
+                                Spacer()
+                                Text ("\(daysCount)")
+                                    .font(.system(size:28, design: .rounded ))
+                                    .fontWeight(.bold)
+                                    .foregroundStyle(.white)
+                                Text("\\\\\(daysTotal)")
+                                    .font(.system(size:28, design: .rounded ))
+                                    .fontWeight(.bold)
+                                    .multilineTextAlignment(.center)
+                                    .foregroundStyle(
+                                        .white
+                                        .opacity(0.3))
+                                Spacer()
+                            }.frame(maxWidth:148, alignment: .topLeading)
+                        }
                         Spacer()
                         Button() {
                             
@@ -30,16 +62,35 @@ struct HomeView: View {
                             Image("SettingBtn")
                         }
                     }.padding(.horizontal, 20.0)
+                    
+                    HStack(spacing:-50){
+                            Image("MotherBunny")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 163, height: 222)
+                                .offset(y:280)
+
+                            Image("ChildBunny")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 163, height: 250)
+                                .offset(y:280)
+                        
+                        
+                    }
                     Spacer()
-                    
+                    Button(){
+                        
+                    }label:{
+                        Image("StartTalkBtn")
+                            .offset( y:140 )
+                    }
+                    Spacer()
                 }
-                
-                HStack{
-                    
-                }
+               
                 
             }
-            .background(Color("AppBg"))
+//            .background(Color("AppBg"))
     
         }
     }
