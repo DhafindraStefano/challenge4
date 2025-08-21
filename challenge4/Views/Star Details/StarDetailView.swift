@@ -40,7 +40,9 @@ struct Wave: Shape {
 
 struct StarDetailView: View {
     // Controls whether we show normal activity UI or the empty state.
-    @State private var hasActivity: Bool = false
+    @State private var hasActivity: Bool = true
+    // Track which tab is selected
+    @State private var selectedTab: TabBar.Tab = .parent
 
     var body: some View {
         GeometryReader { geo in
@@ -58,9 +60,10 @@ struct StarDetailView: View {
                         .ignoresSafeArea()
                 }
             }
-            .overlay(
-                // Common UI elements (back button & date picker) stay the same.
+            // Top overlay: stays pinned to the top
+            .overlay(alignment: .top) {
                 VStack(spacing: 16) {
+                    // Back button and date picker remain at the top
                     HStack {
                         BackButton()
                             .padding(.leading, 20)
@@ -69,28 +72,39 @@ struct StarDetailView: View {
                         Spacer()
                     }
 
-                    // Conditional content based on hasActivity
+                    // Show the tab bar and cards only when there's activity
                     if hasActivity {
-                        // Normal tab bar and cards
-                        TabBar()
-                            .padding(.top,-2)
+                        TabBar(selectedTab: $selectedTab)
+                            .padding(.top, -2)
 
+                        // Cards vary based on the selected tab
                         VStack(spacing: 12) {
-                            Cards(state: .feeling)
-                            Cards(state: .why)
-                            Cards(state: .need)
+                            switch selectedTab {
+                            case .parent:
+                                Cards(state: .feeling)
+                                Cards(state: .why)
+                                Cards(state: .need)
+                            case .child:
+                                Cards(state: .feeling)
+                                Cards(state: .need)
+                            case .games:
+                                Cards(state: .why)
+                            }
                         }
                         .padding(.horizontal, 16)
                         .padding(.bottom, 20)
-                    } else {
-                        Spacer()
-                        
-                        // Show the no‑activity card
-                        NoActivityCard()
-                            .padding(.bottom, 100)
                     }
                 }
-            )
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            }
+            // Bottom overlay: used only when there is no activity
+            .overlay(alignment: .bottom) {
+                if !hasActivity {
+                    NoActivityCard()
+                        .padding(.bottom, 100)
+                        .padding(.horizontal, 16)
+                }
+            }
         }
     }
 }
