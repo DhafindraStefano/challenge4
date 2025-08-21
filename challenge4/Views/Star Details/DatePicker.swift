@@ -21,21 +21,34 @@ struct DatePicker: View {
                 }
             }) {
                 Image(systemName: "chevron.left")
-                    .font(.title2)                // size similar to other icons
+                    .font(.title2)
                     .foregroundColor(.white)
                     .fontWeight(.heavy)
             }
 
-            // Date (top) and day name (bottom)
-            VStack(spacing: 4) {
-                Text(dateString)
-                    .font(.title)                 // bigger font for the date
-                    .foregroundColor(.white)
-                    .fontWeight(.heavy)
-                Text(dayString)
-                    .font(.headline)              // smaller font for the day name
-                    .foregroundColor(.white)
-                    .fontWeight(.light)
+            // Date (top) and day name (bottom) with hidden reference text underneath
+            ZStack {
+                // Your visible date/day
+                VStack(spacing: 4) {
+                    Text(dateString)
+                        .font(.title)
+                        .foregroundColor(.white)
+                        .fontWeight(.heavy)
+                    Text(dayString)
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .fontWeight(.light)
+                }
+                // Hidden placeholder: ensures consistent width for longest possible strings
+                VStack(spacing: 4) {
+                    Text("31")
+                        .font(.title)
+                        .fontWeight(.heavy)
+                    Text("Wednesday")
+                        .font(.headline)
+                        .fontWeight(.light)
+                }
+                .opacity(0)
             }
 
             // Right chevron: go to next day
@@ -52,7 +65,7 @@ struct DatePicker: View {
                     .fontWeight(.heavy)
             }
         }
-        .padding() // adjust padding as needed
+        .padding()
     }
 
     /// Two-digit day of month (01, 02, etc.)
