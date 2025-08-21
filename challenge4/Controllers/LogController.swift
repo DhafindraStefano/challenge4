@@ -34,8 +34,8 @@ class LogController: ObservableObject {
     }
     
     // MARK: - NeedObject
-    func addNeed(_ newNeed: String) -> NeedObject {
-        var need = NeedObject(needs: [newNeed])
+    func addNeed(_ newNeeds: [String]) -> NeedObject {
+        let need = NeedObject(needs: newNeeds)
         modelContext.insert(need)
         save()
         return need

@@ -52,7 +52,7 @@ struct EmotionBar: View {
                     )
             )
             .padding(7)
-            
+
             if let selected = observation?.name, !selected.isEmpty {
                 Button(action: {
                     onNext?()  
@@ -82,7 +82,6 @@ struct EmotionBar: View {
             isNextActive = true
         }
     })
-
 }
 
 
