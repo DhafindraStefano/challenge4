@@ -4,9 +4,7 @@
 //
 //  Created by Levana on 21/08/25.
 //
-
 import SwiftUI
-
 struct CalendarView: View {
     @State private var currentDate = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1)) ?? Date()
     private let calendar = Calendar.current
@@ -14,7 +12,7 @@ struct CalendarView: View {
     // Month and Year
     private var monthYear: String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "MMM yyyy"
+        formatter.dateFormat = "MMM YYYY" //-> Add YYYY If you want to add year beside the month
         return formatter.string(from: currentDate)
     }
     
@@ -38,33 +36,22 @@ struct CalendarView: View {
     
     var body: some View {
         ZStack {
-            // Solid background (dark navy)
-            Color(red: 10/255, green: 10/255, blue: 35/255)
+            Color(red: 7/255, green: 7/255, blue: 32/255)
                 .ignoresSafeArea()
             
             VStack {
                 Spacer()
                 Image("Rock")
                     .resizable()
-                    .scaledToFit() // keeps proportion
-                    .frame(maxWidth: .infinity) // stretch horizontally
+                    .scaledToFit()
+                    .frame(maxWidth: .infinity)
             }
             .ignoresSafeArea()
             
             VStack {
                 // Header with back button and month navigation
                 HStack {
-                    Button(action: {
-                        // Handle back navigation
-                    }) {
-                        Image(systemName: "chevron.left")
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                            .frame(width: 44, height: 44)
-                            .background(Color(red: 50/255, green: 45/255, blue: 100/255))
-                            .clipShape(Circle())
-                    }
+                    BackButton()
                     
                     Spacer()
                     HStack(spacing: 8) {
@@ -75,9 +62,11 @@ struct CalendarView: View {
                         }) {
                             Image(systemName: "chevron.left")
                                 .foregroundColor(.white)
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
                         }
                         
-                        Text(monthYear)   // 👈 now shows "Jan 2025"
+                        Text(monthYear)// Shows "Jan 2025"
                             .font(.largeTitle)
                             .fontWeight(.semibold)
                             .foregroundColor(.white)
@@ -89,17 +78,19 @@ struct CalendarView: View {
                         }) {
                             Image(systemName: "chevron.right")
                                 .foregroundColor(.white)
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
                         }
                     }
                     
                     Spacer()
                     
-                    Color.clear.frame(width: 44, height: 44) // balance
+                    Color.clear.frame(width: 44, height: 44)
                 }
                 .padding(.horizontal, 20)
-                .padding(.top, 20)
-                
-                Spacer()
+             // .padding(.top, 20)
+                .padding(.bottom, 30)
+             //   Spacer()
                 
                 // Calendar container
                 VStack(spacing: 0) {
@@ -109,8 +100,9 @@ struct CalendarView: View {
                             Text(day)
                                 .font(.title2)
                                 .fontWeight(.bold)
-                                .foregroundColor(.white.opacity(0.9))
-                                .frame(width: 39, height: 35)
+                                .foregroundColor(Color(red: 118/255, green: 114/255, blue: 255/255))
+                             // .foregroundColor(.white.opacity(0.9))
+                                .frame(width: 39, height: 50)
                         }
                     }
                     .padding(.top, 20)
@@ -125,26 +117,26 @@ struct CalendarView: View {
                                     .font(.title2)
                                     .fontWeight(.bold)
                                     .foregroundColor(.white)
-                                    .frame(width: 35, height: 35)
+                                    .frame(width: 40, height: 50)
                             } else {
                                 Text("")
-                                    .frame(width: 35, height: 35)
+                                    .frame(width: 40, height: 50)
                             }
                         }
                     }
                     .padding(.horizontal, 20)
                     .padding(.bottom, 20)
                 }
-                .background(Color(red: 40/255, green: 30/255, blue: 90/255))
+                .background(Color(red: 21/255, green: 20/255, blue: 80/255))
                 .cornerRadius(20)
                 .padding(.horizontal, 20)
                 
                 Spacer()
             }
+            
         }
     }
 }
-
 #Preview {
     CalendarView()
 }
