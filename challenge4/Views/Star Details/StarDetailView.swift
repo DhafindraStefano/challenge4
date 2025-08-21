@@ -57,11 +57,15 @@ struct StarDetailView: View {
                     HStack{
                         // Back Button
                         BackButton()
+                            .padding(.leading, 20)
                         
                         // Date
-                    }
+                        DatePicker()
+                            .padding(.leading, 13)
                         
-                    
+                        Spacer()
+                    }
+
                     // Top tab bar
                     TabBar()
                         .padding(.top, 20)
