@@ -9,7 +9,7 @@ import SwiftUI
 import Lottie
 
 struct HomeView: View {
-    @State private var daysCount : Int = 0
+    @State private var daysCount : Int = 1
     @State private var daysTotal: Int = 30
     @State private var offsetAmount : CGFloat = -150
     var body: some View {
@@ -95,28 +95,31 @@ struct HomeView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 210.32, height: 69)
-                                .offset(x:70,y:390)
+                                .offset(x:70,y:405)
                             LottieView(name: "rabbit talk child", // the name is the name of the .json file
                                        loopMode: .loop, contentMode: .scaleAspectFit, speed: 1.0)
                             .frame(width: 134, height: 173)
-                            .offset(x: 100,y: 2180)
                             .scaleEffect(0.14)
+                            .offset(y: 320)
+                            
                             Image("ParentStone")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 99.84, height: 65.69)
-                                .offset(x:-90,y:385)
+                                .offset(x:-90,y:405)
                             LottieView(name: "rabbit talk mom", // the name is the name of the .json file
                                        loopMode: .loop, contentMode: .scaleAspectFit, speed: 1.0)
                             .frame(width: 163, height: 207)
-                            .offset(x:-70, y: 1700)
                             .scaleEffect(0.17)
+                            .offset(x:-30, y: 310)
+                            
                         }
                         
                     }
                     
                     Button(){
-                        
+                       print("Talk to Ms.Rabbit Button Clicked")
+                        HowNVCView()
                         
                     }label:{
                         Image("StartTalkBtn")
@@ -127,7 +130,7 @@ struct HomeView: View {
                
                 
             }
-//            .background(Color("AppBg"))
+            .background(Color("AppBg"))
     
         }
     }
