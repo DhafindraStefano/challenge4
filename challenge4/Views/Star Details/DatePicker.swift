@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct DatePicker: View {
-    @State private var selectedDate = Date()
+    @State private var selectedDate: Date
+    
+    init(initialDate: Date = Date()) {
+        _selectedDate = State(initialValue: initialDate)
+    }
 
     var body: some View {
         HStack(spacing: 16) {
@@ -51,7 +55,7 @@ struct DatePicker: View {
                 .opacity(0)
             }
 
-            // Right chevron: go to next day
+            // Right chevron: go to next day (disabled if current date is today or later)
             Button(action: {
                 withAnimation {
                     selectedDate = Calendar.current.date(byAdding: .day,
@@ -61,9 +65,10 @@ struct DatePicker: View {
             }) {
                 Image(systemName: "chevron.right")
                     .font(.title2)
-                    .foregroundColor(.white)
+                    .foregroundColor(isAtPresentDay ? .gray : .white)
                     .fontWeight(.heavy)
             }
+            .disabled(isAtPresentDay)
         }
         .padding()
     }
@@ -80,6 +85,12 @@ struct DatePicker: View {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE"
         return formatter.string(from: selectedDate)
+    }
+    
+    /// Check if selected date is today or later (prevent future navigation)
+    private var isAtPresentDay: Bool {
+        let calendar = Calendar.current
+        return calendar.isDate(selectedDate, inSameDayAs: Date()) || selectedDate > Date()
     }
 }
 

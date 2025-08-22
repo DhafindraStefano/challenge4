@@ -55,8 +55,14 @@ struct CalendarView: View {
         logs = logController.fetchLogs()
     }
     
+    // --- Check if current month is the present month (prevent future navigation) ---
+    private var isAtPresentMonth: Bool {
+        return calendar.isDate(currentDate, equalTo: Date(), toGranularity: .month)
+    }
+    
     var body: some View {
-        ZStack {
+        NavigationStack {
+            ZStack {
             // Background
             Color(red: 7/255, green: 7/255, blue: 32/255).ignoresSafeArea()
             
@@ -111,10 +117,11 @@ struct CalendarView: View {
                             }
                         }) {
                             Image(systemName: "chevron.right")
-                                .foregroundColor(.white)
+                                .foregroundColor(isAtPresentMonth ? .gray : .white)
                                 .font(.title)
                                 .fontWeight(.bold)
                         }
+                        .disabled(isAtPresentMonth)
                     }
                 }
                 .padding(.horizontal)
@@ -163,20 +170,23 @@ struct CalendarView: View {
                                     if let date = (i < weekDays.count ? weekDays[i] : nil) {
                                         let dayNumber = calendar.component(.day, from: date)
                                         
-                                        ZStack {
-                                            if isCompleted(date: date) {
-                                                Image("Star")
-                                                    .resizable()
-                                                    .scaledToFit()
-                                                    .frame(width: 40, height: 40)
+                                        NavigationLink(destination: StarDetailView(selectedDate: date)) {
+                                            ZStack {
+                                                if isCompleted(date: date) {
+                                                    Image("Star")
+                                                        .resizable()
+                                                        .scaledToFit()
+                                                        .frame(width: 40, height: 40)
+                                                }
+                                                
+                                                Text("\(dayNumber)")
+                                                    .font(.title2)
+                                                    .fontWeight(.bold)
+                                                    .foregroundColor(.white)
                                             }
-                                            
-                                            Text("\(dayNumber)")
-                                                .font(.title2)
-                                                .fontWeight(.bold)
-                                                .foregroundColor(.white)
+                                            .frame(maxWidth: .infinity, minHeight: 50)
                                         }
-                                        .frame(maxWidth: .infinity, minHeight: 50)
+                                        .buttonStyle(PlainButtonStyle())
                                         
                                     } else {
                                         Text("")
@@ -196,10 +206,12 @@ struct CalendarView: View {
                 
                 Spacer()
             }
+            }
+            .onAppear {
+                fetchLogs()
+            }
         }
-        .onAppear {
-            fetchLogs()
-        }
+        .navigationBarHidden(true)
     }
 }
 

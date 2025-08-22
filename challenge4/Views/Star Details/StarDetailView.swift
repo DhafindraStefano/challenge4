@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 // Custom shape with a wavy bottom edge
 struct Wave: Shape {
@@ -39,17 +40,36 @@ struct Wave: Shape {
 }
 
 struct StarDetailView: View {
-    // Controls whether we show normal activity UI or the empty state.
-    @State private var hasActivity: Bool = true
+    @Environment(\.modelContext) private var modelContext
+    let selectedDate: Date
+    @State private var logs: [LogObject] = []
     // Track which tab is selected
     @State private var selectedTab: TabBar.Tab = .parent
+    private let calendar = Calendar.current
+    
+    init(selectedDate: Date = Date()) {
+        self.selectedDate = selectedDate
+    }
+    
+    // Check if there are logs for the selected date
+    private var isCompleted: Bool {
+        return logs.contains { log in
+            calendar.isDate(log.date, inSameDayAs: selectedDate)
+        }
+    }
+    
+    // Fetch logs from LogController
+    private func fetchLogs() {
+        let logController = LogController(modelContext: modelContext)
+        logs = logController.fetchLogs()
+    }
 
     var body: some View {
         GeometryReader { geo in
             ZStack {
-                // If there’s an activity, keep the wave backgrounds;
-                // otherwise, show a plain “Background” color.
-                if hasActivity {
+                // If there's an activity, keep the wave backgrounds;
+                // otherwise, show a plain "Background" color.
+                if isCompleted {
                     Color("LightOrangeBackground")
                         .ignoresSafeArea()
                     Wave(baselineFraction: 0.33, amplitudeFraction: 0.05, inverted: true)
@@ -67,13 +87,13 @@ struct StarDetailView: View {
                     HStack {
                         BackButton()
                             .padding(.leading, 20)
-                        DatePicker()
+                        DatePicker(initialDate: selectedDate)
                             .padding(.leading, 2)
                         Spacer()
                     }
 
                     // Show the tab bar and cards only when there's activity
-                    if hasActivity {
+                    if isCompleted {
                         TabBar(selectedTab: $selectedTab)
                             .padding(.top, -2)
 
@@ -99,15 +119,19 @@ struct StarDetailView: View {
             }
             // Bottom overlay: used only when there is no activity
             .overlay(alignment: .bottom) {
-                if !hasActivity {
+                if !isCompleted {
                     NoActivityCard()
                         .padding(.bottom, 100)
                         .padding(.horizontal, 16)
                 }
             }
         }
+        .navigationBarHidden(true)
+        .onAppear {
+            fetchLogs()
+        }
     }
 }
 #Preview {
-    StarDetailView()
+    StarDetailView(selectedDate: Date())
 }
