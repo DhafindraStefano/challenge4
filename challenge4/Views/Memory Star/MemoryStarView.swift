@@ -12,7 +12,6 @@ struct MemoryStarView: View {
     @State private var daysTotal: Int = 30
     @State private var offsetAmount : CGFloat = -150
     var body: some View {
-        NavigationStack{
             ZStack{
                 //First Layer
                 VStack{
@@ -149,7 +148,6 @@ struct MemoryStarView: View {
             }
 //            .background(Color("AppBg"))
     
-        }
     }
 }
 
