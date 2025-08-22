@@ -9,10 +9,23 @@ import SwiftUI
 
 struct WhyNVCView:View {
     //Log Object
-    @Binding var observation: RabitFaceObject?
-    @State var feeling: FeelingObject? = FeelingObject(audioFilePath: "")
+    @Binding var observationParent: RabitFaceObject?
+    @Binding var feelingParent: FeelingObject?
+    @Binding var needsParent: NeedObject?
+    
+    @Binding var observationChild: RabitFaceObject?
+    @Binding var feelingChild: FeelingObject?
+    @Binding var needsChild: NeedObject?
+    
+    @Binding var answerGame: FeelingObject?
+    
+    @Binding var child: Bool
+    
+    @State private var empty: String =  ""
     
     @State private var isNextActive: Bool = false
+    let game = ""
+    
     @Environment(\.dismiss) private var dismiss
     var body: some View {
         NavigationStack{
@@ -54,7 +67,7 @@ struct WhyNVCView:View {
                             .resizable()
                             .frame(width: 283, height: 345)
                             .offset(x: 0, y: 50)
-                        RecordButton(feeling: $feeling, onNext: {
+                        RecordButton(feelingParent: $feelingParent, feelingChild: $feelingChild, answerGame: $answerGame ,game: $empty, child: $child, onNext: {
                             isNextActive = true
                         })
                             .offset(x: 0, y:270)
@@ -64,7 +77,7 @@ struct WhyNVCView:View {
                 }
             }
             .navigationDestination(isPresented: $isNextActive) {
-                NeedNVCView(observation: $observation, feeling: $feeling)
+                NeedNVCView(observationParent: $observationParent, feelingParent: $feelingParent, needsParent: $needsParent, observationChild: $observationChild, feelingChild: $feelingChild, needsChild: $needsChild, answerGame: $answerGame, child: $child)
             }
         }
 
@@ -87,9 +100,9 @@ struct WhyNVCView:View {
     }
 }
 
-#Preview {
-    @Previewable @State var observation: RabitFaceObject? = RabitFaceObject(name: "", image: "")
-    @Previewable @State var isNextActive: Bool = false
-
-    WhyNVCView(observation: $observation)
-}
+//#Preview {
+//    @Previewable @State var observation: RabitFaceObject? = RabitFaceObject(name: "", image: "")
+//    @Previewable @State var isNextActive: Bool = false
+//
+//    WhyNVCView(observation: $observation)
+//}
