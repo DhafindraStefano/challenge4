@@ -8,32 +8,32 @@
 import SwiftUI
 
 struct DatePicker: View {
-    @State private var selectedDate: Date
+    @Binding var selectedDate: Date
+    let onPreviousDay: () -> Void
+    let onNextDay: () -> Void
     
-    init(initialDate: Date = Date()) {
-        _selectedDate = State(initialValue: initialDate)
+    init(selectedDate: Binding<Date>, onPreviousDay: @escaping () -> Void = {}, onNextDay: @escaping () -> Void = {}) {
+        _selectedDate = selectedDate
+        self.onPreviousDay = onPreviousDay
+        self.onNextDay = onNextDay
     }
 
     var body: some View {
         HStack(spacing: 16) {
             // Left chevron: go to previous day
             Button(action: {
-                withAnimation {
-                    selectedDate = Calendar.current.date(byAdding: .day,
-                                                         value: -1,
-                                                         to: selectedDate) ?? selectedDate
-                }
+                onPreviousDay()
             }) {
                 Image(systemName: "chevron.left")
                     .font(.title2)
                     .foregroundColor(.white)
-                    .fontWeight(.heavy)
+//                    .fontWeight(.heavy)
             }
 
             // Date (top) and day name (bottom) with hidden reference text underneath
             ZStack {
                 // Your visible date/day
-                VStack(spacing: 4) {
+                VStack(spacing: 2) {
                     Text(dateString)
                         .font(.title)
                         .foregroundColor(.white)
@@ -44,7 +44,7 @@ struct DatePicker: View {
                         .fontWeight(.light)
                 }
                 // Hidden placeholder: ensures consistent width for longest possible strings
-                VStack(spacing: 4) {
+                VStack(spacing: 2) {
                     Text("31")
                         .font(.title)
                         .fontWeight(.heavy)
@@ -57,16 +57,12 @@ struct DatePicker: View {
 
             // Right chevron: go to next day (disabled if current date is today or later)
             Button(action: {
-                withAnimation {
-                    selectedDate = Calendar.current.date(byAdding: .day,
-                                                         value: 1,
-                                                         to: selectedDate) ?? selectedDate
-                }
+                onNextDay()
             }) {
                 Image(systemName: "chevron.right")
                     .font(.title2)
                     .foregroundColor(isAtPresentDay ? .gray : .white)
-                    .fontWeight(.heavy)
+//                    .fontWeight(.heavy)
             }
             .disabled(isAtPresentDay)
         }
@@ -95,5 +91,6 @@ struct DatePicker: View {
 }
 
 #Preview {
-    DatePicker()
+    @State var previewDate = Date()
+    return DatePicker(selectedDate: $previewDate, onPreviousDay: {}, onNextDay: {})
 }
