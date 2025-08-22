@@ -6,6 +6,7 @@
 //
 import SwiftUI
 import SwiftData
+import SwiftData
 
 struct NeedNVCView: View {
     //Log Object
@@ -25,16 +26,22 @@ struct NeedNVCView: View {
     @State private var customNeed: String = ""
     @State private var isNextActive: Bool = false
     
+    @State private var isNextActive: Bool = false
+    
     @Environment(\.dismiss) private var dismiss
 
     
     var body: some View {
         NavigationStack {
             ZStack {
+        NavigationStack {
+            ZStack {
                 Color.background
                     .ignoresSafeArea()
                 
+                
                 VStack {
+                    VStack {
                     VStack {
                         Text("What do you ")
                             .font(.largeTitle)
@@ -56,6 +63,8 @@ struct NeedNVCView: View {
                         .frame(maxWidth: .infinity)
                         .multilineTextAlignment(.center)
                     }
+                    
+                    ZStack {
                     
                     ZStack {
                         Image("Moon")
@@ -106,11 +115,26 @@ struct NeedNVCView: View {
                     } else{
                         RandomizeView(observationParent: $observationParent, feelingParent: $feelingParent, needsParent: $needsParent, observationChild: $observationChild, feelingChild: $feelingChild, needsChild: $needsChild, answerGame: $answerGame, child: $child)
                     }
-                    
+                }
+                .navigationDestination(isPresented: $isNextActive) {
+                    LogListPage()
                 }
             }
         }
         .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "chevron.backward")
+                        .font(.title)
+                        .foregroundColor(.white)
+                        .padding(10)
+                        .background(Color.cheveronButton)
+                        .clipShape(Circle())
+                        .shadow(color: .cheveronDropShadow.opacity(1), radius: 0, x: 0, y: 8)
+                }
+            }
+        }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: { dismiss() }) {

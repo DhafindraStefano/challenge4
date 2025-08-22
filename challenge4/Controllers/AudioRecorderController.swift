@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 //
 //  AudioRecorderController.swift
 //  challenge4
@@ -7,7 +5,6 @@
 //  Created by Muhammad Dwiva Arya Erlangga on 19/08/25.
 //
 
->>>>>>> Stashed changes
 import Foundation
 import AVFoundation
 import SwiftData

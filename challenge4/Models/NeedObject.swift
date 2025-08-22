@@ -11,11 +11,7 @@ import Foundation
 @Model
 class NeedObject {
     var id: UUID
-<<<<<<< Updated upstream
-    var needs: [String] 
-=======
     var needs: [String]
->>>>>>> Stashed changes
     
     init(id: UUID = UUID(), needs: [String] = []) {
         self.id = id

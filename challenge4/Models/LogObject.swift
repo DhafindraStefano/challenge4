@@ -48,4 +48,3 @@ class LogObject {
         self.answerGame = answerGame
     }
 }
-

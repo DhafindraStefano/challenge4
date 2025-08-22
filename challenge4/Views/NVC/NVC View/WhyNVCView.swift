@@ -44,6 +44,7 @@ struct WhyNVCView:View {
                                 .foregroundColor(.white)
                             Button(action: {
                                 print("Megaphone tapped!") // change it into voice over
+                                print("Megaphone tapped!") // change it into voice over
                             }) {
                                 Image(systemName: "speaker.wave.3.fill")
                                     .font(.largeTitle)
