@@ -6,16 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CalendarView: View {
+    @Environment(\.modelContext) private var modelContext
     @State private var currentDate = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1)) ?? Date()
+    @State private var logs: [LogObject] = []
     private let calendar = Calendar.current
-    
-    // --- Random completed dates for demo ---
-    private let completedDates: Set<Int> = {
-        let all = Array(1...31)
-        return Set(all.shuffled().prefix(8))
-    }()
     
     // Month and Year
     private var monthYear: String {
@@ -47,8 +44,15 @@ struct CalendarView: View {
     
     // --- Helper: check if a date should show a star ---
     private func isCompleted(date: Date) -> Bool {
-        let day = calendar.component(.day, from: date)
-        return date <= Date() && completedDates.contains(day)
+        return date <= Date() && logs.contains { log in
+            calendar.isDate(log.date, inSameDayAs: date)
+        }
+    }
+    
+    // --- Fetch logs when view appears or month changes ---
+    private func fetchLogs() {
+        let logController = LogController(modelContext: modelContext)
+        logs = logController.fetchLogs()
     }
     
     var body: some View {
@@ -86,6 +90,7 @@ struct CalendarView: View {
                         Button(action: {
                             if let newDate = calendar.date(byAdding: .month, value: -1, to: currentDate) {
                                 currentDate = newDate
+                                fetchLogs()
                             }
                         }) {
                             Image(systemName: "chevron.left")
@@ -102,6 +107,7 @@ struct CalendarView: View {
                         Button(action: {
                             if let newDate = calendar.date(byAdding: .month, value: 1, to: currentDate) {
                                 currentDate = newDate
+                                fetchLogs()
                             }
                         }) {
                             Image(systemName: "chevron.right")
@@ -190,6 +196,9 @@ struct CalendarView: View {
                 
                 Spacer()
             }
+        }
+        .onAppear {
+            fetchLogs()
         }
     }
 }
