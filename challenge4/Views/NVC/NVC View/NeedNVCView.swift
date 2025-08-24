@@ -6,7 +6,6 @@
 //
 import SwiftUI
 import SwiftData
-import SwiftData
 
 struct NeedNVCView: View {
     //Log Object
@@ -26,22 +25,15 @@ struct NeedNVCView: View {
     @State private var customNeed: String = ""
     @State private var isNextActive: Bool = false
     
-    @State private var isNextActive: Bool = false
-    
     @Environment(\.dismiss) private var dismiss
 
-    
     var body: some View {
-        NavigationStack {
-            ZStack {
         NavigationStack {
             ZStack {
                 Color.background
                     .ignoresSafeArea()
                 
-                
                 VStack {
-                    VStack {
                     VStack {
                         Text("What do you ")
                             .font(.largeTitle)
@@ -65,8 +57,6 @@ struct NeedNVCView: View {
                     }
                     
                     ZStack {
-                    
-                    ZStack {
                         Image("Moon")
                             .resizable()
                             .scaledToFit()
@@ -79,22 +69,6 @@ struct NeedNVCView: View {
                             .resizable()
                             .frame(width: 283, height: 345)
                             .offset(x: 0, y: 50)
-                        
-//                        NeedCard(
-//                            selectedNeeds: $selectedNeeds,
-//                            customNeed: $customNeed,
-//                            chosenNeeds: $needs,
-//                            onNext: {
-//                                if let obs = observation, let feel = feeling, let finalNeeds = needs {
-//                                    let logController = LogController(modelContext: modelContext)
-//                                    logController.addLog(observation: obs, feeling: feel, needs: finalNeeds)
-//                                    print("✅ Log saved with needs: \(finalNeeds.needs)")
-//                                }
-//                                selectedNeeds = []
-//                                isNextActive = true
-//                            }
-//                        )
-//                        .offset(x: 0, y:270)
                         
                         NeedCard(
                             selectedNeeds: $selectedNeeds,
@@ -116,9 +90,6 @@ struct NeedNVCView: View {
                         RandomizeView(observationParent: $observationParent, feelingParent: $feelingParent, needsParent: $needsParent, observationChild: $observationChild, feelingChild: $feelingChild, needsChild: $needsChild, answerGame: $answerGame, child: $child)
                     }
                 }
-                .navigationDestination(isPresented: $isNextActive) {
-                    LogListPage()
-                }
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -135,22 +106,8 @@ struct NeedNVCView: View {
                 }
             }
         }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: { dismiss() }) {
-                    Image(systemName: "chevron.backward")
-                        .font(.title)
-                        .foregroundColor(.white)
-                        .padding(10)
-                        .background(Color.cheveronButton)
-                        .clipShape(Circle())
-                        .shadow(color: .cheveronDropShadow.opacity(1), radius: 0, x: 0, y: 8)
-                }
-            }
-        }
     }
 }
-
 
 #Preview {
     @Previewable @State var observationParent: RabitFaceObject? = RabitFaceObject(name: "Parent Rabbit", image: "RabbitImage")
@@ -177,5 +134,4 @@ struct NeedNVCView: View {
         answerGame: $answerGame,
         child: $child
     )
-
 }

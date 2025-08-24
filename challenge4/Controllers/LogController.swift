@@ -65,6 +65,13 @@ class LogController: ObservableObject {
         }
     }
     
+    func fetchLogs() -> [LogObject] {
+        let descriptor = FetchDescriptor<LogObject>(
+            sortBy: [SortDescriptor(\.date, order: .reverse)]
+        )
+        return (try? modelContext.fetch(descriptor)) ?? []
+    }
+    
     func deleteLog(_ log: LogObject) {
         modelContext.delete(log)
         save()
@@ -86,7 +93,7 @@ class LogController: ObservableObject {
     
     // MARK: - FeelingObject (with audio)
     func addFeeling(audioPath: String) {
-        let feeling = FeelingObject(audioFilePath: audioPath)
+        let feeling = FeelingObject(AudioFilePath: audioPath)
         modelContext.insert(feeling)
         save()
     }
