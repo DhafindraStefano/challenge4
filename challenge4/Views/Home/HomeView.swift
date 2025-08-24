@@ -13,7 +13,7 @@ struct HomeView: View {
     @State private var daysTotal: Int = 30
     @State private var offsetAmount : CGFloat = -150
     @State private var showHowNVCView = false
-//    @State private var isClick = false
+    //    @State private var isClick = false
     var body: some View {
         NavigationStack{
             ZStack{
@@ -111,30 +111,12 @@ struct HomeView: View {
                 //Sixth Layer
                 Button{
                     showHowNVCView = true
-//                    isClick = true
+                    //                    isClick = true
                 }label:{
                     Image("StartTalkBtn")
                 } .offset(x:10, y:320 )
             }.navigationDestination(isPresented: $showHowNVCView) { HowNVCView() }
-            //                                    Spacer()
-        }
-        //                Button {
-        //                    showHowNVCView = true
-        //                } label: {
-        //                    Image("StartTalkBtn")
-        //                }.padding(.bottom, 12)
-        //
-        //            }.navigationDestination(isPresented: $showHowNVCView) {
-        //                HowNVCView()
-        //            }
-        //                .safeAreaInset(edge: .bottom) {
-        //                Button { showHowNVCView = true } label: { Image("StartTalkBtn") }
-        //                  .padding(.bottom, 12)
-        //              }
-        //              .toolbar(.hidden, for: .navigationBar) // if you want no bar
-        //              .navigationDestination(isPresented: $showHowNVCView) { HowNVCView() } // iOS 17+
-        //            }
-        .background(Color("AppBg"), ignoresSafeAreaEdges: .all)
+        }.background(Color("AppBg"), ignoresSafeAreaEdges: .all)
     }
 }
 
