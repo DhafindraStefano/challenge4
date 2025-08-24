@@ -6,29 +6,42 @@
 //
 import SwiftUI
 import SwiftData
+import SwiftData
 
 struct NeedNVCView: View {
-    // Bindings from parent
-    @Binding var observation: RabitFaceObject?
-    @Binding var feeling: FeelingObject?
+    //Log Object
+    @Binding var observationParent: RabitFaceObject?
+    @Binding var feelingParent: FeelingObject?
+    @Binding var needsParent: NeedObject?
     
-    // Local state
-    @State private var needs: NeedObject? = NeedObject(needs: [""])
+    @Binding var observationChild: RabitFaceObject?
+    @Binding var feelingChild: FeelingObject?
+    @Binding var needsChild: NeedObject?
+    
+    @Binding var answerGame: FeelingObject?
+    
+    @Binding var child: Bool
     
     @State private var selectedNeeds: [String] = []
     @State private var customNeed: String = ""
     @State private var isNextActive: Bool = false
     
+    @State private var isNextActive: Bool = false
+    
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.modelContext) private var modelContext
+
     
     var body: some View {
+        NavigationStack {
+            ZStack {
         NavigationStack {
             ZStack {
                 Color.background
                     .ignoresSafeArea()
                 
+                
                 VStack {
+                    VStack {
                     VStack {
                         Text("What do you ")
                             .font(.largeTitle)
@@ -52,6 +65,8 @@ struct NeedNVCView: View {
                     }
                     
                     ZStack {
+                    
+                    ZStack {
                         Image("Moon")
                             .resizable()
                             .scaledToFit()
@@ -65,21 +80,40 @@ struct NeedNVCView: View {
                             .frame(width: 283, height: 345)
                             .offset(x: 0, y: 50)
                         
+//                        NeedCard(
+//                            selectedNeeds: $selectedNeeds,
+//                            customNeed: $customNeed,
+//                            chosenNeeds: $needs,
+//                            onNext: {
+//                                if let obs = observation, let feel = feeling, let finalNeeds = needs {
+//                                    let logController = LogController(modelContext: modelContext)
+//                                    logController.addLog(observation: obs, feeling: feel, needs: finalNeeds)
+//                                    print("✅ Log saved with needs: \(finalNeeds.needs)")
+//                                }
+//                                selectedNeeds = []
+//                                isNextActive = true
+//                            }
+//                        )
+//                        .offset(x: 0, y:270)
+                        
                         NeedCard(
                             selectedNeeds: $selectedNeeds,
                             customNeed: $customNeed,
-                            chosenNeeds: $needs,
+                            chosenNeeds: child ? $needsChild : $needsParent,
                             onNext: {
-                                if let obs = observation, let feel = feeling, let finalNeeds = needs {
-                                    let logController = LogController(modelContext: modelContext)
-                                    logController.addLog(observation: obs, feeling: feel, needs: finalNeeds)
-                                    print("✅ Log saved with needs: \(finalNeeds.needs)")
-                                }
                                 selectedNeeds = []
+                                child = !child
                                 isNextActive = true
                             }
                         )
-                        .offset(x: 0, y:270)
+                        .offset(x: 0, y: 270)
+                    }
+                }
+                .navigationDestination(isPresented: $isNextActive) {
+                    if child {
+                        HowNVCView(observationParent: $observationParent, feelingParent: $feelingParent, needsParent: $needsParent, observationChild: $observationChild, feelingChild: $feelingChild, needsChild: $needsChild, answerGame: $answerGame, child: $child)
+                    } else{
+                        RandomizeView(observationParent: $observationParent, feelingParent: $feelingParent, needsParent: $needsParent, observationChild: $observationChild, feelingChild: $feelingChild, needsChild: $needsChild, answerGame: $answerGame, child: $child)
                     }
                 }
                 .navigationDestination(isPresented: $isNextActive) {
@@ -101,24 +135,47 @@ struct NeedNVCView: View {
                 }
             }
         }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "chevron.backward")
+                        .font(.title)
+                        .foregroundColor(.white)
+                        .padding(10)
+                        .background(Color.cheveronButton)
+                        .clipShape(Circle())
+                        .shadow(color: .cheveronDropShadow.opacity(1), radius: 0, x: 0, y: 8)
+                }
+            }
+        }
     }
 }
 
 
-
-//#Preview {
-//    NeedNVCView(
-//        observation: .constant(nil),
-//        feeling: .constant(nil)
-//    )
-//}
 #Preview {
-    @Previewable @State var observation: RabitFaceObject? = RabitFaceObject(name: "", image: "")
-    @Previewable @State var feeling: FeelingObject? = FeelingObject(audioFilePath: "")
+    @Previewable @State var observationParent: RabitFaceObject? = RabitFaceObject(name: "Parent Rabbit", image: "RabbitImage")
+    @Previewable @State var feelingParent: FeelingObject? = FeelingObject(AudioFilePath: "parent_feeling.m4a")
+    @Previewable @State var needsParent: NeedObject? = NeedObject(needs: [""])
+    
+    @Previewable @State var observationChild: RabitFaceObject? = RabitFaceObject(name: "Child Rabbit", image: "RabbitImage")
+    @Previewable @State var feelingChild: FeelingObject? = FeelingObject(AudioFilePath: "child_feeling.m4a")
+    @Previewable @State var needsChild: NeedObject? = NeedObject(needs: ["Play"])
+    
+    @Previewable @State var answerGame: FeelingObject? = FeelingObject(AudioFilePath: "game_answer.m4a")
+    
+    @Previewable @State var child: Bool = false
     
     NeedNVCView(
-        observation: $observation,
-        feeling: $feeling
+        observationParent: $observationParent,
+        feelingParent: $feelingParent,
+        needsParent: $needsParent,
+        
+        observationChild: $observationChild,
+        feelingChild: $feelingChild,
+        needsChild: $needsChild,
+        
+        answerGame: $answerGame,
+        child: $child
     )
-    .modelContainer(for: [LogObject.self, NeedObject.self, RabitFaceObject.self, FeelingObject.self], inMemory: true)
+
 }

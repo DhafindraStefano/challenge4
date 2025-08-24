@@ -62,7 +62,7 @@ struct NeedCard: View {
                         Button(action: {
                             customNeed = ""
                         }) {
-                            Image(systemName: "xmark.circle.fill")
+                            Image(systemName: "xmark.circle.fill")  
                                 .font(.title2)
                                 .foregroundColor(.white.opacity(0.8))
                         }
