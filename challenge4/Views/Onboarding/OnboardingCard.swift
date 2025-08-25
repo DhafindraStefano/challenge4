@@ -83,13 +83,15 @@ struct OnboardingCard: View {
                 // Text area with TIGHTER spacing (changed from 10 to 6)
                 VStack(spacing: 6) {
                     Text(page.title)
-                        .font(.system(size: 24, weight: .bold, design: .rounded))
+                        .font(.title3.bold())
+                        .fontDesign(.rounded)
                         .foregroundColor(.white)
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
                     
                     Text(page.subtitle)
-                        .font(.system(size: 18, weight: .regular, design: .rounded))
+                        .font(.caption)
+                        .fontDesign(.rounded)
                         .foregroundColor(.white.opacity(0.5))
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
