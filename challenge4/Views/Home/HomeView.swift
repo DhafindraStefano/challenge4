@@ -9,10 +9,11 @@ import SwiftUI
 import Lottie
 
 struct HomeView: View {
-    @State private var daysCount : Int = 5
+    @State private var daysCount : Int = 3
     @State private var daysTotal: Int = 30
     @State private var offsetAmount : CGFloat = -150
     @State private var showHowNVCView = false
+    @State private var angle = Angle.zero
     //    @State private var isClick = false
     var body: some View {
         NavigationStack{
@@ -34,14 +35,27 @@ struct HomeView: View {
                     
                 }
                 
-                RotatingStars()
+                //Second Layer
+//                RotatingStars()
+                StarBackground(starImageName: "StarHome", count: daysCount, minSize: 16, maxSize: 45)
+                    .frame(width: UIScreen.main.bounds.width,
+                           height: UIScreen.main.bounds.height)
+                    .rotationEffect(angle)
+                    .onAppear {
+                        withAnimation(.linear(duration: 16).repeatForever(autoreverses: false)) {
+                            angle = .degrees(360)
+                        }
+                    }
+                
+                //Third Layer
                 Image("FullMoon")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 79, height: 79)
                     .zIndex(1)
-                    .offset(x: 80, y:-100)
+                    .offset(x: 80, y:-150)
                 
+                //Fourth Layer
                 VStack {
                     Image("MoonBase")
                         .resizable()
@@ -52,7 +66,7 @@ struct HomeView: View {
                 }
                 
                 
-                //FourthLayer
+                //Fifth Layer
                 ZStack() {
                     Image("ProgressBar")
                         .resizable()
@@ -61,12 +75,14 @@ struct HomeView: View {
                     
                     HStack(spacing: 0) {
                         Text ("\(daysCount)")
-                            .font(.system(size:28, design: .rounded ))
+                            .font(.title)
+                            .fontDesign(.rounded)
                             .fontWeight(.bold)
                             .foregroundStyle(.white)
                             .offset(x: 58, y:-6)
                         Text("\\\\\(daysTotal)")
-                            .font(.system(size:28, design: .rounded ))
+                            .font(.title)
+                            .fontDesign(.rounded)
                             .fontWeight(.bold)
                             .multilineTextAlignment(.center)
                             .foregroundStyle(
@@ -78,7 +94,7 @@ struct HomeView: View {
                     .padding(EdgeInsets(top:-360, leading:20, bottom: 8, trailing: 20))
                 
                 
-                //FifthLayer
+                //6th Layer
                 VStack{
                     
                     ZStack {
@@ -97,7 +113,7 @@ struct HomeView: View {
                             .resizable()
                             .scaledToFit()
                             .frame(width: 99.84, height: 65.69)
-                            .offset(x:-15,y:205)
+                            .offset(x:-18,y:205)
                         LottieView(name: "rabbit talk mom", // the name is the name of the .json file
                                    loopMode: .loop, contentMode: .scaleAspectFit, speed: 1.0)
                         .frame(width: 163, height: 207)
@@ -108,14 +124,21 @@ struct HomeView: View {
                     
                 }.frame(maxWidth: 353, alignment: .topLeading)
                 
-                //Sixth Layer
-                Button{
-                    showHowNVCView = true
-                    //                    isClick = true
-                }label:{
-                    Image("StartTalkBtn")
-                } .offset(x:10, y:320 )
-            }.navigationDestination(isPresented: $showHowNVCView) { HowNVCView() }
+                //7th Layer
+                VStack{
+                    Spacer()
+                    TalkToRabbitBtn ( showHowNVCView: $showHowNVCView)
+                }.padding(EdgeInsets(top: 0, leading: 0, bottom: 120, trailing: 0))
+                
+                
+               
+                    .navigationDestination(isPresented: $showHowNVCView) {
+                        HowNVCView()
+                    }
+                
+                
+            }
+          
         }.background(Color("AppBg"), ignoresSafeAreaEdges: .all)
     }
 }

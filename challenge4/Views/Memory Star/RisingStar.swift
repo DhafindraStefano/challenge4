@@ -2,9 +2,9 @@ import SwiftUI
 
 struct RisingMemoryStar: View {
     var imageName = "StarHome"
-    /// Where to start (fraction of screen). Tweak so it sits between your rabbits.
+
     var startY: CGFloat = 0.62
-    /// Where to stop (near the top).
+
     var endY: CGFloat = 0.12
     var travelDuration: Double = 1.2
     var startScale: CGFloat = 0.4
@@ -58,7 +58,7 @@ struct RisingMemoryStar: View {
                         }
                     }
                 }
-        }
+        }.background(.black)
         .allowsHitTesting(false) // won’t block your buttons
     }
 }

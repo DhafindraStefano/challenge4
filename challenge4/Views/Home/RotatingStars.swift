@@ -78,7 +78,7 @@ struct RotatingStars: View {
     @State private var angle = Angle.zero
     
     var body: some View {
-        StarBackground(starImageName: "StarHome", count: 2, minSize: 16, maxSize: 45)
+        StarBackground(starImageName: "StarHome", count: 5, minSize: 16, maxSize: 45)
             .frame(width: UIScreen.main.bounds.width,
                    height: UIScreen.main.bounds.height)
             .rotationEffect(angle) // rotates content, not the frame
