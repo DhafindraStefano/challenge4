@@ -11,8 +11,9 @@ struct NeedCard: View {
     let needs = ["Play", "Sleep", "Talk", "Help", "Love"]
     @Binding var selectedNeeds: [String]
     @Binding var customNeed: String
-    @Binding var chosenNeeds: NeedObject?
-    
+    @Binding var child: Bool
+    @Binding var needChild: NeedObject?
+    @Binding var needParent: NeedObject?
     var onNext: (() -> Void)? = nil
     
     var body: some View {
@@ -36,7 +37,7 @@ struct NeedCard: View {
                 // Chips for needs
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 12) {
-                        ForEach(needs, id: \.self) { need in
+                        ForEach(needss, id: \.self) { need in
                             Text(need)
                                 .font(.title2).bold() // bigger font
                                 .foregroundColor(.white)
@@ -109,7 +110,19 @@ struct NeedCard: View {
                         selectedNeeds.append(customNeed)
                         customNeed = ""
                     }
-                    chosenNeeds?.needs = selectedNeeds
+                    if child {
+                        if needChild == nil {
+                            needChild = NeedObject(needs: selectedNeeds)
+                        } else {
+                            needChild?.needs = selectedNeeds
+                        }
+                    } else {
+                        if needParent == nil {
+                            needParent = NeedObject(needs: selectedNeeds)
+                        } else {
+                            needParent?.needs = selectedNeeds
+                        }
+                    }
                     onNext?()
                 }) {
                     Image(systemName: "checkmark")
@@ -126,10 +139,10 @@ struct NeedCard: View {
     }
 }
 
-#Preview {
-    @Previewable @State var selectedNeeds: [String] = [""]
-    @Previewable @State var customNeed: String = ""
-    @Previewable @State var needs: NeedObject? = NeedObject(needs: [""])
-    
-    NeedCard(selectedNeeds: $selectedNeeds, customNeed: $customNeed, chosenNeeds: $needs)
-}
+//#Preview {
+//    @Previewable @State var selectedNeeds: [String] = [""]
+//    @Previewable @State var customNeed: String = ""
+//    @Previewable @State var needs: NeedObject? = NeedObject(needs: [""])
+//    
+//    NeedCard(selectedNeeds: $selectedNeeds, customNeed: $customNeed, chosenNeeds: $needs)
+//}

@@ -26,36 +26,10 @@ struct NeedNVCView: View {
     @State private var isNextActive: Bool = false
     
     @Environment(\.dismiss) private var dismiss
-
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.background
-                    .ignoresSafeArea()
-                
-                VStack {
-                    VStack {
-                        Text("What do you ")
-                            .font(.largeTitle)
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(.white)
-                        HStack(spacing: 0) {
-                            Text("need? ")
-                                .font(.largeTitle)
-                                .foregroundColor(.white)
-                            Button(action: {
-                                print("Megaphone tapped!")
-                            }) {
-                                Image(systemName: "speaker.wave.3.fill")
-                                    .font(.largeTitle)
-                                    .foregroundColor(.white)
-                            }
-                            .buttonStyle(.plain)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .multilineTextAlignment(.center)
-                    }
-                    
+                NavigationStack {
                     ZStack {
                         Image("Rabies")
                             .resizable()
@@ -105,26 +79,26 @@ struct NeedNVCView: View {
 
 #Preview {
     @Previewable @State var observationParent: RabitFaceObject? = RabitFaceObject(name: "Parent Rabbit", image: "RabbitImage")
-    @Previewable @State var feelingParent: FeelingObject? = FeelingObject(AudioFilePath: "parent_feeling.m4a")
+    @Previewable @State var feelingParent: FeelingObject? = FeelingObject(name: "" , AudioFilePath: "parent_feeling.m4a")
     @Previewable @State var needsParent: NeedObject? = NeedObject(needs: [""])
-    
+                    
     @Previewable @State var observationChild: RabitFaceObject? = RabitFaceObject(name: "Child Rabbit", image: "RabbitImage")
-    @Previewable @State var feelingChild: FeelingObject? = FeelingObject(AudioFilePath: "child_feeling.m4a")
+    @Previewable @State var feelingChild: FeelingObject? = FeelingObject(name:"" ,AudioFilePath: "child_feeling.m4a")
     @Previewable @State var needsChild: NeedObject? = NeedObject(needs: ["Play"])
-    
-    @Previewable @State var answerGame: FeelingObject? = FeelingObject(AudioFilePath: "game_answer.m4a")
-    
+                    
+    @Previewable @State var answerGame: FeelingObject? = FeelingObject(name: "" , AudioFilePath: "game_answer.m4a")
+                    
     @Previewable @State var child: Bool = false
-    
+                    
     NeedNVCView(
         observationParent: $observationParent,
         feelingParent: $feelingParent,
         needsParent: $needsParent,
-        
+                    
         observationChild: $observationChild,
         feelingChild: $feelingChild,
         needsChild: $needsChild,
-        
+                        
         answerGame: $answerGame,
         child: $child
     )

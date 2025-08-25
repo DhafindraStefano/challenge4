@@ -96,27 +96,9 @@ struct WhyNVCView:View {
     }
 }
 
-#Preview {
-    @Previewable @State var observationParent: RabitFaceObject? = nil
-    @Previewable @State var feelingParent: FeelingObject? = nil
-    @Previewable @State var needsParent: NeedObject? = nil
-    
-    @Previewable @State var observationChild: RabitFaceObject? = nil
-    @Previewable @State var feelingChild: FeelingObject? = nil
-    @Previewable @State var needsChild: NeedObject? = nil
-    
-    @Previewable @State var answerGame: FeelingObject? = nil
-    
-    @Previewable @State var child: Bool = false
-
-    WhyNVCView(
-        observationParent: $observationParent,
-        feelingParent: $feelingParent,
-        needsParent: $needsParent,
-        observationChild: $observationChild,
-        feelingChild: $feelingChild,
-        needsChild: $needsChild,
-        answerGame: $answerGame,
-        child: $child
-    )
-}
+//#Preview {
+//    @Previewable @State var observation: RabitFaceObject? = RabitFaceObject(name: "", image: "")
+//    @Previewable @State var isNextActive: Bool = false
+//
+//    WhyNVCView(observation: $observation)
+//}

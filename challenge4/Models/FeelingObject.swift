@@ -26,10 +26,12 @@ import Foundation
 @Model
 class FeelingObject {
     var id: UUID
+    var name: String
     var AudioFilePath: String
     
-    init(id: UUID = UUID(), AudioFilePath: String) {
+    init(id: UUID = UUID(), name: String,AudioFilePath: String) {
         self.id = id
+        self.name = name
         self.AudioFilePath = AudioFilePath
     }
 }

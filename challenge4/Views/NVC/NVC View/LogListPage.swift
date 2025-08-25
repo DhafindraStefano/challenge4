@@ -86,7 +86,7 @@ struct LogListPage: View {
     private func addDummyLog(logController: LogController) {
         // Example Parent log
         let obs = RabitFaceObject(name: "Rabbit", image: "🐰")
-        let feeling = FeelingObject(AudioFilePath: "sample_audio.m4a")
+        let feeling = FeelingObject(name:"", AudioFilePath: "sample_audio.m4a")
         let need = NeedObject(needs: ["Rest", "Connection"])
 
         logController.addLog(role: .parent,
@@ -95,7 +95,7 @@ struct LogListPage: View {
                              needs: need)
 
         // Example Game log
-        let gameAnswer = FeelingObject(AudioFilePath: "game_audio.m4a")
+        let gameAnswer = FeelingObject(name: "", AudioFilePath: "game_audio.m4a")
         logController.addLog(role: .game, feeling: gameAnswer)
 
         refreshLogs(logController: logController)

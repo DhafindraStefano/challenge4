@@ -65,42 +65,48 @@ class LogController: ObservableObject {
         }
     }
     
-    func fetchLogs() -> [LogObject] {
+    private func fetch(where predicate: Predicate<LogObject>) -> [LogObject] {
         let descriptor = FetchDescriptor<LogObject>(
+            predicate: predicate,
             sortBy: [SortDescriptor(\.date, order: .reverse)]
         )
         return (try? modelContext.fetch(descriptor)) ?? []
     }
     
+    // MARK: - Parent Fetches
+    func fetchParentObservations() -> [LogObject] {
+        fetch(where: #Predicate { $0.observationParent != nil })
+    }
+    
+    func fetchParentFeelings() -> [LogObject] {
+        fetch(where: #Predicate { $0.feelingParent != nil })
+    }
+    
+    func fetchParentNeeds() -> [LogObject] {
+        fetch(where: #Predicate { $0.needsParent != nil })
+    }
+    
+    // MARK: - Child Fetches
+    func fetchChildObservations() -> [LogObject] {
+        fetch(where: #Predicate { $0.observationChild != nil })
+    }
+    
+    func fetchChildFeelings() -> [LogObject] {
+        fetch(where: #Predicate { $0.feelingChild != nil })
+    }
+    
+    func fetchChildNeeds() -> [LogObject] {
+        fetch(where: #Predicate { $0.needsChild != nil })
+    }
+    
+    // MARK: - Game Fetch
+    func fetchGameAnswers() -> [LogObject] {
+        fetch(where: #Predicate { $0.answerGame != nil })
+    }
+    
     func deleteLog(_ log: LogObject) {
         modelContext.delete(log)
         save()
-    }
-    
-    // MARK: - NeedObject
-    func addNeed(_ newNeeds: [String]) -> NeedObject {
-        let need = NeedObject(needs: newNeeds)
-        modelContext.insert(need)
-        save()
-        return need
-    }
-
-    func fetchNeeds() -> [NeedObject] {
-        let descriptor = FetchDescriptor<NeedObject>()
-        return (try? modelContext.fetch(descriptor)) ?? []
-    }
-
-    
-    // MARK: - FeelingObject (with audio)
-    func addFeeling(audioPath: String) {
-        let feeling = FeelingObject(AudioFilePath: audioPath)
-        modelContext.insert(feeling)
-        save()
-    }
-    
-    func fetchFeelings() -> [FeelingObject] {
-        let descriptor = FetchDescriptor<FeelingObject>()
-        return (try? modelContext.fetch(descriptor)) ?? []
     }
     
     // MARK: - Save
