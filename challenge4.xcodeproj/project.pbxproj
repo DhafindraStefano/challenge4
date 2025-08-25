@@ -49,7 +49,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = challenge4UITests;
 			sourceTree = "<group>";
-		};
+`		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
