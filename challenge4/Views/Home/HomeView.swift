@@ -133,7 +133,7 @@ struct HomeView: View {
                 
                
                     .navigationDestination(isPresented: $showHowNVCView) {
-                        HowNVCView()
+//                        HowNVCView()
                     }
                 
                 
