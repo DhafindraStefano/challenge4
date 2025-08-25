@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct OnboardingBunniesView: View {
+    @State private var slideOffset: CGFloat = 300
+    
     var body: some View {
         VStack {
             GeometryReader { geo in
@@ -16,6 +18,12 @@ struct OnboardingBunniesView: View {
             .allowsHitTesting(false)
         }
         .ignoresSafeArea(edges: .bottom)
+        .offset(y: slideOffset)
+        .onAppear {
+            withAnimation(.easeOut(duration: 1.2)) {
+                slideOffset = 0
+            }
+        }
     }
 }
 
