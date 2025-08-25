@@ -14,6 +14,8 @@ struct Wave: Shape {
     var amplitudeFraction: CGFloat
     var inverted: Bool = false
     
+    @StateObject private var audioController = AudioRecorderController()
+    
     func path(in rect: CGRect) -> Path {
         var path = Path()
         let baselineY = rect.height * baselineFraction
@@ -92,11 +94,11 @@ struct StarDetailView: View {
             animationDirection = .none
         }
     }
-    
+
     // Fetch logs from LogController
     private func fetchLogs() {
         let logController = LogController(modelContext: modelContext)
-        
+
         switch selectedTab {
         case .parent:
             logs = logController.fetchLogs(role: .parent)
@@ -106,6 +108,7 @@ struct StarDetailView: View {
             logs = logController.fetchLogs(role: .game)
         }
     }
+
 
     
     var body: some View {
@@ -142,18 +145,39 @@ struct StarDetailView: View {
                         TabBar(selectedTab: $selectedTab)
                             .padding(.top, -2)
                         
-                        // Cards vary based on the selected tab
                         VStack(spacing: 12) {
-                            switch selectedTab {
-                            case .parent:
-                                Cards(state: .feeling)
-                                Cards(state: .why)
-                                Cards(state: .need)
-                            case .child:
-                                Cards(state: .feeling)
-                                Cards(state: .need)
-                            case .games:
-                                Cards(state: .games)
+                            if let log = logs.first(where: { calendar.isDate($0.date, inSameDayAs: selectedDate) }) {
+                                switch selectedTab {
+                                case .parent:
+                                    if let observation = log.observationParent {
+                                        Cards(state: .feeling, titleText: "How I'm Feeling Today", rabitFace: observation.name, imageName: observation.image)
+                                    }
+                                    
+                                    if let feeling = log.feelingParent {
+                                        Cards(state: .why, titleText: "Why I Feel That Way", audioPathFeeling: feeling.AudioFilePath)
+                                    }
+                                    
+                                    if let needs = log.needsParent {
+                                        Cards(state: .need, titleText: "What I Need", needs: needs.needs)
+                                    }
+
+                                case .child:
+                                    if let observation = log.observationChild {
+                                        Cards(state: .feeling, titleText: "How I'm Feeling Today", rabitFace: observation.name, imageName: observation.image)
+                                    }
+                                    
+                                    if let feeling = log.feelingChild {
+                                        Cards(state: .why, titleText: "Why I Feel That Way", audioPathFeeling: feeling.AudioFilePath)
+                                    }
+                                    
+                                    if let needs = log.needsChild {
+                                        Cards(state: .need, titleText: "What I Need", needs: needs.needs)
+                                    }
+                                case .games:
+                                    if log.answerGame != nil {
+                                        Cards(state: .games, titleText: log.answerGame!.name, audioPathGame: log.answerGame?.AudioFilePath)
+                                    }
+                                }
                             }
                         }
                         .padding(.horizontal, 16)
@@ -183,6 +207,9 @@ struct StarDetailView: View {
             if animationDirection == .none {
                 fetchLogs()
             }
+        }
+        .onChange(of: selectedTab) { newTab in
+            fetchLogs()
         }
         .gesture(
             DragGesture()

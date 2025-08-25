@@ -25,7 +25,6 @@ struct NeedNVCView: View {
     @State private var customNeed: String = ""
     @State private var isNextActive: Bool = false
     
-    
     @Environment(\.dismiss) private var dismiss
     
     
@@ -97,10 +96,14 @@ struct NeedNVCView: View {
                                         NeedCard(
                                             selectedNeeds: $selectedNeeds,
                                             customNeed: $customNeed,
-                                            chosenNeeds: child ? $needsChild : $needsParent,
+                                            child: $child,
+                                            needChild: $needsChild,
+                                            needParent: $needsParent,
                                             onNext: {
                                                 selectedNeeds = []
                                                 child = !child
+                                                print("Child value : ")
+                                                print(child)
                                                 isNextActive = true
                                             }
                                         )
@@ -113,9 +116,6 @@ struct NeedNVCView: View {
                                     } else{
                                         RandomizeView(observationParent: $observationParent, feelingParent: $feelingParent, needsParent: $needsParent, observationChild: $observationChild, feelingChild: $feelingChild, needsChild: $needsChild, answerGame: $answerGame, child: $child)
                                     }
-                                }
-                                .navigationDestination(isPresented: $isNextActive) {
-                                    LogListPage()
                                 }
                             }
                         }
@@ -142,14 +142,14 @@ struct NeedNVCView: View {
 
 #Preview {
     @Previewable @State var observationParent: RabitFaceObject? = RabitFaceObject(name: "Parent Rabbit", image: "RabbitImage")
-    @Previewable @State var feelingParent: FeelingObject? = FeelingObject(AudioFilePath: "parent_feeling.m4a")
+    @Previewable @State var feelingParent: FeelingObject? = FeelingObject(name: "" , AudioFilePath: "parent_feeling.m4a")
     @Previewable @State var needsParent: NeedObject? = NeedObject(needs: [""])
                     
     @Previewable @State var observationChild: RabitFaceObject? = RabitFaceObject(name: "Child Rabbit", image: "RabbitImage")
-    @Previewable @State var feelingChild: FeelingObject? = FeelingObject(AudioFilePath: "child_feeling.m4a")
+    @Previewable @State var feelingChild: FeelingObject? = FeelingObject(name:"" ,AudioFilePath: "child_feeling.m4a")
     @Previewable @State var needsChild: NeedObject? = NeedObject(needs: ["Play"])
                     
-    @Previewable @State var answerGame: FeelingObject? = FeelingObject(AudioFilePath: "game_answer.m4a")
+    @Previewable @State var answerGame: FeelingObject? = FeelingObject(name: "" , AudioFilePath: "game_answer.m4a")
                     
     @Previewable @State var child: Bool = false
                     

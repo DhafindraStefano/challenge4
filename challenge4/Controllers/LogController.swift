@@ -65,6 +65,45 @@ class LogController: ObservableObject {
         }
     }
     
+    private func fetch(where predicate: Predicate<LogObject>) -> [LogObject] {
+        let descriptor = FetchDescriptor<LogObject>(
+            predicate: predicate,
+            sortBy: [SortDescriptor(\.date, order: .reverse)]
+        )
+        return (try? modelContext.fetch(descriptor)) ?? []
+    }
+    
+    // MARK: - Parent Fetches
+    func fetchParentObservations() -> [LogObject] {
+        fetch(where: #Predicate { $0.observationParent != nil })
+    }
+    
+    func fetchParentFeelings() -> [LogObject] {
+        fetch(where: #Predicate { $0.feelingParent != nil })
+    }
+    
+    func fetchParentNeeds() -> [LogObject] {
+        fetch(where: #Predicate { $0.needsParent != nil })
+    }
+    
+    // MARK: - Child Fetches
+    func fetchChildObservations() -> [LogObject] {
+        fetch(where: #Predicate { $0.observationChild != nil })
+    }
+    
+    func fetchChildFeelings() -> [LogObject] {
+        fetch(where: #Predicate { $0.feelingChild != nil })
+    }
+    
+    func fetchChildNeeds() -> [LogObject] {
+        fetch(where: #Predicate { $0.needsChild != nil })
+    }
+    
+    // MARK: - Game Fetch
+    func fetchGameAnswers() -> [LogObject] {
+        fetch(where: #Predicate { $0.answerGame != nil })
+    }
+    
     func deleteLog(_ log: LogObject) {
         modelContext.delete(log)
         save()

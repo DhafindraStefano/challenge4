@@ -121,7 +121,10 @@ struct RandomizeView: View {
                 }
             }
             .navigationDestination(isPresented: $isNextActive) {
-                LogListPage()
+                // Change into the memory star page
+                CalendarView()
+//                LogListPage()
+                
             }
             .overlay(alignment: .topLeading) {
                 BackButton()
@@ -137,14 +140,14 @@ struct RandomizeView: View {
 
 #Preview {
     @Previewable @State var observationParent: RabitFaceObject? = RabitFaceObject(name: "Parent Rabbit", image: "RabbitImage")
-    @Previewable @State var feelingParent: FeelingObject? = FeelingObject(AudioFilePath: "parent_feeling.m4a")
+    @Previewable @State var feelingParent: FeelingObject? = FeelingObject(name:"",AudioFilePath: "parent_feeling.m4a")
     @Previewable @State var needsParent: NeedObject? = NeedObject(needs: ["Care", "Support"])
     
     @Previewable @State var observationChild: RabitFaceObject? = RabitFaceObject(name: "Child Rabbit", image: "RabbitImage")
-    @Previewable @State var feelingChild: FeelingObject? = FeelingObject(AudioFilePath: "child_feeling.m4a")
+    @Previewable @State var feelingChild: FeelingObject? = FeelingObject(name:"" ,AudioFilePath: "child_feeling.m4a")
     @Previewable @State var needsChild: NeedObject? = NeedObject(needs: ["Play", "Fun"])
     
-    @Previewable @State var answerGame: FeelingObject? = FeelingObject(AudioFilePath: "game_answer.m4a")
+    @Previewable @State var answerGame: FeelingObject? = FeelingObject(name:"",AudioFilePath: "game_answer.m4a")
     
     @Previewable @State var child: Bool = false
     

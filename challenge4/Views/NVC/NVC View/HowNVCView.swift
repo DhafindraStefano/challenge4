@@ -38,7 +38,6 @@ struct HowNVCView: View {
     
     @State private var isNextActive: Bool = false
     @Environment(\.dismiss) private var dismiss
-    @State private var observation: RabitFaceObject? = RabitFaceObject(name: "", image: "")
     
     var body: some View {
         NavigationStack{
