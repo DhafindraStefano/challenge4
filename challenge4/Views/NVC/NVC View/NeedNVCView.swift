@@ -6,7 +6,6 @@
 //
 import SwiftUI
 import SwiftData
-import SwiftData
 
 struct NeedNVCView: View {
     //Log Object
@@ -26,156 +25,144 @@ struct NeedNVCView: View {
     @State private var customNeed: String = ""
     @State private var isNextActive: Bool = false
     
-    @State private var isNextActive: Bool = false
     
     @Environment(\.dismiss) private var dismiss
-
+    
     
     var body: some View {
         NavigationStack {
             ZStack {
-        NavigationStack {
-            ZStack {
-                Color.background
-                    .ignoresSafeArea()
-                
-                
-                VStack {
-                    VStack {
-                    VStack {
-                        Text("What do you ")
-                            .font(.largeTitle)
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(.white)
-                        HStack(spacing: 0) {
-                            Text("need? ")
-                                .font(.largeTitle)
-                                .foregroundColor(.white)
-                            Button(action: {
-                                print("Megaphone tapped!")
-                            }) {
-                                Image(systemName: "speaker.wave.3.fill")
-                                    .font(.largeTitle)
-                                    .foregroundColor(.white)
+                NavigationStack {
+                    ZStack {
+                        Color.background
+                            .ignoresSafeArea()
+                        
+                        
+                        VStack {
+                            VStack {
+                                VStack {
+                                    Text("What do you ")
+                                        .font(.largeTitle)
+                                        .multilineTextAlignment(.center)
+                                        .foregroundColor(.white)
+                                    HStack(spacing: 0) {
+                                        Text("need? ")
+                                            .font(.largeTitle)
+                                            .foregroundColor(.white)
+                                        Button(action: {
+                                            print("Megaphone tapped!")
+                                        }) {
+                                            Image(systemName: "speaker.wave.3.fill")
+                                                .font(.largeTitle)
+                                                .foregroundColor(.white)
+                                        }
+                                        .buttonStyle(.plain)
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .multilineTextAlignment(.center)
+                                }
+                                
+                                ZStack {
+                                    
+                                    ZStack {
+                                        Image("Moon")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .offset(x: 0, y: 251)
+                                        Image("ShadowOfRabbit")
+                                            .resizable()
+                                            .frame(width: 170, height: 70)
+                                            .offset(x: 0, y:200)
+                                        Image("RabbitImage")
+                                            .resizable()
+                                            .frame(width: 283, height: 345)
+                                            .offset(x: 0, y: 50)
+                                        
+                                        //                        NeedCard(
+                                        //                            selectedNeeds: $selectedNeeds,
+                                        //                            customNeed: $customNeed,
+                                        //                            chosenNeeds: $needs,
+                                        //                            onNext: {
+                                        //                                if let obs = observation, let feel = feeling, let finalNeeds = needs {
+                                        //                                    let logController = LogController(modelContext: modelContext)
+                                        //                                    logController.addLog(observation: obs, feeling: feel, needs: finalNeeds)
+                                        //                                    print("✅ Log saved with needs: \(finalNeeds.needs)")
+                                        //                                }
+                                        //                                selectedNeeds = []
+                                        //                                isNextActive = true
+                                        //                            }
+                                        //                        )
+                                        //                        .offset(x: 0, y:270)
+                                        
+                                        NeedCard(
+                                            selectedNeeds: $selectedNeeds,
+                                            customNeed: $customNeed,
+                                            chosenNeeds: child ? $needsChild : $needsParent,
+                                            onNext: {
+                                                selectedNeeds = []
+                                                child = !child
+                                                isNextActive = true
+                                            }
+                                        )
+                                        .offset(x: 0, y: 270)
+                                    }
+                                }
+                                .navigationDestination(isPresented: $isNextActive) {
+                                    if child {
+                                        HowNVCView(observationParent: $observationParent, feelingParent: $feelingParent, needsParent: $needsParent, observationChild: $observationChild, feelingChild: $feelingChild, needsChild: $needsChild, answerGame: $answerGame, child: $child)
+                                    } else{
+                                        RandomizeView(observationParent: $observationParent, feelingParent: $feelingParent, needsParent: $needsParent, observationChild: $observationChild, feelingChild: $feelingChild, needsChild: $needsChild, answerGame: $answerGame, child: $child)
+                                    }
+                                }
+                                .navigationDestination(isPresented: $isNextActive) {
+                                    LogListPage()
+                                }
                             }
-                            .buttonStyle(.plain)
                         }
-                        .frame(maxWidth: .infinity)
-                        .multilineTextAlignment(.center)
-                    }
-                    
-                    ZStack {
-                    
-                    ZStack {
-                        Image("Moon")
-                            .resizable()
-                            .scaledToFit()
-                            .offset(x: 0, y: 251)
-                        Image("ShadowOfRabbit")
-                            .resizable()
-                            .frame(width: 170, height: 70)
-                            .offset(x: 0, y:200)
-                        Image("RabbitImage")
-                            .resizable()
-                            .frame(width: 283, height: 345)
-                            .offset(x: 0, y: 50)
-                        
-//                        NeedCard(
-//                            selectedNeeds: $selectedNeeds,
-//                            customNeed: $customNeed,
-//                            chosenNeeds: $needs,
-//                            onNext: {
-//                                if let obs = observation, let feel = feeling, let finalNeeds = needs {
-//                                    let logController = LogController(modelContext: modelContext)
-//                                    logController.addLog(observation: obs, feeling: feel, needs: finalNeeds)
-//                                    print("✅ Log saved with needs: \(finalNeeds.needs)")
-//                                }
-//                                selectedNeeds = []
-//                                isNextActive = true
-//                            }
-//                        )
-//                        .offset(x: 0, y:270)
-                        
-                        NeedCard(
-                            selectedNeeds: $selectedNeeds,
-                            customNeed: $customNeed,
-                            chosenNeeds: child ? $needsChild : $needsParent,
-                            onNext: {
-                                selectedNeeds = []
-                                child = !child
-                                isNextActive = true
+                        .navigationBarBackButtonHidden(true)
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                Button(action: { dismiss() }) {
+                                    Image(systemName: "chevron.backward")
+                                        .font(.title)
+                                        .foregroundColor(.white)
+                                        .padding(10)
+                                        .background(Color.cheveronButton)
+                                        .clipShape(Circle())
+                                        .shadow(color: .cheveronDropShadow.opacity(1), radius: 0, x: 0, y: 8)
+                                }
                             }
-                        )
-                        .offset(x: 0, y: 270)
+                        }
                     }
-                }
-                .navigationDestination(isPresented: $isNextActive) {
-                    if child {
-                        HowNVCView(observationParent: $observationParent, feelingParent: $feelingParent, needsParent: $needsParent, observationChild: $observationChild, feelingChild: $feelingChild, needsChild: $needsChild, answerGame: $answerGame, child: $child)
-                    } else{
-                        RandomizeView(observationParent: $observationParent, feelingParent: $feelingParent, needsParent: $needsParent, observationChild: $observationChild, feelingChild: $feelingChild, needsChild: $needsChild, answerGame: $answerGame, child: $child)
-                    }
-                }
-                .navigationDestination(isPresented: $isNextActive) {
-                    LogListPage()
-                }
-            }
-        }
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: { dismiss() }) {
-                    Image(systemName: "chevron.backward")
-                        .font(.title)
-                        .foregroundColor(.white)
-                        .padding(10)
-                        .background(Color.cheveronButton)
-                        .clipShape(Circle())
-                        .shadow(color: .cheveronDropShadow.opacity(1), radius: 0, x: 0, y: 8)
-                }
-            }
-        }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: { dismiss() }) {
-                    Image(systemName: "chevron.backward")
-                        .font(.title)
-                        .foregroundColor(.white)
-                        .padding(10)
-                        .background(Color.cheveronButton)
-                        .clipShape(Circle())
-                        .shadow(color: .cheveronDropShadow.opacity(1), radius: 0, x: 0, y: 8)
                 }
             }
         }
     }
 }
 
-
 #Preview {
     @Previewable @State var observationParent: RabitFaceObject? = RabitFaceObject(name: "Parent Rabbit", image: "RabbitImage")
     @Previewable @State var feelingParent: FeelingObject? = FeelingObject(AudioFilePath: "parent_feeling.m4a")
     @Previewable @State var needsParent: NeedObject? = NeedObject(needs: [""])
-    
+                    
     @Previewable @State var observationChild: RabitFaceObject? = RabitFaceObject(name: "Child Rabbit", image: "RabbitImage")
     @Previewable @State var feelingChild: FeelingObject? = FeelingObject(AudioFilePath: "child_feeling.m4a")
     @Previewable @State var needsChild: NeedObject? = NeedObject(needs: ["Play"])
-    
+                    
     @Previewable @State var answerGame: FeelingObject? = FeelingObject(AudioFilePath: "game_answer.m4a")
-    
+                    
     @Previewable @State var child: Bool = false
-    
+                    
     NeedNVCView(
         observationParent: $observationParent,
         feelingParent: $feelingParent,
         needsParent: $needsParent,
-        
+                    
         observationChild: $observationChild,
         feelingChild: $feelingChild,
         needsChild: $needsChild,
-        
+                        
         answerGame: $answerGame,
         child: $child
     )
-
 }

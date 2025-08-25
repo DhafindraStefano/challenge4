@@ -70,32 +70,6 @@ class LogController: ObservableObject {
         save()
     }
     
-    // MARK: - NeedObject
-    func addNeed(_ newNeeds: [String]) -> NeedObject {
-        let need = NeedObject(needs: newNeeds)
-        modelContext.insert(need)
-        save()
-        return need
-    }
-
-    func fetchNeeds() -> [NeedObject] {
-        let descriptor = FetchDescriptor<NeedObject>()
-        return (try? modelContext.fetch(descriptor)) ?? []
-    }
-
-    
-    // MARK: - FeelingObject (with audio)
-    func addFeeling(audioPath: String) {
-        let feeling = FeelingObject(audioFilePath: audioPath)
-        modelContext.insert(feeling)
-        save()
-    }
-    
-    func fetchFeelings() -> [FeelingObject] {
-        let descriptor = FetchDescriptor<FeelingObject>()
-        return (try? modelContext.fetch(descriptor)) ?? []
-    }
-    
     // MARK: - Save
     private func save() {
         do {

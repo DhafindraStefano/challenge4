@@ -39,7 +39,7 @@ struct CalendarView: View {
     // --- Fetch logs when view appears or month changes ---
     private func fetchLogs() {
         let logController = LogController(modelContext: modelContext)
-        logs = logController.fetchLogs()
+        logs = logController.fetchLogs(role: .parent)
     }
     
     // --- Check if current month is the present month (prevent future navigation) ---

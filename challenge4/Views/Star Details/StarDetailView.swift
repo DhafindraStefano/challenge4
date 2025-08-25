@@ -96,8 +96,17 @@ struct StarDetailView: View {
     // Fetch logs from LogController
     private func fetchLogs() {
         let logController = LogController(modelContext: modelContext)
-        logs = logController.fetchLogs()
+        
+        switch selectedTab {
+        case .parent:
+            logs = logController.fetchLogs(role: .parent)
+        case .child:
+            logs = logController.fetchLogs(role: .child)
+        case .games:
+            logs = logController.fetchLogs(role: .game)
+        }
     }
+
     
     var body: some View {
         GeometryReader { geo in
