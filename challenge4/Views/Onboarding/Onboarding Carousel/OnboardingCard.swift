@@ -14,16 +14,16 @@ struct OnboardingCard: View {
         ZStack {
             // Card frame
             RoundedRectangle(cornerRadius: 36, style: .continuous)
-                .fill(Color(hex: 0x1E1C70))
+                .fill(Color.cardBackground)
                 .overlay(
                     RoundedRectangle(cornerRadius: 36, style: .continuous)
-                        .strokeBorder(Color(hex: 0x181858), lineWidth: 8)
+                        .strokeBorder(Color.cardBorder, lineWidth: 8)
                 )
                 .shadow(color: .black.opacity(0.35), radius: 18, y: 8)
             
             // Overlay (e.g., dice)
             if page.overlay == .dice {
-                DiceCorner()
+                Image("DiceImage")
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                     .padding(.top, 30)
                     .padding(.leading, 15)
@@ -110,10 +110,33 @@ struct OnboardingCard: View {
                     .padding(.bottom, 56)
                     .zIndex(10)
             } else {
-                NextButton(isLast: isLast, action: onNext)
+                NextButton(action: onNext)
                     .padding(.bottom, 56)
                     .zIndex(10)
             }
         }
     }
+}
+
+// MARK: - Preview
+#Preview {
+    let samplePage = OnboardingPage(
+        main: .single("onb_feelings", width: 250, height: 200, offsetY: -50),
+        faces: [
+            .init("OnboardingSadFace", width: 82, offsetX: -92, offsetY: -38),
+            .init("OnboardingAngryFace", width: 100, offsetX: 0, offsetY: -10),
+            .init("OnboardingHappyFace", width: 92, offsetX: 87, offsetY: -48)
+        ],
+        overlay: .dice,
+        title: "Share your feelings",
+        subtitle: "Reflect on your day with your child using NVC framework"
+    )
+    
+    OnboardingCard(
+        page: samplePage,
+        isLast: false,
+        onNext: { print("Next tapped") }
+    )
+    .frame(width: 380, height: 571)
+    .background(Color.buttonBlueDropShadow)
 }

@@ -51,7 +51,7 @@ struct OnboardingCarouselView: View {
     var body: some View {
         GeometryReader { geo in
             ZStack {
-                Color(hexValue: 0x0F0D39).ignoresSafeArea()
+                Color.background.ignoresSafeArea()
                 
                 TabView(selection: $index) {
                     ForEach(pages.indices, id: \.self) { i in
