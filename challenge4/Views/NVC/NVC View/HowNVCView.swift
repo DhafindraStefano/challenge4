@@ -89,6 +89,9 @@ struct HowNVCView: View {
             }
             .navigationDestination(isPresented: $isNextActive) {
                 WhyNVCView(observationParent: $observationParent, feelingParent: $feelingParent, needsParent: $needsParent, observationChild: $observationChild, feelingChild: $feelingChild, needsChild: $needsChild, answerGame: $answerGame, child: $child)
+                    .transaction { transaction in
+                        transaction.disablesAnimations = true
+                    }
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -97,13 +100,7 @@ struct HowNVCView: View {
                         Button(action: {
                             dismiss()
                         }) {
-                            Image(systemName: "chevron.backward")
-                                .font(.title)
-                                .foregroundColor(.white)
-                                .padding(10)
-                                .background(Color.cheveronButton)
-                                .clipShape(Circle())
-                                .shadow(color: .cheveronDropShadow.opacity(1), radius: 0, x: 0, y: 8)
+                            BackButton()
                         }
                     }
                 }

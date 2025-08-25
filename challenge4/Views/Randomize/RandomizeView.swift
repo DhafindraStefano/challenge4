@@ -87,8 +87,7 @@ struct RandomizeView: View {
                             }
 
                         )
-                        .scaleEffect(1.1)
-                        .offset(x: 0, y: 272)
+                        .offset(x: 0, y: 270)
 
                     }
                 }
@@ -99,15 +98,15 @@ struct RandomizeView: View {
 //                LogListPage()
                 
             }
-            .overlay(alignment: .topLeading) {
-                BackButton()
-                .padding(.top, 20)
-                .padding(.leading, 20)
-                .scaleEffect(1.2)
-                .zIndex(10)
-            }
         }
         .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: { dismiss() }) {
+                    BackButton()
+                }
+            }
+        }
     }
 }
 

@@ -69,6 +69,9 @@ struct WhyNVCView:View {
             }
             .navigationDestination(isPresented: $isNextActive) {
                 NeedNVCView(observationParent: $observationParent, feelingParent: $feelingParent, needsParent: $needsParent, observationChild: $observationChild, feelingChild: $feelingChild, needsChild: $needsChild, answerGame: $answerGame, child: $child)
+                    .transaction { transaction in
+                        transaction.disablesAnimations = true
+                    }
             }
         }
 
@@ -78,13 +81,7 @@ struct WhyNVCView:View {
                         Button(action: {
                             dismiss()
                         }) {
-                            Image(systemName: "chevron.backward")
-                                .font(.title)
-                                .foregroundColor(.white)
-                                .padding(10)
-                                .background(Color.cheveronButton)
-                                .clipShape(Circle())
-                                .shadow(color: .cheveronDropShadow.opacity(1), radius: 0, x: 0, y: 8)
+                            BackButton()
                         }
                     }
                 }
