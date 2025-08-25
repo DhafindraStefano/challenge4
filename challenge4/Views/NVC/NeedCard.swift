@@ -37,7 +37,7 @@ struct NeedCard: View {
                 // Chips for needs
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 12) {
-                        ForEach(needss, id: \.self) { need in
+                        ForEach(needs, id: \.self) { need in
                             Text(need)
                                 .font(.title2).bold() // bigger font
                                 .foregroundColor(.white)

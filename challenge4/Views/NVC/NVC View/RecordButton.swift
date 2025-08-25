@@ -26,11 +26,11 @@ struct RecordButton: View {
                     if let filePath = recorderController.stopRecordingWithoutLimit() {
                         print("Recording saved at: \(filePath)")
                         if game == "game" {
-                            answerGame = FeelingObject(AudioFilePath: filePath)
+                            answerGame = FeelingObject(name:"", AudioFilePath: filePath)
                         } else if child{
-                            feelingChild = FeelingObject(AudioFilePath: filePath)
+                            feelingChild = FeelingObject(name:"", AudioFilePath: filePath)
                         } else {
-                            feelingParent = FeelingObject(AudioFilePath: filePath)
+                            feelingParent = FeelingObject(name:"", AudioFilePath: filePath)
                         }
                     }
                 } else {
