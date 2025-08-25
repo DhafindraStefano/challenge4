@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Lottie
 
 struct HowNVCView: View {
 //    // MARK: - Parent
@@ -67,13 +68,8 @@ struct HowNVCView: View {
                         .multilineTextAlignment(.center)
                     }
                     ZStack {
-                        Image("Rabies")
-                            .resizable()
-                           .scaledToFit()
-                           .scaleEffect(1.7)
-                            .offset(x: 0, y: 280)
-                            .allowsHitTesting(false)
-
+                        RabbitsTalkingView()
+                        
                         EmotionBar(
                                 observationParent: $observationParent,
                                 observationChild: $observationChild,

@@ -51,12 +51,7 @@ struct NeedNVCView: View {
                     }
                     NavigationStack {
                         ZStack {
-                            Image("Rabies")
-                                .resizable()
-                                .scaledToFit()
-                                .scaleEffect(1.7)
-                                .offset(x: 0, y: 280)
-                                .allowsHitTesting(false)
+                            RabbitsTalkingView()
                             
                             NeedCard(
                                 selectedNeeds: $selectedNeeds,
