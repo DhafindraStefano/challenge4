@@ -2,6 +2,7 @@ import SwiftUI
 
 struct OnboardingViewStart: View {
     @Environment(\.dismiss) private var dismiss
+    @State private var navigateToCarousel = false
     
     var body: some View {
         NavigationStack {
@@ -25,6 +26,14 @@ struct OnboardingViewStart: View {
                 OnboardingBunniesView()
             }
             .navigationBarBackButtonHidden(true)
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    navigateToCarousel = true
+                }
+            }
+            .navigationDestination(isPresented: $navigateToCarousel) {
+                OnboardingCarouselView()
+            }
         }
     }
 }

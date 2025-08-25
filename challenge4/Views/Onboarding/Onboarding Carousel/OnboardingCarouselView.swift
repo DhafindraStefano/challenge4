@@ -76,11 +76,12 @@ struct OnboardingCarouselView: View {
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
     
     private func advance() {
         if index < pages.count - 1 {
-            withAnimation(.spring(response: 0.35, dampingFraction: 0.9)) { index += 1 }
+            withAnimation(.spring(response: 0.8, dampingFraction: 0.9)) { index += 1 }
         } else {
             onFinish?()
         }
