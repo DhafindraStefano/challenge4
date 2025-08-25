@@ -103,6 +103,7 @@ struct HowNVCView: View {
                 Rectangle()
                     .fill(Color.black.opacity(0.8))
                     .ignoresSafeArea(.all)
+                    .allowsHitTesting(false)
                     .mask {
                         Rectangle()
                             .ignoresSafeArea(.all)
@@ -113,6 +114,20 @@ struct HowNVCView: View {
                                     .blendMode(.destinationOut)
                             }
                     }
+                
+                // Invisible overlay for tap gesture to skip animation
+                if !child && ellipseScale != 10.0 {
+                    Rectangle()
+                        .fill(Color.clear)
+                        .ignoresSafeArea(.all)
+                        .onTapGesture {
+                            // Skip animation - hide card and expand ellipse
+                            showParentCard = false
+                            withAnimation(.easeInOut(duration: 2.0)) {
+                                ellipseScale = 10.0
+                            }
+                        }
+                }
             }
             .onAppear {
                 if !child {
@@ -131,15 +146,6 @@ struct HowNVCView: View {
                         withAnimation(.easeInOut(duration: 2.0)) {
                             ellipseScale = 10.0
                         }
-                    }
-                }
-            }
-            .onTapGesture {
-                if !child {
-                    // Skip animation - hide card and expand ellipse
-                    showParentCard = false
-                    withAnimation(.easeInOut(duration: 2.0)) {
-                        ellipseScale = 10.0
                     }
                 }
             }
