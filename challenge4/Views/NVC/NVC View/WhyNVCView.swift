@@ -9,10 +9,23 @@ import SwiftUI
 
 struct WhyNVCView:View {
     //Log Object
-    @Binding var observation: RabitFaceObject?
-    @State var feeling: FeelingObject? = FeelingObject(audioFilePath: "")
+    @Binding var observationParent: RabitFaceObject?
+    @Binding var feelingParent: FeelingObject?
+    @Binding var needsParent: NeedObject?
+    
+    @Binding var observationChild: RabitFaceObject?
+    @Binding var feelingChild: FeelingObject?
+    @Binding var needsChild: NeedObject?
+    
+    @Binding var answerGame: FeelingObject?
+    
+    @Binding var child: Bool
+    
+    @State private var empty: String =  ""
     
     @State private var isNextActive: Bool = false
+    let game = ""
+    
     @Environment(\.dismiss) private var dismiss
     var body: some View {
         NavigationStack{
@@ -31,6 +44,7 @@ struct WhyNVCView:View {
                                 .foregroundColor(.white)
                             Button(action: {
                                 print("Megaphone tapped!") // change it into voice over
+                                print("Megaphone tapped!") // change it into voice over
                             }) {
                                 Image(systemName: "speaker.wave.3.fill")
                                     .font(.largeTitle)
@@ -42,19 +56,9 @@ struct WhyNVCView:View {
                         .multilineTextAlignment(.center)
                     }
                     ZStack{
-                        Image("Moon")
-                            .resizable()
-                            .scaledToFit()
-                            .offset(x: 0, y: 251)
-                        Image("ShadowOfRabbit")
-                            .resizable()
-                            .frame(width: 170, height: 70)
-                            .offset(x: 0, y:200)
-                        Image("RabbitImage")
-                            .resizable()
-                            .frame(width: 283, height: 345)
-                            .offset(x: 0, y: 50)
-                        RecordButton(feeling: $feeling, onNext: {
+                        RabbitsTalkingView()
+                        
+                        RecordButton(feelingParent: $feelingParent, feelingChild: $feelingChild, answerGame: $answerGame ,game: $empty, child: $child, onNext: {
                             isNextActive = true
                         })
                             .offset(x: 0, y:270)
@@ -64,7 +68,10 @@ struct WhyNVCView:View {
                 }
             }
             .navigationDestination(isPresented: $isNextActive) {
-                NeedNVCView(observation: $observation, feeling: $feeling)
+                NeedNVCView(observationParent: $observationParent, feelingParent: $feelingParent, needsParent: $needsParent, observationChild: $observationChild, feelingChild: $feelingChild, needsChild: $needsChild, answerGame: $answerGame, child: $child)
+                    .transaction { transaction in
+                        transaction.disablesAnimations = true
+                    }
             }
         }
 
@@ -74,13 +81,7 @@ struct WhyNVCView:View {
                         Button(action: {
                             dismiss()
                         }) {
-                            Image(systemName: "chevron.backward")
-                                .font(.title)
-                                .foregroundColor(.white)
-                                .padding(10)
-                                .background(Color.cheveronButton)
-                                .clipShape(Circle())
-                                .shadow(color: .cheveronDropShadow.opacity(1), radius: 0, x: 0, y: 8)
+                            BackButton()
                         }
                     }
                 }
@@ -88,8 +89,14 @@ struct WhyNVCView:View {
 }
 
 #Preview {
-    @Previewable @State var observation: RabitFaceObject? = RabitFaceObject(name: "", image: "")
-    @Previewable @State var isNextActive: Bool = false
+    @Previewable @State var observationParent: RabitFaceObject? = RabitFaceObject(name: "", image: "")
+    @Previewable @State var feelingParent: FeelingObject? = nil
+    @Previewable @State var needsParent: NeedObject? = nil
+    @Previewable @State var observationChild: RabitFaceObject? = nil
+    @Previewable @State var feelingChild: FeelingObject? = nil
+    @Previewable @State var needsChild: NeedObject? = nil
+    @Previewable @State var answerGame: FeelingObject? = nil
+    @Previewable @State var child: Bool = false
 
-    WhyNVCView(observation: $observation)
+    WhyNVCView(observationParent: $observationParent, feelingParent: $feelingParent, needsParent: $needsParent, observationChild: $observationChild, feelingChild: $feelingChild, needsChild: $needsChild, answerGame: $answerGame, child: $child)
 }

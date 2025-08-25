@@ -10,7 +10,7 @@ import SwiftData
 
 struct CalendarView: View {
     @Environment(\.modelContext) private var modelContext
-    @State private var currentDate = Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1)) ?? Date()
+    @State private var currentDate = Date()
     @State private var logs: [LogObject] = []
     @State private var animationDirection: CalendarHelper.AnimationDirection = .none
     private let calendar = Calendar.current
@@ -39,8 +39,15 @@ struct CalendarView: View {
     // --- Fetch logs when view appears or month changes ---
     private func fetchLogs() {
         let logController = LogController(modelContext: modelContext)
-        logs = logController.fetchLogs()
+        
+        // Fetch *all logs* regardless of role
+        let descriptor = FetchDescriptor<LogObject>(
+            sortBy: [SortDescriptor(\.date, order: .reverse)]
+        )
+        
+        logs = (try? modelContext.fetch(descriptor)) ?? []
     }
+
     
     // --- Check if current month is the present month (prevent future navigation) ---
     private var isAtPresentMonth: Bool {
