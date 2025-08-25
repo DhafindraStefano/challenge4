@@ -64,10 +64,27 @@ struct RecordButton: View {
                 }
             }
             .padding(.horizontal, 70)
+            HStack {
+                        Button(action: {
+                            feelingParent = nil
+                            feelingChild = nil
+                            answerGame = nil
+                        }) {
+                            Image(systemName: "trash.fill")
+                                .font(.largeTitle)
+                                .foregroundColor(.white)
+                                .padding(15)
+                                .background(Color.trash)
+                                .clipShape(Circle())
+                                .shadow(color: .trashDropShadow.opacity(1), radius: 0, x: 0, y: 8)
+                        }
+                        Spacer()
+                    }
+                    .padding(.horizontal, 70)
+                }
+                .frame(maxWidth: .infinity)
+            }
         }
-        .frame(maxWidth: .infinity)
-    }
-}
 
 #Preview {
     @Previewable @State var feelingParent: FeelingObject? = nil

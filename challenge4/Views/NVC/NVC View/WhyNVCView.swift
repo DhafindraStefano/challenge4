@@ -56,18 +56,13 @@ struct WhyNVCView:View {
                         .multilineTextAlignment(.center)
                     }
                     ZStack{
-                        Image("Moon")
+                        Image("Rabies")
                             .resizable()
-                            .scaledToFit()
-                            .offset(x: 0, y: 251)
-                        Image("ShadowOfRabbit")
-                            .resizable()
-                            .frame(width: 170, height: 70)
-                            .offset(x: 0, y:200)
-                        Image("RabbitImage")
-                            .resizable()
-                            .frame(width: 283, height: 345)
-                            .offset(x: 0, y: 50)
+                           .scaledToFit()
+                           .scaleEffect(1.7)
+                            .offset(x: 0, y: 280)
+                            .allowsHitTesting(false)
+                        
                         RecordButton(feelingParent: $feelingParent, feelingChild: $feelingChild, answerGame: $answerGame ,game: $empty, child: $child, onNext: {
                             isNextActive = true
                         })
@@ -101,9 +96,27 @@ struct WhyNVCView:View {
     }
 }
 
-//#Preview {
-//    @Previewable @State var observation: RabitFaceObject? = RabitFaceObject(name: "", image: "")
-//    @Previewable @State var isNextActive: Bool = false
-//
-//    WhyNVCView(observation: $observation)
-//}
+#Preview {
+    @Previewable @State var observationParent: RabitFaceObject? = nil
+    @Previewable @State var feelingParent: FeelingObject? = nil
+    @Previewable @State var needsParent: NeedObject? = nil
+    
+    @Previewable @State var observationChild: RabitFaceObject? = nil
+    @Previewable @State var feelingChild: FeelingObject? = nil
+    @Previewable @State var needsChild: NeedObject? = nil
+    
+    @Previewable @State var answerGame: FeelingObject? = nil
+    
+    @Previewable @State var child: Bool = false
+
+    WhyNVCView(
+        observationParent: $observationParent,
+        feelingParent: $feelingParent,
+        needsParent: $needsParent,
+        observationChild: $observationChild,
+        feelingChild: $feelingChild,
+        needsChild: $needsChild,
+        answerGame: $answerGame,
+        child: $child
+    )
+}

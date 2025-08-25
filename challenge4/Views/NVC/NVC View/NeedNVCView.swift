@@ -57,18 +57,12 @@ struct NeedNVCView: View {
                     }
                     
                     ZStack {
-                        Image("Moon")
+                        Image("Rabies")
                             .resizable()
-                            .scaledToFit()
-                            .offset(x: 0, y: 251)
-                        Image("ShadowOfRabbit")
-                            .resizable()
-                            .frame(width: 170, height: 70)
-                            .offset(x: 0, y:200)
-                        Image("RabbitImage")
-                            .resizable()
-                            .frame(width: 283, height: 345)
-                            .offset(x: 0, y: 50)
+                           .scaledToFit()
+                           .scaleEffect(1.7)
+                            .offset(x: 0, y: 280)
+                            .allowsHitTesting(false)
                         
                         NeedCard(
                             selectedNeeds: $selectedNeeds,
