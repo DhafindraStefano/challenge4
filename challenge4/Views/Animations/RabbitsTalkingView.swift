@@ -18,13 +18,13 @@ struct RabbitsTalkingView: View {
                 .offset(x: 0, y: 280)
                 .allowsHitTesting(false)
             
-            LottieView(name: "rabbit talk mom", // the name is the name of the .json file
+            LottieView(name: "rabbit talk mom",
                        loopMode: .loop, contentMode: .scaleAspectFit, speed: 1.0)
                     .frame(width: 283, height: 345)
                     .offset(x: -140, y: -100)
                     .scaleEffect(0.17)
             
-            LottieView(name: "rabbit talk child", // the name is the name of the .json file
+            LottieView(name: "rabbit talk child",
                        loopMode: .loop, contentMode: .scaleAspectFit, speed: 1.0)
                     .frame(width: 283, height: 345)
                     .offset(x: 60, y: -100)
