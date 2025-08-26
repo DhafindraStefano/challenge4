@@ -26,6 +26,7 @@ struct BackButton: View {
         }
         // Apply the custom bouncy button style
         .buttonStyle(BounceButtonStyle())
+        .offset(y: 20)
     }
 }
 

@@ -1,20 +1,22 @@
 //
-//  ParentsTurnCard.swift
+//  TurnCard.swift
 //  challenge4
 //
-//  Created by Dhafindra Razaqa Stefano on 25/08/25.
+//  Created by Dhafindra Razaqa Stefano on 26/08/25.
 //
 
 import SwiftUI
 
-struct ParentsTurnCard: View {
+struct TurnCard: View {
+    let isParent: Bool
+    
     var body: some View {
         ZStack{
             RoundedRectangle(cornerRadius: 31)
-                .frame(width: 150, height: 40)
+                .frame(width: isParent ? 150 : 120, height: 40)
                 .foregroundColor(Color.emotionBar)
             
-            Text("Parent's Turn")
+            Text(isParent ? "Parent's Turn" : "Child's Turn")
                 .font(.callout)
                 .fontDesign(.rounded)
                 .foregroundColor(.white)
@@ -24,5 +26,5 @@ struct ParentsTurnCard: View {
 }
 
 #Preview {
-    ParentsTurnCard()
+    TurnCard(isParent: true)
 }
