@@ -17,9 +17,10 @@ struct MemoryStarView: View {
             VStack{
                 Image("Background")
                     .resizable()
-                    .scaledToFit()
-                    .frame(width: 2565, height: 908.09)
-                    .offset(x:offsetAmount, y: -9)
+                    .scaledToFill()
+                    .frame(maxWidth:.infinity , maxHeight: .infinity)
+                    .clipped()
+                    .offset(x: offsetAmount, y: -20)
                     .ignoresSafeArea()
                     .onAppear {
                         withAnimation(.linear(duration: 5).repeatForever(autoreverses: false)) {
@@ -29,7 +30,14 @@ struct MemoryStarView: View {
                 
             }
             
-            //Secon Layer
+            Image("FullMoon")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 79, height: 79)
+                .offset(x: 98, y:-150)
+                .zIndex(1)
+            
+            //Second Layer
             VStack {
                 Image("MoonBase")
                     .resizable()
@@ -39,7 +47,7 @@ struct MemoryStarView: View {
                     .ignoresSafeArea(.all)
             }
             
-            //Fourth Layer
+            //Third Layer
             VStack{
                 
                 HStack(spacing:-50){
@@ -48,56 +56,62 @@ struct MemoryStarView: View {
                             .resizable()
                             .scaledToFit()
                             .frame(width: 210.32, height: 69)
-                            .offset(x:70,y:555)
+                            .offset(x:75,y:495)
+                        
                         LottieView(name: "rabbit talk child", // the name is the name of the .json file
                                    loopMode: .loop, contentMode: .scaleAspectFit, speed: 1.0)
                         .frame(width: 134, height: 173)
                         .scaleEffect(0.14)
-                        .offset(y: 470)
+                        .offset(x:10,y: 410)
                         
                         Image("ParentStone")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 99.84, height: 65.69)
-                            .offset(x:-90,y:550)
+                            .offset(x:-90,y:490)
                         LottieView(name: "rabbit talk mom", // the name is the name of the .json file
                                    loopMode: .loop, contentMode: .scaleAspectFit, speed: 1.0)
                         .frame(width: 163, height: 207)
                         .scaleEffect(0.17)
-                        .offset(x:-30, y: 460)
+                        .offset(x:-20, y: 400)
                     }
                     
                 }
+                RisingStar1()
+                    .allowsHitTesting(false)
                 
-                VStack {
-                    HStack {
-                        Text("You Collect")
-                            .font(.system(size:28, design: .rounded ))
-                            .fontWeight(.regular)
-                            .foregroundStyle(.white)
-                            .offset(x: 5, y:500)
-                        Text("Memory")
-                            .font(.system(size:28, design: .rounded ))
-                            .fontWeight(.regular)
-                            .foregroundStyle(Color("MemoryFontColor"))
-                            .offset(x: 5, y:500)
-                    }
-                    HStack {
-                        Text("Star")
-                            .font(.system(size:28, design: .rounded ))
-                            .fontWeight(.regular)
-                            .foregroundStyle(Color("MemoryFontColor"))
-                            .offset(x: 5, y:500)
-                        Text("together")
-                            .font(.system(size:28, design: .rounded ))
-                            .fontWeight(.regular)
-                            .foregroundStyle(.white)
-                            .offset(x: 5, y:500)
-                    }
-                    
-                }
-                Spacer()
             }
+            
+            //FourthLayer
+            VStack {
+                Spacer()
+                HStack {
+                    Text("You Collect")
+                        .font(.title)
+                        .fontDesign(.rounded)
+                        .fontWeight(.regular)
+                        .foregroundStyle(.white)
+                        .offset(x: 5, y:0)
+                    Text("Memory")
+                        .font(.system(size:28, design: .rounded ))
+                        .fontWeight(.regular)
+                        .foregroundStyle(Color("MemoryFontColor"))
+                        .offset(x: 5, y:0)
+                }
+                HStack {
+                    Text("Star")
+                        .font(.title)
+                        .fontDesign(.rounded)
+                        .fontWeight(.regular)
+                        .foregroundStyle(Color("MemoryFontColor"))
+                        .offset(x: 5, y:0)
+                    Text("together")
+                        .font(.system(size:28, design: .rounded ))
+                        .fontWeight(.regular)
+                        .foregroundStyle(.white)
+                        .offset(x: 5, y:0)
+                }
+            }.padding(.bottom, 40)
             
             
         }

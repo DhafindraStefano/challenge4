@@ -12,8 +12,8 @@ private struct Star: Identifiable {
 struct StarBackground: View {
     var starImageName: String = "StarHome"
     var count: Int = 30
-    var minSize: CGFloat = 16
-    var maxSize: CGFloat = 45
+    var minSize: CGFloat = 12
+    var maxSize: CGFloat = 20
     
     @State private var stars: [Star] = []
     
@@ -37,17 +37,17 @@ struct StarBackground: View {
         .allowsHitTesting(false) // never block taps on foreground UI
     }
     
-    //    private func makeStars(in size: CGSize) -> [Star] {
-    //        guard size.width > 0, size.height > 0 else { return [] }
-    //        return (0..<count).map { _ in
-    //            Star(
-    //                x: .random(in: 0...size.width),
-    //                y: .random(in: 0...size.height),
-    //                size: .random(in: minSize...maxSize)
-    //            )
-    //        }
-    //    }
-    //}
+//        private func makeStars(in size: CGSize) -> [Star] {
+//            guard size.width > 0, size.height > 0 else { return [] }
+//            return (0..<count).map { _ in
+//                Star(
+//                    x: .random(in: 0...size.width),
+//                    y: .random(in: 0...size.height),
+//                    size: .random(in: minSize...maxSize)
+//                )
+//            }
+//        }
+//    }
     private func makeStars(in size: CGSize) -> [Star] {
         guard size.width > 0, size.height > 0, count > 0 else { return [] }
         
@@ -78,7 +78,7 @@ struct RotatingStars: View {
     @State private var angle = Angle.zero
     
     var body: some View {
-        StarBackground(starImageName: "StarHome", count: 5, minSize: 16, maxSize: 45)
+        StarBackground(starImageName: "StarHome", count: 5, minSize: 12, maxSize: 20)
             .frame(width: UIScreen.main.bounds.width,
                    height: UIScreen.main.bounds.height)
             .rotationEffect(angle) // rotates content, not the frame

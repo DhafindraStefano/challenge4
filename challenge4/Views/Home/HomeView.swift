@@ -8,14 +8,17 @@
 import SwiftUI
 import Lottie
 
+
+
 struct HomeView: View {
-    @State private var daysCount : Int = 3
+    @State private var daysCount : Int = 7
     @State private var daysTotal: Int = 30
     @State private var offsetAmount : CGFloat = -150
     @State private var showHowNVCView = false
     @State private var angle = Angle.zero
-    //    @State private var isClick = false
-    var body: some View {
+//    @State private var isClicked = false
+    
+    var body: some View { 
         NavigationStack{
             ZStack{
                 //First Layer
@@ -23,7 +26,6 @@ struct HomeView: View {
                     Image("Background")
                         .resizable()
                         .scaledToFill()
-                        .frame(width: .infinity, height: .infinity)
                         .clipped()
                         .offset(x:offsetAmount, y: -30)
                         .ignoresSafeArea()
@@ -37,7 +39,7 @@ struct HomeView: View {
                 
                 //Second Layer
 //                RotatingStars()
-                StarBackground(starImageName: "StarHome", count: daysCount, minSize: 16, maxSize: 45)
+                StarBackground(starImageName: "StarHome", count: daysCount, minSize: 10, maxSize: 26)
                     .frame(width: UIScreen.main.bounds.width,
                            height: UIScreen.main.bounds.height)
                     .rotationEffect(angle)
@@ -142,6 +144,15 @@ struct HomeView: View {
         }.background(Color("AppBg"), ignoresSafeAreaEdges: .all)
     }
 }
+
+
+//struct HomeViewEnd : View{
+//    var body: some View{
+//        
+//    }
+//    
+//    
+//}
 
 #Preview {
     HomeView()
