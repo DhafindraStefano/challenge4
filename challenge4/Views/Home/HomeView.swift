@@ -8,15 +8,30 @@
 import SwiftUI
 import Lottie
 
-
-
 struct HomeView: View {
     @State private var daysCount : Int = 7
     @State private var daysTotal: Int = 30
     @State private var offsetAmount : CGFloat = -150
     @State private var showHowNVCView = false
+    @State private var isClicked = false
     @State private var angle = Angle.zero
 //    @State private var isClicked = false
+
+// MARK: - Parent
+    @State private var child: Bool = false
+    
+    // MARK: - Parent
+    @State private var observationParent: RabitFaceObject? = nil
+    @State private var feelingParent: FeelingObject? = nil
+    @State private var needsParent: NeedObject? = nil
+    
+    // MARK: - Child
+    @State private var observationChild: RabitFaceObject? = nil
+    @State private var feelingChild: FeelingObject? = nil
+    @State private var needsChild: NeedObject? = nil
+
+    // MARK: - Game
+    @State private var answerGame: FeelingObject? = nil
     
     var body: some View { 
         NavigationStack{
@@ -129,13 +144,19 @@ struct HomeView: View {
                 //7th Layer
                 VStack{
                     Spacer()
-                    TalkToRabbitBtn ( showHowNVCView: $showHowNVCView)
+                    TalkToRabbitBtn ( showHowNVCView: $showHowNVCView, isClicked: $isClicked)
                 }.padding(EdgeInsets(top: 0, leading: 0, bottom: 120, trailing: 0))
-                
-                
-               
                     .navigationDestination(isPresented: $showHowNVCView) {
-//                        HowNVCView()
+                        HowNVCView(
+                            observationParent: $observationParent,
+                            feelingParent: $feelingParent,
+                            needsParent: $needsParent,
+                            observationChild: $observationChild,
+                            feelingChild: $feelingChild,
+                            needsChild: $needsChild,
+                            answerGame: $answerGame,
+                            child: $child
+                        )
                     }
                 
                 
