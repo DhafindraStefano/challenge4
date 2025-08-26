@@ -11,8 +11,11 @@ struct MemoryStarView: View {
     @State private var daysCount : Int = 0
     @State private var daysTotal: Int = 30
     @State private var offsetAmount : CGFloat = -150
+    @State private var navigateToHome = false
+    
     var body: some View {
-        ZStack{
+        NavigationStack {
+            ZStack{
             //First Layer
             VStack{
                 Image("Background")
@@ -38,47 +41,27 @@ struct MemoryStarView: View {
                 .zIndex(1)
             
             //Second Layer
-            VStack {
-                Image("MoonBase")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 440, height: 246)
-                    .offset(y: 300 )
-                    .ignoresSafeArea(.all)
-            }
+//            VStack {
+//                Image("MoonBase")
+//                    .resizable()
+//                    .scaledToFit()
+//                    .frame(width: 440, height: 246)
+//                    .offset(y: 300 )
+//                    .ignoresSafeArea(.all)
+//            }
             
             //Third Layer
             VStack{
                 
                 HStack(spacing:-50){
                     ZStack {
-                        Image("ChildStone")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 210.32, height: 69)
-                            .offset(x:75,y:495)
-                        
-                        LottieView(name: "rabbit talk child", // the name is the name of the .json file
-                                   loopMode: .loop, contentMode: .scaleAspectFit, speed: 1.0)
-                        .frame(width: 134, height: 173)
-                        .scaleEffect(0.14)
-                        .offset(x:10,y: 410)
-                        
-                        Image("ParentStone")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 99.84, height: 65.69)
-                            .offset(x:-90,y:490)
-                        LottieView(name: "rabbit talk mom", // the name is the name of the .json file
-                                   loopMode: .loop, contentMode: .scaleAspectFit, speed: 1.0)
-                        .frame(width: 163, height: 207)
-                        .scaleEffect(0.17)
-                        .offset(x:-20, y: 400)
+                        RabbitStarView()
+                            .frame(maxWidth: 393, maxHeight: 575, alignment: .bottom)
+
                     }
                     
                 }
-                RisingStar1()
-                    .allowsHitTesting(false)
+                
                 
             }
             
@@ -114,8 +97,18 @@ struct MemoryStarView: View {
             }.padding(.bottom, 40)
             
             
+            }
+            .onAppear {
+                // Add 12-second delay before navigating to HomeView
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    navigateToHome = true
+                }
+            }
+            .navigationDestination(isPresented: $navigateToHome) {
+                HomeView(isClickedInitially: true)
+                    .navigationBarBackButtonHidden(true)
+            }
         }
-        
     }
 }
 

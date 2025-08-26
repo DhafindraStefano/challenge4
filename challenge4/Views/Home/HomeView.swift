@@ -16,6 +16,10 @@ struct HomeView: View {
     @State private var isClicked = false
     @State private var angle = Angle.zero
 //    @State private var isClicked = false
+    
+    init(isClickedInitially: Bool = false) {
+        _isClicked = State(initialValue: isClickedInitially)
+    }
 
 // MARK: - Parent
     @State private var child: Bool = false

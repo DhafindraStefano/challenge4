@@ -21,7 +21,7 @@ struct RisingStar1: View {
             let cx = geo.size.width / 2
             // tweak these to start between your rabbits and stop near the top
             let start = CGPoint(x: cx, y: geo.size.height * 0.82)
-            let end   = CGPoint(x: cx, y: geo.size.height * 0.12)
+            let end   = CGPoint(x: cx, y: geo.size.height * 0.18)
             
             KeyframeAnimator(initialValue: Values(), trigger: go) { v in
                 ZStack {
