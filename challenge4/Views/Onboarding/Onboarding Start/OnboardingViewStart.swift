@@ -32,7 +32,7 @@ struct OnboardingViewStart: View {
                 }
             }
             .navigationDestination(isPresented: $navigateToCarousel) {
-                OnboardingCarouselView()
+                OnboardingCards()
             }
         }
     }

@@ -4,11 +4,16 @@ import SwiftUI
 // MARK: - Permission Buttons
 struct PermissionButtons: View {
     let onAllow: () -> Void
+    @StateObject private var audioRecorder = AudioRecorderController()
     
     var body: some View {
         VStack(spacing: 20) {
             // Allow Microphone button
-            Button(action: onAllow) {
+            Button(action: {
+                audioRecorder.requestPermission {
+                    onAllow()
+                }
+            }) {
                 HStack(spacing: 12) {
                     Image(systemName: "mic.fill")
                         .font(.system(size: 20, weight: .medium))
@@ -32,7 +37,12 @@ struct PermissionButtons: View {
             .buttonStyle(BounceButtonStyle())
             
             // Later in Settings button
-            Button(action: onAllow) { // Same action for now
+            Button(action: {
+                // Open Settings app
+                if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(settingsUrl)
+                }
+            }) {
                 Text("Later in Settings")
                     .font(.system(size: 20, weight: .regular, design: .rounded))
                     .foregroundColor(Color.accentPurple2)
