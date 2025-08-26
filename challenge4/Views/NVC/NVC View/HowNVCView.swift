@@ -106,7 +106,6 @@ struct HowNVCView: View {
                     .fill(Color.black.opacity(0.8))
                     .ignoresSafeArea(.all, edges: .all)
                     .allowsHitTesting(false)
-                    
                     .mask {
                         Rectangle()
                             .ignoresSafeArea(.all, edges: .all)
