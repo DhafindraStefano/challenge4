@@ -17,6 +17,10 @@ struct RecordButton: View {
     
     @StateObject private var recorderController = AudioRecorderController()
     
+    // NEW
+    @State private var showDeletePopup = false
+    @State private var pendingDelete: (() -> Void)? = nil
+    
     var onNext: (() -> Void)? = nil
     
     var body: some View {
@@ -65,26 +69,99 @@ struct RecordButton: View {
             }
             .padding(.horizontal, 70)
             HStack {
-                        Button(action: {
-                            feelingParent = nil
-                            feelingChild = nil
-                            answerGame = nil
-                        }) {
-                            Image(systemName: "trash.fill")
-                                .font(.largeTitle)
-                                .foregroundColor(.white)
-                                .padding(15)
-                                .background(Color.trash)
-                                .clipShape(Circle())
-                                .shadow(color: .trashDropShadow.opacity(1), radius: 0, x: 0, y: 8)
+                if recorderController.isRecording {
+                    Button(action: {
+                        pendingDelete = {
+                            if let tempPath = recorderController.stopRecordingWithoutLimit() {
+                                let url = URL(fileURLWithPath: tempPath)
+                                try? FileManager.default.removeItem(at: url)
+                                print("🗑️ Deleted temp recording at \(url)")
+                            }
                         }
-                        Spacer()
+                        showDeletePopup = true
+                    }) {
+                        Image(systemName: "trash.fill")
+                            .font(.largeTitle)
+                            .foregroundColor(.white)
+                            .padding(15)
+                            .background(Color.trash)
+                            .clipShape(Circle())
+                            .shadow(color: .trashDropShadow.opacity(1), radius: 0, x: 0, y: 8)
                     }
-                    .padding(.horizontal, 70)
+                    Spacer()
+                    
+                } else if let path = feelingParent?.AudioFilePath, game != "game", !child {
+                    Button(action: {
+                        pendingDelete = {
+                            let url = URL(fileURLWithPath: path)
+                            try? FileManager.default.removeItem(at: url)
+                            print("🗑️ Deleted parent recording at \(url)")
+                            feelingParent = nil
+                        }
+                        showDeletePopup = true
+                    }) {
+                        Image(systemName: "trash.fill")
+                            .font(.largeTitle)
+                            .foregroundColor(.white)
+                            .padding(15)
+                            .background(Color.trash)
+                            .clipShape(Circle())
+                            .shadow(color: .trashDropShadow.opacity(1), radius: 0, x: 0, y: 8)
+                    }
+                    Spacer()
+                    
+                } else if let path = feelingChild?.AudioFilePath, game != "game", child {
+                    Button(action: {
+                        pendingDelete = {
+                            let url = URL(fileURLWithPath: path)
+                            try? FileManager.default.removeItem(at: url)
+                            print("🗑️ Deleted child recording at \(url)")
+                            feelingChild = nil
+                        }
+                        showDeletePopup = true
+                    }) {
+                        Image(systemName: "trash.fill")
+                            .font(.largeTitle)
+                            .foregroundColor(.white)
+                            .padding(15)
+                            .background(Color.trash)
+                            .clipShape(Circle())
+                            .shadow(color: .trashDropShadow.opacity(1), radius: 0, x: 0, y: 8)
+                    }
+                    Spacer()
+                    
+                } else if let path = answerGame?.AudioFilePath, game == "game" {
+                    Button(action: {
+                        pendingDelete = {
+                            let url = URL(fileURLWithPath: path)
+                            try? FileManager.default.removeItem(at: url)
+                            print("🗑️ Deleted game recording at \(url)")
+                            answerGame = nil
+                        }
+                        showDeletePopup = true
+                    }) {
+                        Image(systemName: "trash.fill")
+                            .font(.largeTitle)
+                            .foregroundColor(.white)
+                            .padding(15)
+                            .background(Color.trash)
+                            .clipShape(Circle())
+                            .shadow(color: .trashDropShadow.opacity(1), radius: 0, x: 0, y: 8)
+                    }
+                    Spacer()
                 }
-                .frame(maxWidth: .infinity)
+            }
+            .padding(.horizontal, 70)
+            
+            // 👇 Add popup overlay
+            PopUpDelete(isPresented: $showDeletePopup) {
+                pendingDelete?()
+                pendingDelete = nil
             }
         }
+        .frame(maxWidth: .infinity)
+    }
+}
 
 #Preview {
     @Previewable @State var feelingParent: FeelingObject? = nil

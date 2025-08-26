@@ -60,11 +60,13 @@ struct StarDetailView: View {
     
     // Check if there are logs for the selected date
     private var isCompleted: Bool {
-        return logs.contains { log in
+        let logController = LogController(modelContext: modelContext)
+        let parentLogs = logController.fetchLogs(role: .parent)
+        return parentLogs.contains { log in
             calendar.isDate(log.date, inSameDayAs: selectedDate)
         }
     }
-    
+
     // Check if selected date is today or later (prevent future navigation)
     private var isAtPresentDay: Bool {
         return calendar.isDate(selectedDate, inSameDayAs: Date()) || selectedDate > Date()
@@ -208,7 +210,7 @@ struct StarDetailView: View {
                 fetchLogs()
             }
         }
-        .onChange(of: selectedTab) { newTab in
+        .onChange(of: selectedTab) { _, _ in
             fetchLogs()
         }
         .gesture(

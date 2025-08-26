@@ -33,31 +33,33 @@ struct WhyNVCView:View {
                 Color.background
                     .ignoresSafeArea()
                 VStack {
-                    VStack{
-                        Text("Why do you feel")
-                            .font(.largeTitle)
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(.white)
-                        HStack(spacing: 0) {
-                            Text("that way? ")
+                    
+                    ZStack{
+                        VStack{
+                            Text("Why do you feel")
                                 .font(.largeTitle)
+                                .multilineTextAlignment(.center)
                                 .foregroundColor(.white)
-                            Button(action: {
-                                print("Megaphone tapped!") // change it into voice over
-                                print("Megaphone tapped!") // change it into voice over
-                            }) {
-                                Image(systemName: "speaker.wave.3.fill")
+                            HStack(spacing: 0) {
+                                Text("that way? ")
                                     .font(.largeTitle)
                                     .foregroundColor(.white)
+                                Button(action: {
+                                    print("Megaphone tapped!") // change it into voice over
+                                    print("Megaphone tapped!") // change it into voice over
+                                }) {
+                                    Image(systemName: "speaker.wave.3.fill")
+                                        .font(.largeTitle)
+                                        .foregroundColor(.white)
+                                }
+                                .buttonStyle(.plain)
                             }
-                            .buttonStyle(.plain)
+                            .frame(maxWidth: .infinity)
+                            .multilineTextAlignment(.center)
                         }
-                        .frame(maxWidth: .infinity)
-                        .multilineTextAlignment(.center)
-                    }
-                    ZStack{
+                        .offset(x: 0, y:-200)
                         RabbitsTalkingView()
-                        
+                        .offset(x: 0, y:50)
                         RecordButton(feelingParent: $feelingParent, feelingChild: $feelingChild, answerGame: $answerGame ,game: $empty, child: $child, onNext: {
                             isNextActive = true
                         })

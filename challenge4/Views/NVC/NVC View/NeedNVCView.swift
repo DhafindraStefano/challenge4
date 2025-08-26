@@ -68,7 +68,7 @@ struct NeedNVCView: View {
                                     isNextActive = true
                                 }
                             )
-                            .offset(x: 0, y: 270)
+                            .offset(x: 0, y: 250)
                         }
                     }
                     .navigationDestination(isPresented: $isNextActive) {

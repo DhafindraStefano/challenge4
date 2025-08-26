@@ -38,7 +38,7 @@ struct CalendarView: View {
     
     // --- Fetch logs when view appears or month changes ---
     private func fetchLogs() {
-        let logController = LogController(modelContext: modelContext)
+        _ = LogController(modelContext: modelContext)
         
         // Fetch *all logs* regardless of role
         let descriptor = FetchDescriptor<LogObject>(
