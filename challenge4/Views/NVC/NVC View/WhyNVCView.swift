@@ -36,11 +36,13 @@ struct WhyNVCView:View {
                     VStack{
                         Text("Why do you feel")
                             .font(.largeTitle)
+                            .fontDesign(.rounded)
                             .multilineTextAlignment(.center)
                             .foregroundColor(.white)
                         HStack(spacing: 0) {
                             Text("that way? ")
                                 .font(.largeTitle)
+                                .fontDesign(.rounded)
                                 .foregroundColor(.white)
                             Button(action: {
                                 print("Megaphone tapped!") // change it into voice over
@@ -56,20 +58,13 @@ struct WhyNVCView:View {
                         .multilineTextAlignment(.center)
                     }
                     ZStack{
-                        Image("Moon")
-                            .resizable()
-                            .scaledToFit()
-                            .offset(x: 0, y: 251)
-                        Image("ShadowOfRabbit")
-                            .resizable()
-                            .frame(width: 170, height: 70)
-                            .offset(x: 0, y:200)
-                        Image("RabbitImage")
-                            .resizable()
-                            .frame(width: 283, height: 345)
-                            .offset(x: 0, y: 50)
+                        RabbitsTalkingView()
+                        
                         RecordButton(feelingParent: $feelingParent, feelingChild: $feelingChild, answerGame: $answerGame ,game: $empty, child: $child, onNext: {
-                            isNextActive = true
+                            // Add 1-second delay to allow button animation and sound to complete
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                isNextActive = true
+                            }
                         })
                             .offset(x: 0, y:270)
 
@@ -79,6 +74,9 @@ struct WhyNVCView:View {
             }
             .navigationDestination(isPresented: $isNextActive) {
                 NeedNVCView(observationParent: $observationParent, feelingParent: $feelingParent, needsParent: $needsParent, observationChild: $observationChild, feelingChild: $feelingChild, needsChild: $needsChild, answerGame: $answerGame, child: $child)
+                    .transaction { transaction in
+                        transaction.disablesAnimations = true
+                    }
             }
         }
 
@@ -88,22 +86,22 @@ struct WhyNVCView:View {
                         Button(action: {
                             dismiss()
                         }) {
-                            Image(systemName: "chevron.backward")
-                                .font(.title)
-                                .foregroundColor(.white)
-                                .padding(10)
-                                .background(Color.cheveronButton)
-                                .clipShape(Circle())
-                                .shadow(color: .cheveronDropShadow.opacity(1), radius: 0, x: 0, y: 8)
+                            BackButton()
                         }
                     }
                 }
     }
 }
 
-//#Preview {
-//    @Previewable @State var observation: RabitFaceObject? = RabitFaceObject(name: "", image: "")
-//    @Previewable @State var isNextActive: Bool = false
-//
-//    WhyNVCView(observation: $observation)
-//}
+#Preview {
+    @Previewable @State var observationParent: RabitFaceObject? = RabitFaceObject(name: "", image: "")
+    @Previewable @State var feelingParent: FeelingObject? = nil
+    @Previewable @State var needsParent: NeedObject? = nil
+    @Previewable @State var observationChild: RabitFaceObject? = nil
+    @Previewable @State var feelingChild: FeelingObject? = nil
+    @Previewable @State var needsChild: NeedObject? = nil
+    @Previewable @State var answerGame: FeelingObject? = nil
+    @Previewable @State var child: Bool = false
+
+    WhyNVCView(observationParent: $observationParent, feelingParent: $feelingParent, needsParent: $needsParent, observationChild: $observationChild, feelingChild: $feelingChild, needsChild: $needsChild, answerGame: $answerGame, child: $child)
+}
