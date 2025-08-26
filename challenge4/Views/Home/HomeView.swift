@@ -113,31 +113,8 @@ struct HomeView: View {
                 
                 
                 //Fifth Layer
-                ZStack() {
-                    Image("ProgressBar")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 177, height: 65)
-                    
-                    HStack(spacing: 0) {
-                        Text ("\(daysCount)")
-                            .font(.title)
-                            .fontDesign(.rounded)
-                            .fontWeight(.bold)
-                            .foregroundStyle(.white)
-                            .offset(x: 58, y:-6)
-                        Text("\\\\\(daysTotal)")
-                            .font(.title)
-                            .fontDesign(.rounded)
-                            .fontWeight(.bold)
-                            .multilineTextAlignment(.center)
-                            .foregroundStyle(
-                                .white
-                                    .opacity(0.3))
-                            .offset(x: 58, y:-6)
-                    }.frame(maxWidth:148, alignment: .topLeading)
-                }.frame(width: 353, height: 70, alignment: .topLeading)
-                    .padding(EdgeInsets(top:-360, leading:20, bottom: 8, trailing: 20))
+                ProgressBarView()
+                    .offset(x: -85, y: -335)
                 
                 
                 //6th Layer

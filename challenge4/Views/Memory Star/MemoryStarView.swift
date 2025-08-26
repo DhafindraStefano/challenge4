@@ -108,6 +108,7 @@ struct MemoryStarView: View {
                 HomeView(isClickedInitially: true)
                     .navigationBarBackButtonHidden(true)
             }
+            .navigationBarBackButtonHidden(true)
         }
     }
 }
