@@ -15,10 +15,17 @@ struct HomeView: View {
     @State private var showHowNVCView = false
     @State private var isClicked = false
     @State private var angle = Angle.zero
+    @State private var showFallingStar = false
+    @State private var showStarBackground = true
+    @State private var starBackgroundOpacity: Double = 1.0
 //    @State private var isClicked = false
     
     init(isClickedInitially: Bool = false) {
         _isClicked = State(initialValue: isClickedInitially)
+        // If coming from MemoryStarView (isClickedInitially is true), show falling star animation
+        _showFallingStar = State(initialValue: isClickedInitially)
+        _showStarBackground = State(initialValue: !isClickedInitially)
+        _starBackgroundOpacity = State(initialValue: isClickedInitially ? 0.0 : 1.0)
     }
 
 // MARK: - Parent
@@ -58,15 +65,33 @@ struct HomeView: View {
                 
                 //Second Layer
 //                RotatingStars()
-                StarBackground(starImageName: "StarHome", count: daysCount, minSize: 10, maxSize: 26)
-                    .frame(width: UIScreen.main.bounds.width,
-                           height: UIScreen.main.bounds.height)
-                    .rotationEffect(angle)
-                    .onAppear {
-                        withAnimation(.linear(duration: 16).repeatForever(autoreverses: false)) {
-                            angle = .degrees(360)
+                if showStarBackground {
+                    StarBackground(starImageName: "StarHome", count: daysCount, minSize: 10, maxSize: 26)
+                        .frame(width: UIScreen.main.bounds.width,
+                               height: UIScreen.main.bounds.height)
+                        .rotationEffect(angle)
+                        .opacity(starBackgroundOpacity)
+                        .onAppear {
+                            withAnimation(.linear(duration: 16).repeatForever(autoreverses: false)) {
+                                angle = .degrees(360)
+                            }
                         }
-                    }
+                }
+                
+                if showFallingStar {
+                    FallingStar()
+                        .onAppear {
+                            // After FallingStar animation completes (1.2s + 0.5s + 0.7s = 2.4s), re-enable StarBackground
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.4) {
+                                showFallingStar = false
+                                showStarBackground = true
+                                // Animate fade-in of StarBackground
+                                withAnimation(.easeIn(duration: 1.0)) {
+                                    starBackgroundOpacity = 1.0
+                                }
+                            }
+                        }
+                }
                 
                 //Third Layer
                 Image("FullMoon")
@@ -150,6 +175,7 @@ struct HomeView: View {
                     Spacer()
                     TalkToRabbitBtn ( showHowNVCView: $showHowNVCView, isClicked: $isClicked)
                 }.padding(EdgeInsets(top: 0, leading: 0, bottom: 120, trailing: 0))
+                .opacity(starBackgroundOpacity)
                     .navigationDestination(isPresented: $showHowNVCView) {
                         HowNVCView(
                             observationParent: $observationParent,

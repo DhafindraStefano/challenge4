@@ -1,12 +1,13 @@
 //
-//  RisingStar2.swift
+//  FallingStar.swift
 //  challenge4
 //
-//  Created by Ardelia on 25/08/25.
+//  Created by Dhafindra Razaqa Stefano on 26/08/25.
 //
+
 import SwiftUI
 
-struct RisingStar1: View {
+struct FallingStar: View {
     // Values we animate with keyframes
     struct Values {
         var position = CGPoint.zero
@@ -19,9 +20,9 @@ struct RisingStar1: View {
     var body: some View {
         GeometryReader { geo in
             let cx = geo.size.width / 2
-            // tweak these to start between your rabbits and stop near the top
-            let start = CGPoint(x: cx, y: geo.size.height * 0.82)
-            let end   = CGPoint(x: cx, y: geo.size.height * 0.18)
+            // Reverse of RisingStar1: start from top and fall to bottom
+            let start = CGPoint(x: cx, y: geo.size.height * 0.18)
+            let end   = CGPoint(x: cx, y: geo.size.height * 0.82)
             
             KeyframeAnimator(initialValue: Values(), trigger: go) { v in
                 ZStack {
@@ -30,28 +31,28 @@ struct RisingStar1: View {
                         .resizable().scaledToFit()
                         .frame(width: 56, height: 56)
                         .position(v.position)
-                        .scaleEffect( 1.4 * v.scale, anchor: .center)
-                    // soft glow that peaks on arrival
+                        .scaleEffect( 2 * v.scale, anchor: .center)
+                    // soft glow that peaks at start, then fades
                         .shadow(color: .white.opacity(1 * v.glow), radius: 18 + 18 * v.glow)
                         .shadow(color: .white.opacity(1 * v.glow), radius: 18 + 18 * v.glow)
                         .shadow(color: .white.opacity(0.8 * v.glow), radius: 36 + 24 * v.glow)
                 }
             } keyframes: { _ in
-                // 1) Move up in 1.2s
+                // 1) Move down in 1.2s (reverse of up movement)
                 KeyframeTrack(\.position) {
-                    CubicKeyframe(start, duration: 0.0)
+                    CubicKeyframe(start, duration: 1.4)
                     LinearKeyframe(end,  duration: 1.2)
                 }
-                // 2) Grow while moving
+                // 2) Shrink while moving (reverse of grow)
                 KeyframeTrack(\.scale) {
-                    CubicKeyframe(0.4, duration: 0.0)
-                    LinearKeyframe(1.0, duration: 1.2)
+                    CubicKeyframe(1.0, duration: 1.0)
+                    LinearKeyframe(0.4, duration: 1.0)
                 }
-                // 3) Glow rises right after arrival, then settles
+                // 3) Glow starts high, then fades (reverse of rising glow)
                 KeyframeTrack(\.glow) {
-                    CubicKeyframe(0.0, duration: 1.2)           // hold while traveling
-                    SpringKeyframe(1.0, duration: 1.5)          // burst
-                    LinearKeyframe(0.2, duration: 2.0)          // settle
+                    SpringKeyframe(1.0, duration: 1.0)          // start with burst
+                    LinearKeyframe(0.2, duration: 1.5)          // fade quickly
+                    CubicKeyframe(0.0, duration: 0.1)           // fade out completely
                 }
             }
             .onAppear { go.toggle()
@@ -63,22 +64,6 @@ struct RisingStar1: View {
     }
 }
 
-
-//struct RisingStar1: View {
-//    var body: some View {
-//        ZStack {
-//            // … background …
-//
-//            // rabbits here
-//
-//            RisingMemoryStar1(imageName: "StarHome",
-//                             startY: 0.62,  // tweak to match your rabbits’ vertical line
-//                             endY: 0.12)    // how close to the top you want to stop
-//            .zIndex(2) // make sure it renders above the rabbits
-//        }
-//    }
-//}
-
-#Preview{
-    RisingStar1()
+#Preview {
+    FallingStar()
 }

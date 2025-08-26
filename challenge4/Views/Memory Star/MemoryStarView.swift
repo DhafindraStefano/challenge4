@@ -56,7 +56,7 @@ struct MemoryStarView: View {
                 HStack(spacing:-50){
                     ZStack {
                         RabbitStarView()
-                            .frame(maxWidth: 393, maxHeight: 575, alignment: .bottom)
+                            .frame(maxWidth: 393, maxHeight: 552, alignment: .bottom)
 
                     }
                     
