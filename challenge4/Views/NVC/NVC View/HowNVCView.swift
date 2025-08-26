@@ -93,7 +93,7 @@ struct HowNVCView: View {
                             }
                         )
                         
-                        .offset(x: 0, y: 290)
+                        .offset(x: 0, y: 270)
                     }
                 }
                 

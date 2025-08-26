@@ -98,17 +98,17 @@ struct CalendarContainer: View {
     }
 }
 
-#Preview {
-    let calendar = Calendar.current
-    let currentDate = Date()
-    let daysInMonth: [Date?] = [nil, nil, nil, Date(), Date(), Date(), Date()]
-    
-    CalendarContainer(
-        currentDate: currentDate,
-        daysInMonth: daysInMonth,
-        numberOfWeeks: 1,
-        logs: [],
-        isCompleted: { _ in false },
-        getTransition: { .identity }
-    )
-}
+//#Preview {
+//    let calendar = Calendar.current
+//    let currentDate = Date()
+//    let daysInMonth: [Date?] = [nil, nil, nil, Date(), Date(), Date(), Date()]
+//    
+//    CalendarContainer(
+//        currentDate: currentDate,
+//        daysInMonth: daysInMonth,
+//        numberOfWeeks: 1,
+//        logs: [],
+//        isCompleted: { _ in false },
+//        getTransition: { .identity }
+//    )
+//}
