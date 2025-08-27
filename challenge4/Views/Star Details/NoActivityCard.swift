@@ -52,7 +52,13 @@ struct NoActivityCard: View {
                     .foregroundColor(.white)
                             
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("No activity today. It's okay, let's do it tomorrow.")
+            .accessibilityHint("You can try again tomorrow.")
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("No activity card. No activity today. It's okay, let's do it tomorrow.")
+        .accessibilityHint("You can try again tomorrow.")
     }
 }
 

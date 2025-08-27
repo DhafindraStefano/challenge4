@@ -25,7 +25,7 @@ let emotionFace: [RabitFaceObject] = [
         image: "Fear"
     ),
     RabitFaceObject(
-        name: "Surpised",
+        name: "Surprised",
         image: "Surprise"
     ),
     RabitFaceObject(

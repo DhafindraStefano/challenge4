@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-struct WhyNVCView:View {
-    //Log Object
+struct WhyNVCView: View {
     @Binding var observationParent: RabitFaceObject?
     @Binding var feelingParent: FeelingObject?
     @Binding var needsParent: NeedObject?
@@ -18,80 +17,209 @@ struct WhyNVCView:View {
     @Binding var needsChild: NeedObject?
     
     @Binding var answerGame: FeelingObject?
-    
     @Binding var child: Bool
     
-    @State private var empty: String =  ""
-    
+    @State private var empty: String = ""
     @State private var isNextActive: Bool = false
-    let game = ""
     
     @Environment(\.dismiss) private var dismiss
+    
+    var audioName : String = "Why_do_you_feel_that_way"
+    
     var body: some View {
-        NavigationStack{
-            ZStack{
-                Color.background
-                    .ignoresSafeArea()
-                VStack {
-                    VStack{
+        ZStack {
+            Color.background.ignoresSafeArea()
+            
+            GeometryReader { geo in
+                ZStack {
+                    RabbitsTalkingView()
+                    
+                    VStack(spacing: 20) {
                         Text("Why do you feel")
                             .font(.largeTitle)
-                            .fontDesign(.rounded)
                             .multilineTextAlignment(.center)
                             .foregroundColor(.white)
-                        HStack(spacing: 0) {
-                            Text("that way? ")
+                        
+                        HStack(spacing: 5) {
+                            Text("that way?")
                                 .font(.largeTitle)
-                                .fontDesign(.rounded)
                                 .foregroundColor(.white)
-                            Button(action: {
-                                print("Megaphone tapped!") // change it into voice over
-                                print("Megaphone tapped!") // change it into voice over
-                            }) {
+                            
+                            Button {
+                                AudioPlayer.shared.playAudio(named: audioName)
+                            } label: {
                                 Image(systemName: "speaker.wave.3.fill")
-                                    .font(.largeTitle)
+                                    .font(.title2)
                                     .foregroundColor(.white)
                             }
                             .buttonStyle(.plain)
+                            .accessibilityLabel("Play audio prompt")
+                            .accessibilityHint("Plays a recording of the question: Why do you feel that way?")
                         }
-                        .frame(maxWidth: .infinity)
-                        .multilineTextAlignment(.center)
                     }
-                    ZStack{
-                        RabbitsTalkingView()
-                        
-                        RecordButton(feelingParent: $feelingParent, feelingChild: $feelingChild, answerGame: $answerGame ,game: $empty, child: $child, onNext: {
-                            // Add 1-second delay to allow button animation and sound to complete
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                isNextActive = true
-                            }
-                        })
-                            .offset(x: 0, y:270)
-
-                    }
+                    .frame(maxWidth: .infinity)
+                    .position(x: geo.size.width / 2,
+                              y: geo.size.height * 0.3)
+                    .zIndex(2)
                     
+                    RecordButton(
+                        feelingParent: $feelingParent,
+                        feelingChild: $feelingChild,
+                        answerGame: $answerGame,
+                        game: $empty,
+                        gameName: $empty,
+                        child: $child,
+                        onNext: { isNextActive = true }
+                    )
+                    .position(x: geo.size.width / 2,
+                              y: geo.size.height * 0.85)
+                    VStack {
+                        HStack {
+                            Button(action: { dismiss() }) {
+                                BackButton()
+                            }
+                            .padding(.leading, 16)
+                            .padding(.top, 46)
+
+                            Spacer()
+                        }
+                        Spacer()
+                    }
                 }
             }
-            .navigationDestination(isPresented: $isNextActive) {
-                NeedNVCView(observationParent: $observationParent, feelingParent: $feelingParent, needsParent: $needsParent, observationChild: $observationChild, feelingChild: $feelingChild, needsChild: $needsChild, answerGame: $answerGame, child: $child)
-                    .transaction { transaction in
-                        transaction.disablesAnimations = true
-                    }
+            .ignoresSafeArea()
+        }
+        
+        // 🚀 Now this works with the parent NavigationStack
+        .navigationDestination(isPresented: $isNextActive) {
+            NeedNVCView(
+                observationParent: $observationParent,
+                feelingParent: $feelingParent,
+                needsParent: $needsParent,
+                observationChild: $observationChild,
+                feelingChild: $feelingChild,
+                needsChild: $needsChild,
+                answerGame: $answerGame,
+                child: $child
+            )
+            .transaction { transaction in
+                transaction.disablesAnimations = true
             }
         }
-
         .navigationBarBackButtonHidden(true)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: {
-                            dismiss()
-                        }) {
-                            BackButton()
-                        }
-                    }
-                }
+//        .toolbar {
+//            ToolbarItem(placement: .navigationBarLeading) {
+//                Button(action: { dismiss() }) {
+//                    BackButton()
+//                        .accessibilityLabel("Go back")
+//                        .accessibilityHint("Returns to the previous step")
+//                }
+//            }
+//        }
     }
 }
+
+
+//struct WhyNVCView:View {
+//    @Binding var observationParent: RabitFaceObject?
+//    @Binding var feelingParent: FeelingObject?
+//    @Binding var needsParent: NeedObject?
+//    
+//    @Binding var observationChild: RabitFaceObject?
+//    @Binding var feelingChild: FeelingObject?
+//    @Binding var needsChild: NeedObject?
+//    
+//    @Binding var answerGame: FeelingObject?
+//    @Binding var child: Bool
+//    
+//    @State private var empty: String = ""
+//    @State private var isNextActive: Bool = false
+//    
+//    @Environment(\.dismiss) private var dismiss
+//    
+//    var audioName : String = "Why_do_you_feel_that_way"
+//    
+//    var body: some View {
+//        NavigationStack {
+//            ZStack {
+//                Color.background.ignoresSafeArea()
+//                
+//                GeometryReader { geo in
+//                    ZStack {
+//                        RabbitsTalkingView()
+//                        
+//                        VStack(spacing: 20) {
+//                            Text("Why do you feel")
+//                                .font(.largeTitle)
+//                                .multilineTextAlignment(.center)
+//                                .foregroundColor(.white)
+//                            
+//                            HStack(spacing: 5) {
+//                                Text("that way?")
+//                                    .font(.largeTitle)
+//                                    .foregroundColor(.white)
+//                                
+//                                Button {
+//                                    AudioPlayer.shared.playAudio(named: audioName)
+//                                } label: {
+//                                    Image(systemName: "speaker.wave.3.fill")
+//                                        .font(.title2)
+//                                        .foregroundColor(.white)
+//                                }
+//                                .buttonStyle(.plain)
+//                                .accessibilityLabel("Play audio prompt")
+//                                .accessibilityHint("Plays a recording of the question: Why do you feel that way?")
+//                            }
+//                        }
+//                        .frame(maxWidth: .infinity)
+//                        .position(x: geo.size.width / 2,
+//                                  y: geo.size.height * 0.3)
+//                        .zIndex(2)
+//                        
+//                        RecordButton(
+//                            feelingParent: $feelingParent,
+//                            feelingChild: $feelingChild,
+//                            answerGame: $answerGame,
+//                            game: $empty,
+//                            gameName: $empty,
+//                            child: $child,
+//                            onNext: { isNextActive = true }
+//                        )
+//                        .position(x: geo.size.width / 2,
+//                                  y: geo.size.height * 0.85)
+//                    }
+//                }
+//            }
+//            .navigationDestination(isPresented: $isNextActive) {
+//                NeedNVCView(
+//                    observationParent: $observationParent,
+//                    feelingParent: $feelingParent,
+//                    needsParent: $needsParent,
+//                    observationChild: $observationChild,
+//                    feelingChild: $feelingChild,
+//                    needsChild: $needsChild,
+//                    answerGame: $answerGame,
+//                    child: $child
+//                )
+//                .transaction { transaction in
+//                    transaction.disablesAnimations = true
+//                }
+//            }
+//        }
+//        .accessibilitySortPriority(1)
+//        .accessibilitySortPriority(0)
+//        .navigationBarBackButtonHidden(true)
+//        .toolbar {
+//            ToolbarItem(placement: .navigationBarLeading) {
+//                Button(action: { dismiss() }) {
+//                    BackButton()
+//                        .accessibilityLabel("Go back")
+//                        .accessibilityHint("Returns to the previous step")
+//                }
+//            }
+//        }
+//    }
+//}
 
 #Preview {
     @Previewable @State var observationParent: RabitFaceObject? = RabitFaceObject(name: "", image: "")

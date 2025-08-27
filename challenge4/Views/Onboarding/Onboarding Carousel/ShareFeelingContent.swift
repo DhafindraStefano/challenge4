@@ -11,24 +11,29 @@ struct ShareFeelingContent: View {
     var body: some View {
         VStack(spacing: 20) {
             Image("OnboardingFaces")
-                .scaleEffect(0.25)
+                .resizable()
+                .scaledToFit()
+                .frame(height: 180)
+                .accessibilityLabel("Cartoon faces representing emotions")
+                .accessibilityAddTraits(.isImage)
             
             VStack(spacing: 8) {
                 Text("Share your feelings")
-                    .font(.title2.bold())
+                    .font(.title.bold())
                     .foregroundColor(.white)
                     .fontDesign(.rounded)
-                    .padding(.top, -180)
+                    .accessibilityAddTraits(.isHeader)
                 
-                Text("Reflect on your day with your child using NVC framework")
-                    .font(.caption)
-                    .foregroundColor(.white.opacity(0.8))
+                Text("Reflect on your day with your child using the Nonviolent Communication framework")
+                    .font(.title3.weight(.light))
+                    .foregroundColor(.white.opacity(0.5))
                     .fontDesign(.rounded)
                     .multilineTextAlignment(.center)
                     .frame(width: 280)
-                    .padding(.top, -150)
             }
-        }.padding(.bottom, 100)
+        }
+        .padding(.bottom, 100)
+        .accessibilityElement(children: .combine) // ✅ read as one
     }
 }
 

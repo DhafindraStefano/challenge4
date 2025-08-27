@@ -29,13 +29,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		CC7A02292E4C26B300E9C6EE /* challenge4.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = challenge4.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		CC7A02382E4C26B500E9C6EE /* challenge4Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = challenge4Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CC7A02422E4C26B500E9C6EE /* challenge4UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = challenge4UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		576E5C602E5E359E003904ED /* challenge4.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = challenge4.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		576E5E382E5F6C7D003904ED /* challenge4Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = challenge4Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		576E5E392E5F6C7D003904ED /* challenge4UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = challenge4UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		CC7A022B2E4C26B300E9C6EE /* challenge4 */ = {
+		576E5F9F2E5F6C87003904ED /* challenge4 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = challenge4;
 			sourceTree = "<group>";
@@ -82,21 +82,13 @@
 		CC7A02202E4C26B300E9C6EE = {
 			isa = PBXGroup;
 			children = (
-				CC7A022B2E4C26B300E9C6EE /* challenge4 */,
+				576E5F9F2E5F6C87003904ED /* challenge4 */,
 				CC7A023B2E4C26B500E9C6EE /* challenge4Tests */,
 				CC7A02452E4C26B500E9C6EE /* challenge4UITests */,
-				CC7A022A2E4C26B300E9C6EE /* Products */,
+				576E5C602E5E359E003904ED /* challenge4.app */,
+				576E5E382E5F6C7D003904ED /* challenge4Tests.xctest */,
+				576E5E392E5F6C7D003904ED /* challenge4UITests.xctest */,
 			);
-			sourceTree = "<group>";
-		};
-		CC7A022A2E4C26B300E9C6EE /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CC7A02292E4C26B300E9C6EE /* challenge4.app */,
-				CC7A02382E4C26B500E9C6EE /* challenge4Tests.xctest */,
-				CC7A02422E4C26B500E9C6EE /* challenge4UITests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -114,16 +106,13 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				CC7A022B2E4C26B300E9C6EE /* challenge4 */,
-			);
 			name = challenge4;
 			packageProductDependencies = (
 				CCC2BA992E55B2BC0041AB66 /* Lottie */,
 				CCC2BA9B2E55B38F0041AB66 /* Lottie */,
 			);
 			productName = challenge4;
-			productReference = CC7A02292E4C26B300E9C6EE /* challenge4.app */;
+			productReference = 576E5C602E5E359E003904ED /* challenge4.app */;
 			productType = "com.apple.product-type.application";
 		};
 		CC7A02372E4C26B500E9C6EE /* challenge4Tests */ = {
@@ -146,7 +135,7 @@
 			packageProductDependencies = (
 			);
 			productName = challenge4Tests;
-			productReference = CC7A02382E4C26B500E9C6EE /* challenge4Tests.xctest */;
+			productReference = 576E5E382E5F6C7D003904ED /* challenge4Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		CC7A02412E4C26B500E9C6EE /* challenge4UITests */ = {
@@ -169,7 +158,7 @@
 			packageProductDependencies = (
 			);
 			productName = challenge4UITests;
-			productReference = CC7A02422E4C26B500E9C6EE /* challenge4UITests.xctest */;
+			productReference = 576E5E392E5F6C7D003904ED /* challenge4UITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -208,7 +197,7 @@
 				CCC2BA8F2E55AAB20041AB66 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
-			productRefGroup = CC7A022A2E4C26B300E9C6EE /* Products */;
+			productRefGroup = CC7A02202E4C26B300E9C6EE;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -409,21 +398,23 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 33J34N23WU;
+				DEVELOPMENT_TEAM = RXK8KL3HX2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = challenge4/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to your microphone to record your feelings.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = binb.idserve.net.challenge4;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -439,21 +430,23 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 33J34N23WU;
+				DEVELOPMENT_TEAM = RXK8KL3HX2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = challenge4/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to your microphone to record your feelings.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = binb.idserve.net.challenge4;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

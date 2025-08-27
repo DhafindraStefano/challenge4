@@ -36,19 +36,25 @@ struct EmotionBar: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 80, height: 80)
-                                    .opacity(selectedObservation?.name == face.name ? 1.0 : 0.5)
+                                    .opacity(selectedObservation?.name == face.name ? 1 : 0.8)
+                                
                                 Text(face.name)
                                     .font(.headline)
                                     .foregroundColor(.white)
                                     .padding(.top, -10)
                                     .opacity(selectedObservation?.name == face.name ? 1.0 : 0.5)
-                                    .fontWeight(selectedObservation?.name == face.name ? .bold : .regular)
+                                    .fontWeight(selectedObservation?.name == face.name ? .black : .regular)
                             }
                         }
+                        .accessibilityLabel("\(face.name) bunny face")
+                        .accessibilityHint("Tap to select this emotion")
+                        .accessibilityAddTraits(selectedObservation?.name == face.name ? .isSelected : [])
                         .buttonStyle(.plain)
                     }
                 }
             }
+            .accessibilityLabel("Emotions list")
+            .accessibilityHint("Swipe left or right to browse emotions")
             .padding()
             .background(
                 Color.emotionBar
@@ -62,6 +68,7 @@ struct EmotionBar: View {
                             )
                         )
                     )
+                    .accessibilityHidden(true)
             )
             .padding(7)
 
@@ -77,6 +84,8 @@ struct EmotionBar: View {
                         .clipShape(Circle())
                         .shadow(color: .checkmarkDropShadow.opacity(1), radius: 0, x: 0, y: 8)
                 }
+                .accessibilityLabel("Confirm emotion \(selectedObservation?.name ?? "")")
+                .accessibilityHint("Moves to the next step")
                 .offset(x: 140, y: -80)
                 .transition(.opacity)
                 .animation(.easeInOut, value: selectedObservation?.name)

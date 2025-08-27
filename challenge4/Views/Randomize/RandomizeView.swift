@@ -2,8 +2,8 @@
 //  StoryView.swift
 //  challenge4
 //
-
 import SwiftUI
+import AVFAudio
 
 struct RandomizeView: View {
     @Binding var observationParent: RabitFaceObject?
@@ -15,100 +15,262 @@ struct RandomizeView: View {
     @Binding var needsChild: NeedObject?
     
     @Binding var answerGame: FeelingObject?
-    
     @Binding var child: Bool
+    
+    @State var gameName: String = ""
     @State var game: String = "game"
     @State private var isNextActive: Bool = false
+    @State private var currentQuestion: Question? = nil
     
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Color.background
-                    .ignoresSafeArea()
-                
-                VStack {
-                    VStack (spacing: 20) {
-                        Text("Can you tell me a story\nabout your childhood?")
-                            .font(Font.custom("SF Pro Rounded", size: 28))
+        ZStack {
+            Color.background.ignoresSafeArea()
+            
+            GeometryReader { geo in
+                ZStack {
+                    RabbitsTalkingView()
+                    
+                    VStack {
+                        Text(currentQuestion?.text ?? "Loading...")
+                            .font(.largeTitle)
                             .multilineTextAlignment(.center)
                             .foregroundColor(.white)
+                            .padding(.horizontal)
+                            .frame(maxWidth: geo.size.width * 0.95)
+                            .accessibilityLabel(currentQuestion?.text ?? "Loading question")
+                            .accessibilityAddTraits(.isHeader)
                         
-                        HStack(spacing: 8) {
-                            Text("Randomize")
-                                .font(Font.custom("SF Pro Rounded", size: 20))
-                                .kerning(0.4)
-                                .foregroundColor(Color(red: 0.46, green: 0.45, blue: 1))
-                            
-                            Image(systemName: "dice")
-                                .font(.system(size: 20))
-                                .foregroundColor(Color(red: 0.46, green: 0.45, blue: 1))
-                        }
-                    }
-                    
-                    ZStack {
-                        RabbitsTalkingView()
-                        
-                        RecordButton(
-                            feelingParent: $feelingParent,
-                            feelingChild: $feelingChild,
-                            answerGame: $answerGame,
-                            game: $game,
-                            child: $child,
-                            onNext: {
-                                let logController = LogController(modelContext: modelContext)
-
-                                if observationParent != nil || feelingParent != nil || needsParent != nil {
-                                    logController.addLog(role: .parent,
-                                                         observation: observationParent,
-                                                         feeling: feelingParent,
-                                                         needs: needsParent)
-                                    print("✅ Parent Log saved with obs=\(observationParent != nil), feeling=\(feelingParent != nil), needs=\(needsParent != nil)")
-                                }
-                                
-                                if observationChild != nil || feelingChild != nil || needsChild != nil {
-                                    logController.addLog(role: .child,
-                                                         observation: observationChild,
-                                                         feeling: feelingChild,
-                                                         needs: needsChild)
-                                    print("✅ Child Log saved with obs=\(observationChild != nil), feeling=\(feelingChild != nil), needs=\(needsChild != nil)")
-                                }
-
-
-                                if answerGame != nil {
-                                    logController.addLog(role: .game, feeling: answerGame)
-                                    print("🎮 Game Log saved with answer file: \(answerGame?.AudioFilePath ?? "nil")")
-                                }
-
-                                // move to next screen
-                                isNextActive = true
+                        if let audioName = currentQuestion?.audioName {
+                            Button {
+                                AudioPlayer.shared.playAudio(named: audioName)
+                            } label: {
+                                Image(systemName: "speaker.wave.3.fill")
+                                    .font(.title)
+                                    .foregroundColor(.white)
                             }
+                            .accessibilityLabel("Play question audio")
+                            .accessibilityHint("Plays a recording of the question")
+                        }
+                        
+                        Button {
+                            let questions = QuestionLoader.loadQuestions()
+                            if let randomQ = questions.randomElement() {
+                                currentQuestion = randomQ
+                                gameName = randomQ.text
+                            }
+                            UIAccessibility.post(
+                                notification: .announcement,
+                                argument: "New question: \(gameName)"
+                            )
+                        } label: {
+                            HStack {
+                                Text("Randomize")
+                                Image(systemName: "dice")
+                            }
+                            .font(.title)
+                            .foregroundColor(Color(red: 0.46, green: 0.45, blue: 1))
+                            .padding(.top, 4)
+                        }
+                        .accessibilityLabel("Randomize question")
+                        .accessibilityHint("Selects a new random question")
+                    }
+                    .position(x: geo.size.width/2, y: geo.size.height * 0.27)
+                    
+                    // --- Record Button pinned near bottom ---
+                    RecordButton(
+                        feelingParent: $feelingParent,
+                        feelingChild: $feelingChild,
+                        answerGame: $answerGame,
+                        game: $game,
+                        gameName: $gameName,
+                        child: $child,
+                        onNext: {
+                            let logController = LogController(modelContext: modelContext)
+                            if observationParent != nil || feelingParent != nil || needsParent != nil ||
+                               observationChild != nil || feelingChild != nil || needsChild != nil ||
+                               answerGame != nil {
+                                logController.addLog(
+                                    observationParent: observationParent,
+                                    feelingParent: feelingParent,
+                                    needsParent: needsParent,
+                                    observationChild: observationChild,
+                                    feelingChild: feelingChild,
+                                    needsChild: needsChild,
+                                    answerGame: answerGame
+                                )
+                            }
+                            isNextActive = true
+                        }
+                    )
+                    .accessibilityLabel("Record your answer")
+                    .accessibilityHint("Tap to start recording your response to the question")
+                    .position(x: geo.size.width/2, y: geo.size.height * 0.9)
+                    
+                    VStack {
+                        HStack {
+                            Button(action: { dismiss() }) {
+                                BackButton()
+                            }
+                            .padding(.leading, 16)
+                            .padding(.top, 46)
 
-                        )
-                        .offset(x: 0, y: 270)
-
+                            Spacer()
+                        }
+                        Spacer()
                     }
                 }
             }
-            .navigationDestination(isPresented: $isNextActive) {
-                // Change into the memory star page
-                MemoryStarView()
-//                LogListPage()
-                
+        }
+        .ignoresSafeArea()
+        .onAppear {
+            let questions = QuestionLoader.loadQuestions()
+            if let randomQ = questions.randomElement() {
+                currentQuestion = randomQ
+                gameName = randomQ.text
             }
+        }
+        .navigationDestination(isPresented: $isNextActive) {
+            MemoryStarView()
         }
         .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: { dismiss() }) {
-                    BackButton()
-                }
-            }
-        }
     }
 }
+
+//struct RandomizeView: View {
+//    @Binding var observationParent: RabitFaceObject?
+//    @Binding var feelingParent: FeelingObject?
+//    @Binding var needsParent: NeedObject?
+//    
+//    @Binding var observationChild: RabitFaceObject?
+//    @Binding var feelingChild: FeelingObject?
+//    @Binding var needsChild: NeedObject?
+//    
+//    @Binding var answerGame: FeelingObject?
+//    @Binding var child: Bool
+//    
+//    @State var gameName: String = ""
+//    @State var game: String = "game"
+//    @State private var isNextActive: Bool = false
+//    @State private var currentQuestion: Question? = nil
+//    
+//    @Environment(\.dismiss) private var dismiss
+//    @Environment(\.modelContext) private var modelContext
+//    
+//    var body: some View {
+//        NavigationStack {
+//            ZStack {
+//                Color.background.ignoresSafeArea()
+//                
+//                GeometryReader { geo in
+//                    ZStack {
+//
+//                        RabbitsTalkingView()
+//                        VStack{
+//                            Text(currentQuestion?.text ?? "Loading...")
+//                                .font(.largeTitle)
+//                                .multilineTextAlignment(.center)
+//                                .foregroundColor(.white)
+//                                .padding(.horizontal)
+//                                .frame(maxWidth: geo.size.width * 0.95)
+//                                .accessibilityLabel(currentQuestion?.text ?? "Loading question")
+//                                .accessibilityAddTraits(.isHeader)
+////                            HStack(spacing: 0) {
+//                                
+//                                if let audioName = currentQuestion?.audioName {
+//                                    Button {
+//                                        AudioPlayer.shared.playAudio(named: audioName)
+//                                    } label: {
+//                                        Image(systemName: "speaker.wave.3.fill")
+//                                            .font(.title)
+//                                            .foregroundColor(.white)
+//                                    }
+//                                    .accessibilityLabel("Play question audio")
+//                                    .accessibilityHint("Plays a recording of the question")
+//                                }
+//                                Button {
+//                                    let questions = QuestionLoader.loadQuestions()
+//                                    if let randomQ = questions.randomElement() {
+//                                        currentQuestion = randomQ
+//                                        gameName = randomQ.text
+//                                    }
+//                                    UIAccessibility.post(
+//                                        notification: .announcement,
+//                                        argument: "New question: \(gameName)"
+//                                    )
+//                                } label: {
+//                                    HStack {
+//                                        Text("Randomize")
+//                                        Image(systemName: "dice")
+//                                    }
+//                                    .font(.title)
+//                                    .foregroundColor(Color(red: 0.46, green: 0.45, blue: 1))
+//                                    .padding(.top, 4)
+//                                }
+//                                .accessibilityLabel("Randomize question")
+//                                .accessibilityHint("Selects a new random question")
+//                        }
+//                        
+//                        .position(x: geo.size.width/2, y: geo.size.height * 0.27)
+//                        
+//                        // --- Record Button pinned near bottom ---
+//                        RecordButton(
+//                            feelingParent: $feelingParent,
+//                            feelingChild: $feelingChild,
+//                            answerGame: $answerGame,
+//                            game: $game,
+//                            gameName: $gameName,
+//                            child: $child,
+//                            onNext: {
+//                                let logController = LogController(modelContext: modelContext)
+//                                if observationParent != nil || feelingParent != nil || needsParent != nil ||
+//                                    observationChild != nil || feelingChild != nil || needsChild != nil ||
+//                                    answerGame != nil {
+//                                    
+//                                    logController.addLog(
+//                                        observationParent: observationParent,
+//                                        feelingParent: feelingParent,
+//                                        needsParent: needsParent,
+//                                        observationChild: observationChild,
+//                                        feelingChild: feelingChild,
+//                                        needsChild: needsChild,
+//                                        answerGame: answerGame
+//                                    )
+//                                }
+//                                isNextActive = true
+//                            }
+//                        )
+//                        .accessibilityLabel("Record your answer")
+//                        .accessibilityHint("Tap to start recording your response to the question")
+//                        .position(x: geo.size.width/2, y: geo.size.height * 0.9)
+//                    }
+//                }
+//            }
+//            .onAppear {
+//                let questions = QuestionLoader.loadQuestions()
+//                if let randomQ = questions.randomElement() {
+//                    currentQuestion = randomQ
+//                    gameName = randomQ.text
+//                }
+//            }
+//            .navigationDestination(isPresented: $isNextActive) {
+//                MemoryStarView()
+//            }
+//        }
+//        .navigationBarBackButtonHidden(true)
+//        .toolbar {
+//            ToolbarItem(placement: .navigationBarLeading) {
+//                Button(action: { dismiss() }) {
+//                    BackButton()
+//                        .accessibilityLabel("Back")
+//                        .accessibilityHint("Goes back to the previous screen")
+//                }
+//            }
+//        }
+//    }
+//}
 
 #Preview {
     @Previewable @State var observationParent: RabitFaceObject? = RabitFaceObject(name: "Parent Rabbit", image: "RabbitImage")

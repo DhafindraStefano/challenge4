@@ -29,9 +29,10 @@ struct StarBackground: View {
                 }
             }
             .onAppear { stars = makeStars(in: geo.size) }
-            .onChange(of: geo.size) { newSize in
-                stars = makeStars(in: newSize)
+            .onChange(of: geo.size) {
+                stars = makeStars(in: geo.size)
             }
+
         }
         .ignoresSafeArea()
         .allowsHitTesting(false) // never block taps on foreground UI

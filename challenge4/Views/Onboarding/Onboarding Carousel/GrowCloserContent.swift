@@ -14,25 +14,28 @@ struct GrowCloserContent: View {
                 .resizable()
                 .scaledToFit()
                 .frame(height: 200)
+                .accessibilityLabel("Two bunnies sitting together, representing bonding")
+                .accessibilityAddTraits(.isImage)
             
             VStack(spacing: 8) {
                 Text("Grow closer together")
-                    .font(.title2.bold())
+                    .font(.title.bold())
                     .foregroundColor(.white)
                     .fontDesign(.rounded)
+                    .accessibilityAddTraits(.isHeader)
                 
                 Text("Build stronger bonds through meaningful conversations")
-                    .font(.caption)
-                    .foregroundColor(.white.opacity(0.8))
+                    .font(.title3.weight(.light))
+                    .foregroundColor(.white.opacity(0.5))
                     .fontDesign(.rounded)
                     .multilineTextAlignment(.center)
                     .frame(width: 280)
             }
         }
         .padding(.bottom, 100)
+        .accessibilityElement(children: .combine)
     }
 }
-
 #Preview {
     GrowCloserContent()
         .background(.black)

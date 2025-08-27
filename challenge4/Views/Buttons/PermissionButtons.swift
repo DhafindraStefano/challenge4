@@ -5,7 +5,7 @@ import SwiftUI
 struct PermissionButtons: View {
     let onAllow: () -> Void
     @StateObject private var audioRecorder = AudioRecorderController()
-    
+    @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding: Bool = false
     var body: some View {
         VStack(spacing: 20) {
             // Allow Microphone button
@@ -25,10 +25,10 @@ struct PermissionButtons: View {
                 }
                 .frame(width: 272, height: 64)
                 .background(.buttonBlue)
-                .cornerRadius(57)
+                .cornerRadius(50)
                 .shadow(color: Color.buttonBlueDropShadow, radius: 0, x: 0, y: 8)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 57)
+                    RoundedRectangle(cornerRadius: 50)
                         .stroke(Color.white.opacity(0.1), lineWidth: 1)
                         .shadow(color: Color.white.opacity(0.25), radius: 0, x: 1, y: 5)
                         .blendMode(.overlay)
@@ -41,6 +41,7 @@ struct PermissionButtons: View {
                 // Open Settings app
                 if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
                     UIApplication.shared.open(settingsUrl)
+                    hasSeenOnboarding = true
                 }
             }) {
                 Text("Later in Settings")
@@ -53,9 +54,9 @@ struct PermissionButtons: View {
 }
 
 // MARK: - Preview
-#Preview {
-    PermissionButtons(onAllow: {
-        print("Permission allowed")
-    })
-    .previewLayout(.sizeThatFits)
-}
+//#Preview {
+//    PermissionButtons(onAllow: {
+//        print("Permission allowed")
+//    })
+//    .previewLayout(.sizeThatFits)
+//}

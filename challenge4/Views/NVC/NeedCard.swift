@@ -15,6 +15,8 @@ struct NeedCard: View {
     @Binding var needChild: NeedObject?
     @Binding var needParent: NeedObject?
     var onNext: (() -> Void)? = nil
+    @State private var showPopup: Bool = false
+
     
     var body: some View {
         ZStack {
@@ -25,13 +27,15 @@ struct NeedCard: View {
                         .font(.title).bold()
                         .foregroundColor(.white)
                     
-                    Button(action: {
-                        print("Button tapped")
-                    }) {
-                        Image(systemName: "list.bullet")
-                            .font(.title)
-                            .foregroundColor(.white)
-                    }.transition(.opacity)
+//                    Button(action: {
+//                        withAnimation(.spring()) {
+//                            showPopup.toggle()
+//                        }
+//                    }) {
+//                        Image(systemName: "list.bullet")
+//                            .font(.title)
+//                            .foregroundColor(.white)
+//                    }
                 }
 
                 // Chips for needs
@@ -53,6 +57,10 @@ struct NeedCard: View {
                                         selectedNeeds.append(need)
                                     }
                                 }
+                                .accessibilityElement()
+                                .accessibilityLabel("\(need) need")
+                                .accessibilityAddTraits(selectedNeeds.contains(need) ? .isSelected : [])
+                                .accessibilityHint("Tap to \(selectedNeeds.contains(need) ? "deselect" : "select") this need")
                                 .animation(.easeInOut(duration: 0.2), value: selectedNeeds)
                         }
                     }
@@ -69,7 +77,8 @@ struct NeedCard: View {
                         )
                         .font(.title3) // bigger font
                         .foregroundColor(.white)
-
+                        .accessibilityLabel("Other need input")
+                        .accessibilityHint("Type a custom need")
                         Button(action: {
                             customNeed = ""
                         }) {
@@ -77,6 +86,8 @@ struct NeedCard: View {
                                 .font(.title) // slightly bigger icon
                                 .foregroundColor(.white.opacity(0.8))
                         }
+                        .accessibilityLabel("Clear custom need")
+                        .accessibilityHint("Removes the text you typed")
                     }
                     .padding(.vertical, 12)
                     .padding(.horizontal, 20)
@@ -110,19 +121,22 @@ struct NeedCard: View {
                         selectedNeeds.append(customNeed)
                         customNeed = ""
                     }
+                    let mappedNeeds = selectedNeeds // already [String]
+
                     if child {
                         if needChild == nil {
-                            needChild = NeedObject(needs: selectedNeeds)
+                            needChild = NeedObject(needs: mappedNeeds)
                         } else {
-                            needChild?.needs = selectedNeeds
+                            needChild?.needs = mappedNeeds.map { NeedObject.Need(text: $0) }
                         }
                     } else {
                         if needParent == nil {
-                            needParent = NeedObject(needs: selectedNeeds)
+                            needParent = NeedObject(needs: mappedNeeds)
                         } else {
-                            needParent?.needs = selectedNeeds
+                            needParent?.needs = mappedNeeds.map { NeedObject.Need(text: $0) }
                         }
                     }
+
                     onNext?()
                 }) {
                     Image(systemName: "checkmark")
@@ -135,6 +149,8 @@ struct NeedCard: View {
                 }
                 .offset(x: 140, y: -110)
                 .buttonStyle(BounceButtonStyle())
+                .accessibilityLabel("Confirm needs")
+                .accessibilityHint("Moves to the next step with \(selectedNeeds.count) needs selected")
             }
         }
     }
@@ -149,3 +165,152 @@ struct NeedCard: View {
     
     NeedCard(selectedNeeds: $selectedNeeds, customNeed: $customNeed, child: $child, needChild: $needChild, needParent: $needParent)
 }
+//
+//import SwiftUI
+//
+//struct NeedCard: View {
+//    let needs = ["Play", "Sleep", "Talk", "Help", "Love"]
+//    @Binding var selectedNeeds: [String]
+//    @Binding var customNeed: String
+//    @Binding var child: Bool
+//    @Binding var needChild: NeedObject?
+//    @Binding var needParent: NeedObject?
+//    var onNext: (() -> Void)? = nil
+//    @State private var showPopup: Bool = false
+//
+//    var body: some View {
+//        ZStack {
+//            VStack(alignment: .leading) {
+//                // Title
+//                HStack {
+//                    Text("Needs")
+//                        .font(.title).bold()
+//                        .foregroundColor(.white)
+//                    
+//                    Button(action: {
+//                        withAnimation(.spring()) {
+//                            showPopup.toggle()
+//                        }
+//                    }) {
+//                        Image(systemName: "list.bullet")
+//                            .font(.title)
+//                            .foregroundColor(.white)
+//                    }
+//                }
+//
+//                // Chips for needs
+//                ScrollView(.horizontal, showsIndicators: false) {
+//                    HStack(spacing: 12) {
+//                        ForEach(needs, id: \.self) { need in
+//                            Text(need)
+//                                .font(.title2).bold()
+//                                .foregroundColor(.white)
+//                                .padding(.vertical, 12)
+//                                .padding(.horizontal, 20)
+//                                .background(Color.needsButton)
+//                                .cornerRadius(20)
+//                                .opacity(selectedNeeds.contains(need) ? 1.0 : 0.5)
+//                                .onTapGesture { toggleNeed(need) }
+//                                .animation(.easeInOut(duration: 0.2), value: selectedNeeds)
+//                        }
+//                    }
+//                }
+//                
+//                // Custom need input
+//                VStack(alignment: .leading, spacing: 8) {
+//                    HStack {
+//                        TextField(
+//                            "",
+//                            text: $customNeed,
+//                            prompt: Text("Other type here....")
+//                                .foregroundColor(.white.opacity(0.5))
+//                        )
+//                        .font(.title3)
+//                        .foregroundColor(.white)
+//
+//                        Button(action: { customNeed = "" }) {
+//                            Image(systemName: "xmark.circle.fill")
+//                                .font(.title)
+//                                .foregroundColor(.white.opacity(0.8))
+//                        }
+//                    }
+//                    .padding(.vertical, 12)
+//                    .padding(.horizontal, 20)
+//                    .background(Color.needsButton)
+//                    .cornerRadius(30)
+//                }
+//            }
+//            .padding(.leading, 10)
+//            .padding(.trailing, 10)
+//            .padding(.top, 16)
+//            .padding(.bottom, 40)
+//            .background(
+//                Color.emotionBar
+//                    .clipShape(
+//                        UnevenRoundedRectangle(
+//                            cornerRadii: .init(
+//                                topLeading: 0,
+//                                bottomLeading: 40,
+//                                bottomTrailing: 40,
+//                                topTrailing: 0
+//                            )
+//                        )
+//                    )
+//            )
+//
+//            // Confirm button
+//            if !selectedNeeds.isEmpty || !customNeed.isEmpty {
+//                Button(action: confirmNeeds) {
+//                    Image(systemName: "checkmark")
+//                        .font(.largeTitle)
+//                        .foregroundColor(.white)
+//                        .padding(18)
+//                        .background(Color.checkmark)
+//                        .clipShape(Circle())
+//                        .shadow(color: .checkmarkDropShadow.opacity(1), radius: 0, x: 0, y: 8)
+//                }
+//                .offset(x: 140, y: -110)
+//                .buttonStyle(BounceButtonStyle())
+//            }
+//        }
+//        // Show the popup as a sheet
+//        .sheet(isPresented: $showPopup) {
+//            PopUpNeeds(selectedNeeds: $selectedNeeds)
+//        }
+//    }
+//
+//    // MARK: - Functions
+//    private func toggleNeed(_ need: String) {
+//        if selectedNeeds.contains(need) {
+//            selectedNeeds.removeAll { $0 == need }
+//        } else {
+//            selectedNeeds.append(need)
+//        }
+//    }
+//    
+//    private func confirmNeeds() {
+//        if !customNeed.isEmpty {
+//            selectedNeeds.append(customNeed)
+//            customNeed = ""
+//        }
+//        
+//        let mappedNeeds: [NeedObject.Need] = selectedNeeds.map { NeedObject.Need(text: $0) }
+//        
+//        if child {
+//            if needChild == nil {
+//                needChild = NeedObject(needs: selectedNeeds)
+//            } else {
+//                needChild?.needs = mappedNeeds
+//            }
+//        } else {
+//            if needParent == nil {
+//                needParent = NeedObject(needs: selectedNeeds)
+//            } else {
+//                needParent?.needs = mappedNeeds
+//            }
+//        }
+//        
+//        selectedNeeds = []
+//        onNext?()
+//    }
+//}

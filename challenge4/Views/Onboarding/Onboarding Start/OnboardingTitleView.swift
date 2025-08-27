@@ -8,9 +8,9 @@ struct OnboardingTitleView: View {
         (
             Text("When it's ").foregroundColor(.white)
           + Text("bed time").foregroundColor(accent)
-          + Text(",\nyou and your kid have\na warm quality time…").foregroundColor(.white)
+          + Text(", you and your kid have a warm quality time…").foregroundColor(.white)
         )
-        .font(.title2.bold())
+        .font(.title.bold())
         .fontDesign(.rounded)
         .frame(width: 277, alignment: .leading)
         .padding(.leading, 32)
@@ -24,6 +24,7 @@ struct OnboardingTitleView: View {
         }
     }
 }
+
 
 #Preview {
     OnboardingTitleView()

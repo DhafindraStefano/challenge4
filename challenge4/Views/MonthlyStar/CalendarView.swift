@@ -38,7 +38,7 @@ struct CalendarView: View {
     
     // --- Fetch logs when view appears or month changes ---
     private func fetchLogs() {
-        let logController = LogController(modelContext: modelContext)
+        _ = LogController(modelContext: modelContext)
         
         // Fetch *all logs* regardless of role
         let descriptor = FetchDescriptor<LogObject>(
@@ -80,7 +80,20 @@ struct CalendarView: View {
             }
         }
     }
-    
+    private var currentMonthDaysCount: Int {
+        calendar.range(of: .day, in: .month, for: currentDate)?.count ?? 30
+    }
+
+    private var completedDaysCount: Int {
+        let monthRange = calendar.range(of: .day, in: .month, for: currentDate) ?? 1..<31
+        let monthStart = calendar.date(from: calendar.dateComponents([.year, .month], from: currentDate))!
+        let monthEnd = calendar.date(byAdding: .day, value: monthRange.count, to: monthStart)!
+
+        return logs.filter { log in
+            log.date >= monthStart && log.date < monthEnd
+        }.count
+    }
+
     // --- Get transition animation ---
     private func getTransition() -> AnyTransition {
         return calendarHelper.getTransition(for: animationDirection)
@@ -91,7 +104,6 @@ struct CalendarView: View {
             ZStack {
             // Background
             Color(red: 7/255, green: 7/255, blue: 32/255).ignoresSafeArea()
-            
             VStack {
                 Spacer()
                 Image("Rock")
@@ -107,6 +119,8 @@ struct CalendarView: View {
                     // Top navbar row
                     HStack {
                         BackButton()
+                            .accessibilityLabel("Go back")
+                            .accessibilityHint("Returns to previous screen")
                         Spacer()
                         Text("Memory Stars")
                             .font(.title)
@@ -127,6 +141,8 @@ struct CalendarView: View {
                                 .font(.title)
 //                                .fontWeight(.bold)
                         }
+                        .accessibilityLabel("Previous Month")
+                        .accessibilityHint("Navigates to the previous month")
                         .frame(width: 44, height: 44)
                         
                         Text(monthYear)
@@ -134,6 +150,8 @@ struct CalendarView: View {
                             .fontWeight(.semibold)
                             .foregroundColor(.white)
                             .frame(minWidth: 120)
+                            .accessibilityAddTraits(.isHeader)
+                            .accessibilityLabel("Current month: \(monthYear)")
                         
                         Button(action: {
                             goToNextMonth()
@@ -141,8 +159,11 @@ struct CalendarView: View {
                             Image(systemName: "chevron.right")
                                 .foregroundColor(isAtPresentMonth ? .gray : .white)
                                 .font(.title)
+
 //                                .fontWeight(.bold)
                         }
+                        .accessibilityLabel("Next Month")
+                        .accessibilityHint("Navigates to the next month")
                         .frame(width: 44, height: 44)
                         .disabled(isAtPresentMonth)
                     }

@@ -31,6 +31,8 @@ struct DatePicker: View {
                     .foregroundColor(isCompleted ? .black : .white)
 //                    .fontWeight(.heavy)
             }
+            .accessibilityLabel("Previous day")
+            .accessibilityHint("Select the previous day")
 
             // Date (top) and day name (bottom) with hidden reference text underneath
             ZStack {
@@ -45,6 +47,9 @@ struct DatePicker: View {
                         .foregroundColor(isCompleted ? .black : .white)
                         .fontWeight(.light)
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("\(dayString), \(dateString) of \(monthString) \(yearString)")
+                .accessibilityHint("Current selected date")
                 // Hidden placeholder: ensures consistent width for longest possible strings
                 VStack(spacing: 2) {
                     Text("31")
@@ -66,6 +71,8 @@ struct DatePicker: View {
                     .foregroundColor(isAtPresentDay ? .gray : (isCompleted ? .black : .white))
 //                    .fontWeight(.heavy)
             }
+            .accessibilityLabel("Next day")
+            .accessibilityHint(isAtPresentDay ? "Cannot select a future date" : "Select the next day")
             .disabled(isAtPresentDay)
         }
         .padding()
@@ -90,9 +97,21 @@ struct DatePicker: View {
         let calendar = Calendar.current
         return calendar.isDate(selectedDate, inSameDayAs: Date()) || selectedDate > Date()
     }
+    private var monthString: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM"
+        return formatter.string(from: selectedDate)
+    }
+
+    private var yearString: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy"
+        return formatter.string(from: selectedDate)
+    }
+
 }
 
-#Preview {
-    @State var previewDate = Date()
-    return DatePicker(selectedDate: $previewDate, isCompleted: false, onPreviousDay: {}, onNextDay: {}).background(.blue)
-}
+//#Preview {
+//    @State var previewDate = Date()
+//    return DatePicker(selectedDate: $previewDate, isCompleted: false, onPreviousDay: {}, onNextDay: {}).background(.blue)
+//}

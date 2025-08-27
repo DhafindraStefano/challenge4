@@ -22,12 +22,13 @@ struct CalendarContainer: View {
         VStack(spacing: 0) {
             // Days of week header
             HStack {
-                ForEach(["S","M","T","W","T","F","S"], id: \.self) { day in
-                    Text(day)
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(Color(red: 118/255, green: 114/255, blue: 255/255))
-                        .frame(width: 39, height: 20)
+                let weekdays = ["S","M","T","W","T","F","S"] // or Calendar.current.shortWeekdaySymbols
+
+                HStack {
+                    ForEach(Array(weekdays.enumerated()), id: \.offset) { _, day in
+                        Text(day)
+                            .frame(maxWidth: .infinity)
+                    }
                 }
             }
             .padding(.top, 20)
@@ -52,6 +53,7 @@ struct CalendarContainer: View {
                                 .opacity(0.46)
                                 .frame(width: width - 1, height: 45)
                                 .position(x: xStart + width/2, y: geo.size.height/2)
+                                .accessibilityHidden(true)
                         }
                     }
                     
@@ -74,6 +76,9 @@ struct CalendarContainer: View {
                                             .fontWeight(.bold)
                                             .foregroundColor(.white)
                                     }
+                                    .accessibilityElement()
+                                    .accessibilityLabel("\(dayNumber) \(isCompleted(date) ? "completed" : "not completed")")
+                                    .accessibilityAddTraits(.isButton)
                                     .frame(maxWidth: .infinity, minHeight: 50)
                                 }
                                 .buttonStyle(PlainButtonStyle())
@@ -98,17 +103,17 @@ struct CalendarContainer: View {
     }
 }
 
-#Preview {
-    let calendar = Calendar.current
-    let currentDate = Date()
-    let daysInMonth: [Date?] = [nil, nil, nil, Date(), Date(), Date(), Date()]
-    
-    CalendarContainer(
-        currentDate: currentDate,
-        daysInMonth: daysInMonth,
-        numberOfWeeks: 1,
-        logs: [],
-        isCompleted: { _ in false },
-        getTransition: { .identity }
-    )
-}
+//#Preview {
+//    let calendar = Calendar.current
+//    let currentDate = Date()
+//    let daysInMonth: [Date?] = [nil, nil, nil, Date(), Date(), Date(), Date()]
+//    
+//    CalendarContainer(
+//        currentDate: currentDate,
+//        daysInMonth: daysInMonth,
+//        numberOfWeeks: 1,
+//        logs: [],
+//        isCompleted: { _ in false },
+//        getTransition: { .identity }
+//    )
+//}

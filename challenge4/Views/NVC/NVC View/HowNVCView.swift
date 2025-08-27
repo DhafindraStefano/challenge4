@@ -9,19 +9,6 @@ import SwiftUI
 import Lottie
 
 struct HowNVCView: View {
-    //    // MARK: - Parent
-    //    @State private var observationParent: RabitFaceObject? = nil
-    //    @State private var feelingParent: FeelingObject? = nil
-    //    @State private var needsParent: NeedObject? = nil
-    //
-    //    // MARK: - Child
-    //    @State private var observationChild: RabitFaceObject? = nil
-    //    @State private var feelingChild: FeelingObject? = nil
-    //    @State private var needsChild: NeedObject? = nil
-    //
-    //    // MARK: - Game
-    //    @State private var answerGame: FeelingObject? = nil
-    
     // MARK: - Parent
     @Binding var observationParent: RabitFaceObject?
     @Binding var feelingParent: FeelingObject?
@@ -38,111 +25,133 @@ struct HowNVCView: View {
     @Binding var child: Bool
     
     @State private var isNextActive: Bool = false
-    @State private var ellipseScale: CGFloat = 10.0 // Animation state for parent's turn
-    @State private var showTurnCard: Bool = false // Controls TurnCard visibility
+    @State private var ellipseScale: CGFloat = 10.0
+    @State private var showTurnCard: Bool = false
+    
     @Environment(\.dismiss) private var dismiss
     
+    var audioName : String = "How_do_you_feel_today"
+
     var body: some View {
-        NavigationStack{
-            ZStack{
-                Color.background
-                    .ignoresSafeArea()
-                VStack {
-                    VStack{
-                        Text("How do you feel")
-                            .font(.largeTitle)
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(.white)
-                        HStack(spacing: 0) {
-                            Text("today? ")
-                                .font(.largeTitle)
-                                .foregroundColor(.white)
-                            Button(action: {
-                                print("Megaphone tapped!") // change it into the voice over
-                            }) {
-                                Image(systemName: "speaker.wave.3.fill")
-                                    .font(.largeTitle)
-                                    .foregroundColor(.white)
-                            }
-                            .buttonStyle(.plain)
-                        }
-                        .frame(maxWidth: .infinity)
+        GeometryReader { geo in
+            ZStack {
+                Color.background.ignoresSafeArea()
+                
+                VStack(spacing: geo.size.height * 0.01) {
+                    Text("How do you feel")
+                        .font(.largeTitle)
                         .multilineTextAlignment(.center)
-                    }
-                    ZStack {
-                        // Turn Card - positioned above RabbitsTalkingView
-                        TurnCard(isParent: !child)
-                             .offset(x: child ? 70 : -70,
-                                     y: child ? -120 : -140)
-                             .opacity(showTurnCard ? 1.0 : 0.0)
-                             .animation(.easeInOut(duration: 1.0), value: showTurnCard)
-                        
-                        RabbitsTalkingView()
-                        
-                        EmotionBar(
-                            observationParent: $observationParent,
-                            observationChild: $observationChild,
-                            child: $child,
-                            onNext: {
-                                // Add 1-second delay to allow button animation and sound to complete
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                    if !child && observationParent != nil {
-                                        isNextActive = true
-                                    } else if child && observationChild != nil {
-                                        isNextActive = true
-                                    }
-                                }
-                            }
-                        )
-                        
-                        .offset(x: 0, y: 290)
+                        .foregroundColor(.white)
+
+                    HStack(spacing: geo.size.width * 0.01) {
+                        Text("today?")
+                            .font(.largeTitle)
+                            .foregroundColor(.white)
+                        Button {
+                            AudioPlayer.shared.playAudio(named: audioName)
+                        } label: {
+                            Image(systemName: "speaker.wave.3.fill")
+                                .font(.title2)
+                                .foregroundColor(.white)
+                        }
+                        .accessibilityLabel("Play audio")
+                        .accessibilityHint("Plays a question asking how you feel today")
                     }
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("How do you feel today?")
+                .offset(y: -geo.size.height * 0.18)
+                .zIndex(2)
+                TurnCard(isParent: !child)
+                    .offset(
+                        x: child ? geo.size.width * 0.22 : -geo.size.width * 0.22,
+                        y: child ? -geo.size.height * 0.1 : -geo.size.height * 0.1
+                    )
+                    .opacity(showTurnCard ? 1.0 : 0.0)
+                    .animation(.easeInOut(duration: 1.0), value: showTurnCard)
+                    .zIndex(3)
+                    .accessibilityLabel(child ? "It’s your child’s turn" : "It’s your turn")
+                    .accessibilityAddTraits(.isStaticText)
+
+                RabbitsTalkingView()
+                    .accessibilityLabel("Two rabbits are talking together")
+                    .accessibilityAddTraits(.isImage)
+                    .zIndex(0)
+
+                EmotionBar(
+                    observationParent: $observationParent,
+                    observationChild: $observationChild,
+                    child: $child,
+                    onNext: {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                            if !child && observationParent != nil {
+                                isNextActive = true
+                            } else if child && observationChild != nil {
+                                isNextActive = true
+                            }
+                        }
+                    }
+                )
+                .accessibilityLabel("Select how you are feeling")
+                .accessibilityHint("Choose a feeling to continue")
+                .zIndex(3)
+                .offset(y: geo.size.height * 0.4)
                 
-                // Animation overlay for parent's turn only - covers entire view
+                VStack {
+                    HStack {
+                        Button(action: { dismiss() }) {
+                            BackButton()
+                        }
+                        .padding(.leading, 16)
+                        .padding(.top, 46)
+                        .accessibilityLabel("Back")
+                        .accessibilityHint("Goes back to the previous screen")
+                        Spacer()
+                    }
+                    Spacer()
+                }
                 
-                // Black tint with animated ellipse cutout
                 Rectangle()
                     .fill(Color.black.opacity(0.8))
-                    .ignoresSafeArea(.all, edges: .all)
-                    .allowsHitTesting(false)
+                    .ignoresSafeArea()
                     .mask {
-                        Rectangle()
-                            .ignoresSafeArea(.all, edges: .all)
-                            .overlay {
-                                Ellipse()
-                                    .frame(width: (child ? 200 : 240) * ellipseScale, height: (child ? 250 : 300) * ellipseScale)
-                                    .offset(x: child ? 70 : -70, y: child ? 20 : 10)
-                                    .blendMode(.destinationOut)
-                            }
+                        Rectangle().overlay {
+                            Ellipse()
+                                .frame(
+                                    width: (child ? geo.size.width * 0.5 : geo.size.width * 0.55) * ellipseScale,
+                                    height: (child ? geo.size.height * 0.3 : geo.size.height * 0.35) * ellipseScale
+                                )
+                                .offset(
+                                    x: child ? geo.size.width * 0.2 : -geo.size.width * 0.22,
+                                    y: geo.size.height * 0.05
+                                )
+                                .blendMode(.destinationOut)
+                            
+                        }
                     }
-                
-                // Invisible overlay for tap gesture to skip animation
+                    .allowsHitTesting(false)
+
                 if ellipseScale != 10.0 {
                     Rectangle()
                         .fill(Color.clear)
-                        .ignoresSafeArea(.all)
+                        .ignoresSafeArea()
                         .onTapGesture {
-                            // Skip animation - hide card and expand ellipse
                             showTurnCard = false
                             withAnimation(.easeInOut(duration: 2.0)) {
                                 ellipseScale = 10.0
                             }
                         }
                 }
+                
             }
+            .ignoresSafeArea()
             .onAppear {
-                // Animation works for both parent and child turns
                 withAnimation(.easeInOut(duration: 2.0)) {
                     ellipseScale = 1.0
                 }
-                
-                // Show TurnCard after 1.5 seconds
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                     showTurnCard = true
                 }
-                
-                // Auto-reverse after 5 seconds
                 DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
                     showTurnCard = false
                     withAnimation(.easeInOut(duration: 2.0)) {
@@ -151,21 +160,19 @@ struct HowNVCView: View {
                 }
             }
             .navigationDestination(isPresented: $isNextActive) {
-                WhyNVCView(observationParent: $observationParent, feelingParent: $feelingParent, needsParent: $needsParent, observationChild: $observationChild, feelingChild: $feelingChild, needsChild: $needsChild, answerGame: $answerGame, child: $child)
-                    .transaction { transaction in
-                        transaction.disablesAnimations = true
-                    }
+                WhyNVCView(
+                    observationParent: $observationParent,
+                    feelingParent: $feelingParent,
+                    needsParent: $needsParent,
+                    observationChild: $observationChild,
+                    feelingChild: $feelingChild,
+                    needsChild: $needsChild,
+                    answerGame: $answerGame,
+                    child: $child
+                )
+                .transaction { $0.disablesAnimations = true }
             }
-        }
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: {
-                    dismiss()
-                }) {
-                    BackButton()
-                }
-            }
+            .navigationBarBackButtonHidden(true)
         }
     }
 }

@@ -22,11 +22,11 @@ struct NextButton: View {
 }
 
 // MARK: - Preview
-#Preview {
-    VStack(spacing: 20) {
-        NextButton(action: {
-            
-        })
-    }
-    .previewLayout(.sizeThatFits)
-}
+//#Preview {
+//    VStack(spacing: 20) {
+//        NextButton(action: {
+//            
+//        })
+//    }
+//    .previewLayout(.sizeThatFits)
+//}

@@ -20,7 +20,7 @@ struct OnboardingBunniesView: View {
         .ignoresSafeArea(edges: .bottom)
         .offset(y: slideOffset)
         .onAppear {
-            withAnimation(.easeOut(duration: 1.2)) {
+            withAnimation(.interpolatingSpring(stiffness: 100, damping: 12)) {
                 slideOffset = 0
             }
         }

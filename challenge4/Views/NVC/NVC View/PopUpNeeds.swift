@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PopUpNeeds: View {
-    @State private var selectedNeeds: [String] = []
+//    @Binding var selectedNeeds: [String]
     
     let needs = ["Rest", "Cooperation", "Understanding", "Focus", "Support"]
     
@@ -43,10 +43,10 @@ struct PopUpNeeds: View {
             // Needs Chips
             FlowLayout(needs, id: \.self) { need in
                 Button(action: {
-                    toggleNeed(need)
+//                    toggleNeed(need)
                 }) {
                     Text(need)
-                        .fontWeight(selectedNeeds.contains(need) ? .bold : .regular)
+//                        .fontWeight(selectedNeeds.contains(need) ? .bold : .regular)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 8)
                         .background(Color.cancelButton)
@@ -78,13 +78,13 @@ struct PopUpNeeds: View {
         .padding()
     }
     
-    private func toggleNeed(_ need: String) {
-        if selectedNeeds.contains(need) {
-            selectedNeeds.removeAll { $0 == need }
-        } else {
-            selectedNeeds.append(need)
-        }
-    }
+//    private func toggleNeed(_ need: String) {
+//        if selectedNeeds.contains(need) {
+//            selectedNeeds.removeAll { $0 == need }
+//        } else {
+//            selectedNeeds.append(need)
+//        }
+//    }
 }
 
 // Custom simple FlowLayout for chips
@@ -138,3 +138,4 @@ struct FlowLayout<Data: RandomAccessCollection, Content: View, ID: Hashable>: Vi
 #Preview {
     PopUpNeeds()
 }
+

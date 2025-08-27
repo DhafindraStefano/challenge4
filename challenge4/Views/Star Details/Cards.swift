@@ -12,16 +12,43 @@ struct Cards: View {
     enum CardState {
         case feeling, why, need, games
     }
+    private var accessibilityTitle: String {
+        switch state {
+        case .feeling:
+            return "Feeling card: \(rabitFace ?? "No feeling")"
+        case .why:
+            return "Reason card"
+        case .need:
+            if let needs = needs?.needs, !needs.isEmpty {
+                return "Needs card: \(needs.map { $0.text }.joined(separator: ", "))"
+            }
+            return "Needs card: no needs logged"
+        case .games:
+            return "Game story card"
+        }
+    }
+
+    private var accessibilityHint: String {
+        switch state {
+        case .feeling:
+            return "Shows the current feeling"
+        case .why:
+            return "Play audio to hear the reason for the feeling"
+        case .need:
+            return "Shows needs"
+        case .games:
+            return "Play audio to hear the game story"
+        }
+    }
 
     var state: CardState
     
-    // 👇 Pass the data directly
     var titleText: String
     var rabitFace: String? = nil
     var imageName: String? = nil
     var audioPathFeeling: String? = nil
     var audioPathGame: String? = nil
-    var needs: [String] = []
+    var needs: NeedObject? = nil
     
     @StateObject private var audioController = AudioRecorderController()
     
@@ -42,6 +69,9 @@ struct Cards: View {
         .background(Color("EmotionBarColor"))
         .cornerRadius(20)
         .padding(.horizontal, 5)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(accessibilityTitle)
+        .accessibilityHint(accessibilityHint)
     }
 
     @ViewBuilder
@@ -60,27 +90,26 @@ struct Cards: View {
         case .why:
             if let audioPathFeeling {
                 // CHANGE THE BUTTON
-                Button(action: {
-                    audioController.playRecording(fileName: audioPathFeeling)
-                    if let duration = audioController.getRecordingDuration(fileName: audioPathFeeling) {
-                        print("Audio duration: \(duration) seconds")
+                ButtonStarDetail(
+                    onPlay: {
+                        audioController.playRecording(fileName: audioPathFeeling)
+                    },
+                    onPause: {
+                        audioController.stopPlayback()
                     }
-                }) {
-                    Label("Play Game Story", systemImage: "play.circle.fill")
-                        .foregroundColor(.white)
-                }
-                .padding(.bottom, 12)
+                )
+                .padding(15)
             } else {
                 Text("No reason recorded")
                     .foregroundColor(.gray)
+                    .accessibilityLabel("No reason recorded")
             }
             
-
         case .need:
-            if !needs.isEmpty {
+            if let needsObj = needs, !needsObj.needs.isEmpty {
                 HStack {
-                    ForEach(needs, id: \.self) { need in
-                        Text(need)
+                    ForEach(needsObj.needs, id: \.id) { need in
+                        Text(need.text)
                             .font(.headline)
                             .foregroundColor(.white)
                             .padding(.horizontal, 12)
@@ -89,95 +118,64 @@ struct Cards: View {
                             .clipShape(Capsule())
                     }
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(needsObj.needs.map { $0.text }.joined(separator: ", "))
+                .accessibilityHint("These are the needs")
                 .padding(.bottom, 12)
-                
             } else {
                 Text("No needs logged")
                     .foregroundColor(.gray)
             }
-
         case .games:
             if let audioPathGame {
-                // CHANGE THE BUTTON
-                Button(action: {
-                    audioController.playRecording(fileName: audioPathGame)
-                    if let duration = audioController.getRecordingDuration(fileName: audioPathGame) {
-                        print("Audio duration: \(duration) seconds")
+                ButtonStarDetail(
+                    onPlay: {
+                        audioController.playRecording(fileName: audioPathGame)
+                    },
+                    onPause: {
+                        audioController.stopPlayback()
                     }
-                }) {
-                    Label("Play Game Story", systemImage: "play.circle.fill")
-                        .foregroundColor(.white)
-                }
-                .padding(.bottom, 12)
+                )
+                .padding(15)
             } else {
-                Text("No reason recorded")
+                Text("No game story recorded")
                     .foregroundColor(.gray)
-                
+                    .accessibilityLabel("No reason recorded")
             }
+
         }
     }
 }
 
 #Preview {
-    VStack {
-        Cards(
-            state: .feeling,
-            titleText: "How I'm Feeling Today",
-            imageName: "HappyFace"
-        )
-        Cards(
-            state: .why,
-            titleText: "Why I Feel That Way",
-            audioPathFeeling: "Audio_123.m4a"
-        )
-        Cards(
-            state: .need,
-            titleText: "What I Need",
-            needs: ["Rest", "Play", "Connection"]
-        )
-        Cards(
-            state: .games,
-            titleText: "Can you tell me a story?",
-            audioPathGame: "Funny story"
-        )
-    }
-    .padding()
-    .background(Color.black)
-}
-
-
-//#Preview {
-//    VStack(spacing: 20) {
-//        Cards(state: .feeling)
-//        Cards(state: .why)
-//        Cards(state: .need)
-//        Cards(state: .games) // preview for the new Games state
-//    }
-//    .padding()
-//    .background(Color(.systemBackground))
-//}
-
-#Preview {
     VStack(spacing: 20) {
+        // Feeling Card
         Cards(
             state: .feeling,
             titleText: "How I'm Feeling Today",
+            rabitFace: "Happy 😊",
             imageName: "HappyFace"
         )
+        
+        // Why Card
         Cards(
             state: .why,
             titleText: "Why I Feel That Way",
             audioPathFeeling: "Audio_123.m4a"
         )
+        
+        // Need Card
         Cards(
             state: .need,
             titleText: "What I Need",
-            needs: ["Rest", "Play", "Connection"]
+            needs: NeedObject(needs: ["Rest", "Play", "Connection"])
         )
+        
+        // Games Card
         Cards(
             state: .games,
             titleText: "Can you tell me a story?",
-            audioPathGame: "Funny story"
+            audioPathGame: "GameStory_001.m4a"
         )
     }
     .padding()
