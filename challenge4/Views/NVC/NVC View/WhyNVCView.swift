@@ -51,6 +51,15 @@ struct WhyNVCView: View {
                                 Image(systemName: "speaker.wave.3.fill")
                                     .font(.title2)
                                     .foregroundColor(.white)
+                                Button {
+                                    AudioPlayer.shared.playAudio(named: audioName)
+                                } label: {
+                                    Image(systemName: "speaker.wave.3.fill")
+                                        .font(.title2)
+                                        .foregroundColor(.white)
+                                }
+                                .buttonStyle(.plain)
+                                .buttonStyle(.plain)
                             }
                             .buttonStyle(.plain)
                             .accessibilityLabel("Play audio prompt")

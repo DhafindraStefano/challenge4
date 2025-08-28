@@ -151,6 +151,9 @@ struct NeedNVCView: View {
     }
 }
 
+
+
+
 #Preview {
     @Previewable @State var observationParent: RabitFaceObject? = RabitFaceObject(name: "Parent Rabbit", image: "RabbitImage")
     @Previewable @State var feelingParent: FeelingObject? = FeelingObject(name: "" , AudioFilePath: "parent_feeling.m4a")

@@ -13,12 +13,12 @@ struct PopUpNeeds: View {
     let needs = ["Rest", "Cooperation", "Understanding", "Focus", "Support"]
     
     var body: some View {
-        VStack(spacing: 10) {
-            // Header
-            HStack {
-                Text("Needs")
-                    .font(.title2).bold()
-                    .foregroundColor(.white)
+        if isPresented {
+            ZStack {
+                // Background dimmed - covers entire screen
+                Color.black.opacity(0.5)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .ignoresSafeArea(.all, edges: .all)
                 
                 Image(systemName: "list.bullet")
                     .font(.title2)
@@ -52,30 +52,19 @@ struct PopUpNeeds: View {
                         .background(Color.cancelButton)
                         .foregroundColor(.white)
                         .clipShape(Capsule())
+                        .shadow(color: .checkmarkDropShadow.opacity(1), radius: 0, x: 0, y: 6)
+                    }
+                    .padding(.bottom, 25)
                 }
+                .padding(.top, 20)
+                .background(Color.popUpBackground)
+                .cornerRadius(20)
+                .padding(.bottom, 700)
+                .padding(.horizontal)
             }
-            
-            // Done Button
-            Button(action: {
-            }) {
-                HStack {
-                    Text("Done")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.white)
-                }
-                .padding(.horizontal, 135)
-                .padding(.vertical, 15)
-                .background(Color.checkmark) // your custom asset
-                .clipShape(Capsule())
-                .shadow(color: .checkmarkDropShadow.opacity(1), radius: 0, x: 0, y: 6)
-            }
-            .padding(.bottom, 25)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .transition(.opacity)
         }
-        .padding(.top, 20)
-        .background(Color.popUpBackground)
-        .cornerRadius(20)
-        .padding()
     }
     
 //    private func toggleNeed(_ need: String) {
@@ -136,6 +125,11 @@ struct FlowLayout<Data: RandomAccessCollection, Content: View, ID: Hashable>: Vi
 }
 
 #Preview {
-    PopUpNeeds()
+    StatefulPreviewWrapper(true) { isPresented in
+        ZStack {
+            Color.gray.ignoresSafeArea()
+            PopUpNeeds(isPresented: isPresented)
+        }
+    }
 }
 

@@ -22,6 +22,8 @@ struct RandomizeView: View {
     @State private var isNextActive: Bool = false
     @State private var currentQuestion: Question? = nil
     
+    @State private var currentQuestion: Question? = nil   // <-- now stores text + audio
+    
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     

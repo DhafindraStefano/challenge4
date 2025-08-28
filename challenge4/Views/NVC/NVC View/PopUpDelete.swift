@@ -17,8 +17,10 @@ struct PopUpDelete: View {
 
 //                // Background dimmed
                 Color.black.opacity(0.5)
-                    .ignoresSafeArea()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .ignoresSafeArea(.all, edges: .all)
                 
+                // Popup content centered
                 VStack(spacing: 20) {
                     // Title
                     Text("Do you want to delete the recording?")
@@ -74,6 +76,7 @@ struct PopUpDelete: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .ignoresSafeArea()
             .transition(.opacity)
+            .padding(.top, -600)
         }
     }
 }

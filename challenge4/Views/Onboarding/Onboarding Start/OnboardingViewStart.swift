@@ -6,7 +6,6 @@ struct OnboardingViewStart: View {
     @State private var navigateToCarousel = false
     @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding: Bool = false
     @State private var currentState: OnboardingState = .sharefeeling
-
     var body: some View {
         NavigationStack {
             ZStack {

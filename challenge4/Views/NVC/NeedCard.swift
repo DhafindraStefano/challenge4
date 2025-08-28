@@ -18,6 +18,9 @@ struct NeedCard: View {
     @State private var showPopup: Bool = false
 
     
+    @State private var showNeedsPopup = false
+    @FocusState private var isTextFieldFocused: Bool
+    
     var body: some View {
         ZStack {
             VStack(alignment: .leading) {
@@ -26,6 +29,7 @@ struct NeedCard: View {
                     Text("Needs")
                         .font(.title).bold()
                         .foregroundColor(.white)
+                        .padding(.leading, 5)
                     
 //                    Button(action: {
 //                        withAnimation(.spring()) {
@@ -152,6 +156,13 @@ struct NeedCard: View {
                 .accessibilityLabel("Confirm needs")
                 .accessibilityHint("Moves to the next step with \(selectedNeeds.count) needs selected")
             }
+            
+            // PopUp overlay
+            PopUpNeeds(isPresented: $showNeedsPopup)
+        }
+        .onTapGesture {
+            // Dismiss keyboard when tapping outside
+            isTextFieldFocused = false
         }
     }
 }

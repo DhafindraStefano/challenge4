@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 import Lottie
 import SwiftData
 
@@ -25,22 +26,25 @@ struct HomeView: View {
         _showStarBackground = State(initialValue: !isClickedInitially)
         _starBackgroundOpacity = State(initialValue: isClickedInitially ? 0.0 : 1.0)
     }
-        // MARK: - Parent / Child / Game Bindings
-        @State var child: Bool = false
-        @State var observationParent: RabitFaceObject? = nil
-        @State var feelingParent: FeelingObject? = nil
-        @State var needsParent: NeedObject? = nil
     
-        @State var observationChild: RabitFaceObject? = nil
-        @State var feelingChild: FeelingObject? = nil
-        @State var needsChild: NeedObject? = nil
+    // MARK: - Parent / Child / Game Bindings
+    @State var child: Bool = false
+    @State var observationParent: RabitFaceObject? = nil
+    @State var feelingParent: FeelingObject? = nil
+    @State var needsParent: NeedObject? = nil
     
-        @State var answerGame: FeelingObject? = nil
+    @State var observationChild: RabitFaceObject? = nil
+    @State var feelingChild: FeelingObject? = nil
+    @State var needsChild: NeedObject? = nil
+    
+    @State var answerGame: FeelingObject? = nil
+    
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \LogObject.date, order: .reverse) private var logs: [LogObject]
     
     private let calendar = Calendar.current
     
+    // MARK: - Computed Properties
     private var currentMonthDaysTotal: Int {
         calendar.range(of: .day, in: .month, for: Date())?.count ?? 30
     }

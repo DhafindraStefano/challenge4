@@ -20,6 +20,7 @@ struct OnboardingCards: View {
     @State private var myOffsetAmount: CGFloat = -150
     var onFinish: () -> Void
     
+    var onFinish: () -> Void
     var body: some View {
         ZStack {
             Color.background.ignoresSafeArea()
